@@ -23,5 +23,16 @@ const password = ref('');
 
 const handleLogin = () => {
   console.log('로그인 시도:', email.value, password.value);
+
+  if (!email.value || !password.value) {
+    alert('이메일과 비밀번호를 입력하세요.');
+    return;
+  }
+
+  if (email.value === 'admin@example.com' && password.value === '1234') {
+    console.log('로그인 성공!');
+  } else {
+    alert('로그인 실패!');
+  }
 };
 </script>
