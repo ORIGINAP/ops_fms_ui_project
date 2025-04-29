@@ -16,4 +16,12 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+const email = ref('');
+const password = ref('');
+
+const handleLogin = () => {
+  console.log('로그인 시도:', email.value, password.value);
+};
 </script>
