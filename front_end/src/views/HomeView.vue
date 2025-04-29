@@ -1,6 +1,6 @@
 <template>
-    <div>Home View</div>
-  </template>
-  
-  <script setup>
-  </script>
+  <div>Home View</div>
+</template>
+
+<script setup>
+</script>
