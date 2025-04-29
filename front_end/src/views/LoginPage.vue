@@ -31,6 +31,7 @@ const handleLogin = () => {
 
   if (email.value === 'admin@example.com' && password.value === '1234') {
     console.log('로그인 성공!');
+    router.push('/main');
   } else {
     alert('로그인 실패!');
   }
