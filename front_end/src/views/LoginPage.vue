@@ -13,13 +13,17 @@
       <button type="submit">Login</button>
     </form>
   </div>
+  <span @click="GotoRegister">회원가입</span>
+
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const email = ref('');
 const password = ref('');
+const router = useRouter();
 
 const handleLogin = () => {
   console.log('로그인 시도:', email.value, password.value);
@@ -36,15 +40,28 @@ const handleLogin = () => {
     alert('로그인 실패!');
   }
 };
+
+const GotoRegister = () => {
+  router.push('/register');
+  return;
+}
+
 </script>
+
+
+
+
+
 
 <style scoped>
 .login-container {
   width: 300px;
   margin: 100px auto;
-  padding: 20px;
+  padding: 24px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
 }
 
 .login-container h1 {
@@ -74,5 +91,9 @@ const handleLogin = () => {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #1e305d;
 }
 </style>
