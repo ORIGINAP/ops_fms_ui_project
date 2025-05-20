@@ -13,6 +13,8 @@
       <button type="submit">Login</button>
     </form>
   </div>
+  <span @click="GotoRegister">회원가입</span>
+
 </template>
 
 <script setup>
@@ -38,7 +40,18 @@ const handleLogin = () => {
     alert('로그인 실패!');
   }
 };
+
+const GotoRegister = () => {
+  router.push('/register');
+  return;
+}
+
 </script>
+
+
+
+
+
 
 <style scoped>
 .login-container {
