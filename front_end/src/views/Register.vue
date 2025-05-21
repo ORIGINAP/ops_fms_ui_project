@@ -11,14 +11,28 @@
     import { ref } from 'vue'
     import axios from 'axios'
 
-    const id = ref('')
-    const pw = ref('')
+    const username = ref('')
+    const password = ref('')
 
     const SendServer = async () => {
+        
+      
+      try{
         await axios.post('http://localhost:5000/register', {
-            id : id.value,
-            pw : pw.value
+            username : username.value,
+            password : password.value
         })
+        alert(res.data.message)
+      } catch(err){
+        if(err.response) {
+          alert(err.response.data.message)
+        } else {
+          alert('gone wrong')
+        }
+      }
+    
+    
+    
+    
     }
-
 </script>
