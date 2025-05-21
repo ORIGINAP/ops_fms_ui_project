@@ -28,18 +28,14 @@ export default {
 
 <style scoped>
 .main-container {
-  position: relative;
-  height: 100vh;
-  background-color: white; /* 배경 흰색 */
-  overflow: hidden;
 }
 
 /* 맵 자리 */
 .map {
-  width: calc(100% - 25% - 70px); /* 전체 너비에서 사이드메뉴 너비(25%)와 여유 공간 빼기 */
-  height: 90%;
+  position: absolute;
+  inset: 50px; /* top, bottom, left가 20px로 설정됨 */
+  right: calc(25%);
   background-color: #dddddd;
-  margin: 45px 20px 20px 60px; /* 상, 우, 하, 좌 */
   border: 2px dashed #aaa;
   display: flex;
   justify-content: center;
@@ -47,6 +43,7 @@ export default {
   font-size: 30px;
   color: #333;
   box-sizing: border-box;
+  z-index: 1; /* 사이드메뉴보다 아래로 */
 }
 
 </style>
