@@ -1,11 +1,21 @@
+<!-- App.vue -->
 <script setup>
 import router from './router';
 </script>
 
 <template>
   <div>
+    <router-view> </router-view>
+
     <router-view></router-view>
+
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
+
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+}
+</style>
