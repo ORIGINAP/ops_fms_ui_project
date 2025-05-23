@@ -39,9 +39,9 @@ export default {
 <style scoped>
 .side-menu {
   position: fixed;
-  top: 80px;
-  right: 160px;
-  width: 23%;
+  top: 20px;
+  right: 135px;
+  width: 26%;
   height: 93%;
   margin: 0;
   z-index: 50;
@@ -54,7 +54,7 @@ export default {
 .menu-body {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .menu-row {
@@ -66,7 +66,7 @@ export default {
 .menu-network {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: white;
-  height: 300px;
+  height: 350px;
   border-radius: 20px;
   flex-grow: 1;
   display: flex;
@@ -80,7 +80,7 @@ export default {
 .menu-temperature {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: white;
-  height: 220px;
+  height: 230px;
   border-radius: 20px;
   flex-grow: 1;
   display: flex;
@@ -94,7 +94,7 @@ export default {
 .menu-other {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   background-color: white;
-  height: 250px;
+  height: 260px;
   border-radius: 20px;
   flex-grow: 1;
   display: flex;
