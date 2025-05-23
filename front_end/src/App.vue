@@ -1,16 +1,17 @@
-<!-- src/App.vue -->
-<template>
-  <router-view />
-</template>
-
-<script>
-export default {
-  name: 'App'
-}
+<!-- App.vue -->
+<script setup>
+import router from './router';
 </script>
+
+<template>
+  <div>
+    <router-view> </router-view>
+  </div>
+</template>
 
 <style>
 html, body {
-  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

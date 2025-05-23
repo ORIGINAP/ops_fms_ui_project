@@ -1,49 +1,44 @@
 <template>
-  <div class="main-container">
-
-    <!-- 맵 들어갈 자리 -->
-    <div class="map">
-      <p>맵</p>
-    </div>
-
-    <!-- 사이드 패널 -->
-    <SideMenu :visible="menuVisible" @close="menuVisible = false" />
+  <div>
+    <Status />
+    <Menu />
+    <Map />
   </div>
 </template>
 
 <script>
-import SideMenu from '../components/SideMenu.vue'
+import Status from '../components/Status.vue';
+import Menu from '../components/Menu.vue';
+import Map from '../components/Map.vue';
 
 export default {
-  name: 'MainPage',
-  components: { SideMenu },
-  data() {
-    return {
-      menuVisible: false,
-    }
-  }
-}
-
+  name: 'HomeView',
+  components: {
+    Status,
+    Menu,
+    Map,
+  },
+};
 </script>
 
-<style scoped>
-.main-container {
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: rgba(246,247,249,100);
 }
-
-/* 맵 자리 */
-.map {
-  position: absolute;
-  inset: 50px; /* top, bottom, left가 20px로 설정됨 */
-  right: calc(25%);
-  background-color: #dddddd;
-  border: 2px dashed #aaa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px;
-  color: #333;
-  box-sizing: border-box;
-  z-index: 1; /* 사이드메뉴보다 아래로 */
-}
-
 </style>
+
+
+/*
+main-color(mid) : rgba(21,100,191,100)
+sub-color(chart) : rgba(178,214,255,100)
+제일연한색 : rgba(231,242,255,100)
+글씨색 : rgba(73,135,207,100)
+진한 글씨색 : rgba(0,63,136,100)
+배경색 : rgba(246,247,259,100)
+
+*/
