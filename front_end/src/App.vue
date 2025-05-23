@@ -6,8 +6,12 @@ import router from './router';
 <template>
   <div>
     <router-view> </router-view>
+
+    <router-view></router-view>
+
   </div>
 </template>
+
 
 <style>
 html, body {
