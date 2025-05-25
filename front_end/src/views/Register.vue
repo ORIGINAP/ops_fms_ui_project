@@ -9,10 +9,12 @@
 
 <script setup>
     import { ref } from 'vue'
+    import { useRouter } from 'vue-router'
     import axios from 'axios'
 
     const username = ref('')
     const password = ref('')
+    const router = useRouter()
 
     const SendServer = async () => {
         
@@ -23,6 +25,7 @@
             password : password.value
         })
         alert(res.data.message)
+        router.push('/');
       } catch(err){
         if(err.response) {
           alert(err.response.data.message)

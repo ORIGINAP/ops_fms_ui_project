@@ -20,25 +20,35 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const email = ref('');
 const password = ref('');
 const router = useRouter();
 
-const handleLogin = () => {
+const handleLogin = async () => {
   console.log('로그인 시도:', email.value, password.value);
 
   if (!email.value || !password.value) {
     alert('이메일과 비밀번호를 입력하세요.');
     return;
   }
-
-  if (email.value === 'admin@example.com' && password.value === '1234') {
-    console.log('로그인 성공!');
+  try {
+    const res = await axios.post('http://localhost:5000/login', {
+      username: email.value,
+      password: password.value,
+    });
+    alert(res.data.message); 
     router.push('/main');
-  } else {
-    alert('로그인 실패!');
+  } catch (err) {
+    if (err.response) {
+      alert(err.response.data.message);
+    } else {
+      alert('gone wrong');
+    }
   }
+  
+
 };
 
 const GotoRegister = () => {
