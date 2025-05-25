@@ -14,11 +14,17 @@ export default {
 <style scoped>
 
 .map {
-  width: 800px;
-  height: 800px;
-  box-shadow: 3px 3px 10px rgba(21,100,191, 0.13);
+  position: fixed;
+  top: 40px;
+  left: 40px;
+
+  width: 1205px;
+  height: 870px;
+  box-shadow: 3px 3px 7px rgba(21,100,191, 0.13);
   background-color: white;
   display: flex;
+
+
   justify-content: center;
   align-items: center;
   border-radius: 30px;
