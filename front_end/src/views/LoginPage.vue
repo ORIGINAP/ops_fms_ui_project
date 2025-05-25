@@ -48,11 +48,6 @@ const GotoRegister = () => {
 
 </script>
 
-
-
-
-
-
 <style scoped>
 .login-container {
   width: 300px;
