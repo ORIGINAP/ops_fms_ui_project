@@ -33,6 +33,21 @@ def register():
 
     return jsonify({"message": "회원가입 완료"}), 201
 
+@app.route('/login', methods=['POST'])
+def login():
+    data =  request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    user = User.query.filter_by(username=username, password=password).first()
+
+    if user:
+        return jsonify({"message":"로그인 성공"}), 200
+    else:
+        return jsonify({"message": "로그인 실패"}), 401
+
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
