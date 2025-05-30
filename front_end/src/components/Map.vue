@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <!-- 세로 긴 영역 3개 -->
+    <!-- 영역 A, B, C -->
     <div class="area" ref="areaA">A</div>
     <div class="area" ref="areaB">B</div>
     <div class="area" ref="areaC">C</div>
 
-    <!-- 캔버스: 로봇 이동과 선 그리기 -->
+    <!-- 캔버스 -->
     <canvas ref="canvas" class="canvas-layer"></canvas>
   </div>
 </template>
@@ -18,16 +18,10 @@ const areaA = ref(null)
 const areaB = ref(null)
 const areaC = ref(null)
 
-const robot = {
-  x: 0,
-  y: 0,
-  size: 16,
-  speed: 1,
-  path: [],
-  targetIndex: 1
-}
-
 let ctx, animationId
+
+const NUM_ROBOTS = 5
+const robots = []
 
 function getCenter(el) {
   const rect = el.getBoundingClientRect()
@@ -49,12 +43,12 @@ function drawPath(path) {
   ctx.stroke()
 }
 
-function drawRobot() {
+function drawRobot(robot) {
   ctx.fillStyle = 'green'
   ctx.fillRect(robot.x - robot.size / 2, robot.y - robot.size / 2, robot.size, robot.size)
 }
 
-function moveRobot() {
+function moveRobot(robot) {
   const target = robot.path[robot.targetIndex]
   const dx = target.x - robot.x
   const dy = target.y - robot.y
@@ -72,9 +66,13 @@ function moveRobot() {
 
 function animate() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
-  drawPath(robot.path)
-  moveRobot()
-  drawRobot()
+  if (robots[0]) drawPath(robots[0].path)
+
+  for (const robot of robots) {
+    moveRobot(robot)
+    drawRobot(robot)
+  }
+
   animationId = requestAnimationFrame(animate)
 }
 
@@ -84,13 +82,25 @@ onMounted(() => {
   canvasEl.height = window.innerHeight
   ctx = canvasEl.getContext('2d')
 
-  robot.path = [
+  const path = [
     getCenter(areaA.value),
     getCenter(areaB.value),
     getCenter(areaC.value)
   ]
-  robot.x = robot.path[0].x
-  robot.y = robot.path[0].y
+
+  // 로봇 여러 개 초기화
+  for (let i = 0; i < NUM_ROBOTS; i++) {
+    const delay = i * 40 // 시간차로 시작 위치 다르게
+    robots.push({
+      x: path[0].x,
+      y: path[0].y,
+      size: 16,
+      speed: 1,
+      path,
+      targetIndex: 1,
+      delay
+    })
+  }
 
   animate()
 })
@@ -119,7 +129,6 @@ onMounted(() => {
   border-radius: 8px;
 }
 
-/* 세 영역 위치 고정 */
 .area:nth-of-type(1) { top: 10%; left: 10%; }   /* A */
 .area:nth-of-type(2) { top: 10%; left: 40%; }   /* B */
 .area:nth-of-type(3) { top: 10%; left: 70%; }   /* C */
