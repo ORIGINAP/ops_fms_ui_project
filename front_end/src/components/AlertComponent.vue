@@ -3,6 +3,7 @@
     <div class="alert-box">
       <div class="alert-icon">⚠️</div>
       <div class="alert-message">{{ alertMessage }}</div>
+      <button class="alert-close" @click="closeAlert">닫기</button>
     </div>
   </div>
 </template>
@@ -20,6 +21,9 @@ export default {
     activateAlert(message) {
       this.isAlertActive = true
       this.alertMessage = message
+    },
+    closeAlert() {
+      this.isAlertActive = false
     }
   }
 }
@@ -60,4 +64,17 @@ export default {
   text-align: center;
 }
 
+.alert-close {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.alert-close:hover {
+  background-color: #c82333;
+}
 </style> 
