@@ -11,9 +11,9 @@
         <input v-model="password" type="password" required />
       </div>
       <button type="submit">Login</button>
+      <button @click="GotoRegister">Register</button>
     </form>
   </div>
-  <span @click="GotoRegister">회원가입</span>
 
 </template>
 
@@ -81,7 +81,7 @@ const GotoRegister = () => {
 }
 
 .login-container input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
@@ -90,6 +90,7 @@ const GotoRegister = () => {
 
 .login-container button {
   width: 100%;
+  margin-top: 15px;
   padding: 10px;
   background-color: #254081;
   color: white;
