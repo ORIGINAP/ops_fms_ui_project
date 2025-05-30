@@ -2,6 +2,7 @@
   <div class="alert-container" v-if="isAlertActive">
     <div class="alert-box">
       <div class="alert-icon">⚠️</div>
+      <div class="alert-message">{{ alertMessage }}</div>
     </div>
   </div>
 </template>
@@ -11,11 +12,15 @@ export default {
   name: 'AlertComponent',
   data() {
     return {
-      isAlertActive: false
+      isAlertActive: false,
+      alertMessage: ''
     }
   },
   methods: {
-
+    activateAlert(message) {
+      this.isAlertActive = true
+      this.alertMessage = message
+    }
   }
 }
 </script>
@@ -47,6 +52,12 @@ export default {
 
 .alert-icon {
   font-size: 48px;
+}
+
+.alert-message {
+  font-size: 18px;
+  color: #333;
+  text-align: center;
 }
 
 </style> 
