@@ -8,7 +8,7 @@ import SystemPage from '../views/SystemPage.vue';
 
 //여기서 라우터 설정을 하시면 됩니다.
 const routes = [
-  { path: '/', name: 'Login', component: HomeView },
+  { path: '/', name: 'Login', component: Login },
   { path: '/main', name: 'home', component: HomeView },
   { path: '/register', name: 'register', component: Register },
   { path: '/LogPage', name: 'LogPage', component: LogPage },
