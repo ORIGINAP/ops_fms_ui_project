@@ -3,7 +3,7 @@
     <div ref="areaA" class="area">A</div>
     <div ref="areaB" class="area">B</div>
     <div ref="areaC" class="area">C</div>
-    <div ref="areaC" class="big-area">D</div>
+    <div ref="areaD" class="big-area">D</div>
     <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -22,14 +22,31 @@ let ctx = null
 const NUM_ROBOTS = 5
 const robots = []
 
+function makePerimeterLoop(el) {
+  const rect = el.getBoundingClientRect()
+  const { left, top, width, height } = rect
+  const right = left + width
+  const bottom = top + height
+  // 시계방향으로 네 모서리
+  return [
+    { x: left,  y: top    },
+    { x: right, y: top    },
+    { x: right, y: bottom },
+    { x: left,  y: bottom },
+    { x: left,  y: top    } // 루프를 닫기 위해 다시 시작점
+  ]
+}
+
 // 영역 중심 좌표 구하기 함수
-function getCenter(el) {
+// 각 영역의 출구 방향을 기준으로 경계 근처 좌표 반환
+function getEdgePoint(el) {
   const rect = el.getBoundingClientRect()
   return {
     x: rect.left + rect.width / 2,
     y: rect.top + rect.height / 2
   }
 }
+
 
 // 두 지점 사이 90도 꺾인 경로 만들기 (ㄱ자 형태)
 function makeRightAnglePath(points) {
@@ -38,12 +55,19 @@ function makeRightAnglePath(points) {
     const from = points[i]
     const to = points[i + 1]
 
+    const mid = {
+      x: (from.x + to.x) / 2,
+      y: (from.y + to.y) / 2
+    }
+
     result.push(from)
-    result.push({ x: from.x, y: to.y }) // 수직 → 수평 이동 (or 꺾임)
+    result.push({ x: mid.x, y: from.y }) // 수평
+    result.push({ x: mid.x, y: to.y })   // 수직
     result.push(to)
   }
   return result
 }
+
 
 function drawArea(areaEl, label) {
   const rect = areaEl.getBoundingClientRect()
@@ -99,6 +123,7 @@ function animate() {
   drawArea(areaA.value, 'A')
   drawArea(areaB.value, 'B')
   drawArea(areaC.value, 'C')
+  drawArea(areaC.value, 'D')
 
   // 모든 로봇 그리기 및 이동
   for (const robot of robots) {
@@ -112,33 +137,32 @@ function animate() {
 
 onMounted(() => {
   const canvasEl = canvas.value
-  canvasEl.width = window.innerWidth
+  canvasEl.width  = window.innerWidth
   canvasEl.height = window.innerHeight
   ctx = canvasEl.getContext('2d')
 
-  // 영역 중심점들 가져오기
-  const rawCenters = [
-    getCenter(areaA.value),
-    getCenter(areaB.value),
-    getCenter(areaC.value),
-    getCenter(areaA.value) // 순환 경로 만들기 위해 다시 A로
+  // 각 영역을 한 바퀴 도는 루프들을 순서대로 연결
+  const loops = [
+    makePerimeterLoop(areaA.value),
+    makePerimeterLoop(areaB.value),
+    makePerimeterLoop(areaC.value),
+    makePerimeterLoop(areaD.value)
   ]
-
-  // 90도 꺾이는 경로 생성
-  const basePath = makeRightAnglePath(rawCenters)
+  // A → B → C → D → A 로 이어 붙이기
+  let basePath = []
+  loops.forEach(loop => { basePath = basePath.concat(loop) })
+  // 마지막에 A의 시작점을 한 번 더 추가해 순환 고리 완성
+  basePath.push(loops[0][0])
 
   // 여러 로봇 독립적으로 생성
   for (let i = 0; i < NUM_ROBOTS; i++) {
-    const offsetX = (i % 3) * 12
-    const offsetY = (i % 3) * 8
-
     robots.push({
       id: i,
-      x: basePath[0].x + offsetX,
-      y: basePath[0].y + offsetY,
+      x: basePath[0].x + 5 * i, // 시작점에 약간씩 오프셋
+      y: basePath[0].y + 3 * i,
       size: 16,
-      speed: 0.7 + Math.random() * 0.3, // 속도 약간씩 다르게
-      path: basePath.map(p => ({ ...p })), // 완전 독립 복제
+      speed: 0.7 + Math.random() * 0.3,
+      path: basePath.map(p => ({ ...p })),
       targetIndex: 1,
       logs: []
     })
@@ -158,8 +182,8 @@ onMounted(() => {
 
 .big-area {
   position: absolute;
-  width: 300px; /* 더 큰 가로로 영역 표시 */
-  height: 180px; /* 세로로 더 길게 */
+  width: 700px; /* 더 큰 가로로 영역 표시 */
+  height: 300px; /* 세로로 더 길게 */
   background: #444;
   color: white;
   font-weight: bold;
@@ -173,8 +197,8 @@ onMounted(() => {
 
 .area {
   position: absolute;
-  width: 100px;
-  height: 180px; /* 세로로 더 길게 */
+  width: 200px;
+  height: 300px; /* 세로로 더 길게 */
   background: #444;
   color: white;
   font-weight: bold;
