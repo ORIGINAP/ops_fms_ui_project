@@ -88,22 +88,24 @@ onMounted(() => {
     getCenter(areaC.value)
   ]
 
-  // 로봇 여러 개 초기화
+  // 여러 로봇 초기화
   for (let i = 0; i < NUM_ROBOTS; i++) {
-    const delay = i * 40 // 시간차로 시작 위치 다르게
+    // path[0]에서 살짝 x/y를 오프셋해서 시작 위치를 분리
+    const offsetX = (i % 3) * 10
+    const offsetY = (i % 3) * 5
     robots.push({
-      x: path[0].x,
-      y: path[0].y,
+      x: path[0].x + offsetX,
+      y: path[0].y + offsetY,
       size: 16,
       speed: 1,
-      path,
+      path: path.map(p => ({ x: p.x, y: p.y })), // path 복제
       targetIndex: 1,
-      delay
     })
   }
 
   animate()
 })
+
 </script>
 
 <style scoped>
