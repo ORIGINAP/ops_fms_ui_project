@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <!-- 영역 컴포넌트들 (위치 고정) -->
-    <div class="area" ref="area1">1</div>
-    <div class="area" ref="area2">2</div>
-    <div class="area" ref="area3">3</div>
+    <!-- 세로 긴 영역 3개 -->
+    <div class="area" ref="areaA">A</div>
+    <div class="area" ref="areaB">B</div>
+    <div class="area" ref="areaC">C</div>
 
-    <!-- 캔버스 레이어 -->
+    <!-- 캔버스: 로봇 이동과 선 그리기 -->
     <canvas ref="canvas" class="canvas-layer"></canvas>
   </div>
 </template>
@@ -14,14 +14,15 @@
 import { ref, onMounted } from 'vue'
 
 const canvas = ref(null)
-const area1 = ref(null)
-const area2 = ref(null)
-const area3 = ref(null)
+const areaA = ref(null)
+const areaB = ref(null)
+const areaC = ref(null)
 
 const robot = {
   x: 0,
   y: 0,
-  speed: 2, // 픽셀 단위 속도
+  size: 16,
+  speed: 1,
   path: [],
   targetIndex: 1
 }
@@ -37,21 +38,20 @@ function getCenter(el) {
 }
 
 function drawPath(path) {
-  ctx.strokeStyle = '#999'
+  ctx.strokeStyle = '#ccc'
   ctx.lineWidth = 2
   ctx.beginPath()
   ctx.moveTo(path[0].x, path[0].y)
   for (let i = 1; i < path.length; i++) {
     ctx.lineTo(path[i].x, path[i].y)
   }
+  ctx.closePath()
   ctx.stroke()
 }
 
 function drawRobot() {
-  ctx.beginPath()
-  ctx.fillStyle = 'red'
-  ctx.arc(robot.x, robot.y, 10, 0, Math.PI * 2)
-  ctx.fill()
+  ctx.fillStyle = 'green'
+  ctx.fillRect(robot.x - robot.size / 2, robot.y - robot.size / 2, robot.size, robot.size)
 }
 
 function moveRobot() {
@@ -72,11 +72,9 @@ function moveRobot() {
 
 function animate() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
-
   drawPath(robot.path)
   moveRobot()
   drawRobot()
-
   animationId = requestAnimationFrame(animate)
 }
 
@@ -87,16 +85,15 @@ onMounted(() => {
   ctx = canvasEl.getContext('2d')
 
   robot.path = [
-    getCenter(area1.value),
-    getCenter(area2.value),
-    getCenter(area3.value)
+    getCenter(areaA.value),
+    getCenter(areaB.value),
+    getCenter(areaC.value)
   ]
   robot.x = robot.path[0].x
   robot.y = robot.path[0].y
 
   animate()
 })
-
 </script>
 
 <style scoped>
@@ -105,27 +102,33 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background-color: #1a1a1a;
 }
+
 .area {
-  width: 100px;
-  height: 100px;
-  background-color: lightblue;
+  width: 120px;
+  height: 300px;
+  background-color: #444;
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-size: 32px;
   font-weight: bold;
-  font-size: 24px;
+  border-radius: 8px;
 }
-.area:nth-child(1) { top: 10%; left: 10%; }
-.area:nth-child(2) { top: 40%; left: 60%; }
-.area:nth-child(3) { top: 70%; left: 20%; }
+
+/* 세 영역 위치 고정 */
+.area:nth-of-type(1) { top: 10%; left: 10%; }   /* A */
+.area:nth-of-type(2) { top: 10%; left: 40%; }   /* B */
+.area:nth-of-type(3) { top: 10%; left: 70%; }   /* C */
 
 .canvas-layer {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 0;
   pointer-events: none;
+  z-index: 0;
 }
 </style>
