@@ -144,6 +144,11 @@ function animate() {
   requestAnimationFrame(animate)
 }
 
+function showAlertLog() {
+  // TODO: 경보 로그 표시 로직 구현
+  alertComponent.value.activateAlert('위험 감지: 안전 시설 이상 감지')
+}
+
 onMounted(() => {
   const canvasEl = canvas.value
   canvasEl.width  = window.innerWidth
@@ -248,4 +253,30 @@ canvas {
   z-index: 0;
 }
 
+.alert-icon-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.alert-icon {
+  font-size: 32px;
+}
+
+.alert-count {
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
 </style>
