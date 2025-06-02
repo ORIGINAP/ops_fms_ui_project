@@ -42,7 +42,10 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.0005
+const FIRE_PROBABILITY = 0.001
+
+// 화재 로그를 저장할 배열
+const fireLogs = ref([])
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -141,12 +144,18 @@ function moveRobot(robot) {
 // 시설 상태 업데이트 함수
 function updateFacilityStatus() {
   Object.keys(facilityStatus.value).forEach(area => {
-    // 1% 확률로 화재 발생
     if (Math.random() < FIRE_PROBABILITY) {
       facilityStatus.value[area].isOnFire = true
-      // 화재 발생 시 경보
+      // 화재 발생 시 로그 추가
+      const log = {
+        id: Date.now(),
+        area,
+        timestamp: new Date().toLocaleTimeString(),
+        message: `${area} 영역에서 화재가 발생했습니다!`
+      }
+      fireLogs.value.unshift(log)
       alertCount.value++
-      alertComponent.value.activateAlert(`${area} 영역에서 화재가 발생했습니다!`)
+      alertComponent.value.activateAlert(log.message)
     }
   })
 }
@@ -186,9 +195,18 @@ function animate() {
   requestAnimationFrame(animate)
 }
 
+// 경보 로그 표시 함수 수정
 function showAlertLog() {
-  // TODO: 경보 로그 표시 로직 구현
-  alertComponent.value.activateAlert('위험 감지: 안전 시설 이상 감지')
+  if (fireLogs.value.length > 0) {
+    // 최근 5개의 로그만 표시
+    const recentLogs = fireLogs.value.slice(0, 5)
+    const logMessage = recentLogs
+      .map(log => `[${log.timestamp}] ${log.message}`)
+      .join('\n')  // 일반 줄바꿈 사용
+    alertComponent.value.activateAlert(logMessage)
+  } else {
+    alertComponent.value.activateAlert('현재 감지된 위험 없음')
+  }
 }
 
 onMounted(() => {
@@ -347,6 +365,13 @@ canvas {
   align-items: center;
   font-size: 14px;
   font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .area.on-fire, .big-area.on-fire {
