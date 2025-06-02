@@ -36,9 +36,6 @@
         </div>
       </div>
     </div>
-
-
-
   </div>
 </template>
 
@@ -57,9 +54,9 @@ export default {
   position: fixed;
   top: 30px;
   right: 40px;
-  width: 100px;
+  width: 90px;
   height: 89%;
-  background-color: rgba(21,100,191,1);
+  background-color: rgba(8,120,255,1);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   z-index: 100;
