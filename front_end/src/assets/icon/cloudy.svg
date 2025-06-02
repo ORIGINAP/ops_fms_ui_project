@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="40px" viewBox="0 0 60 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Weather4.0/Cloudy</title>
+    <g id="Icons-and-infographics" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-Status-Icons" transform="translate(-1348.000000, -1168.000000)">
+            <g id="Group-5" transform="translate(1348.000000, 1168.000000)">
+                <path d="M20,15.3847 L47.692,15.3847 C54.49,15.3847 60,20.8947 60,27.6927 C60,34.4897 54.49,39.9997 47.692,39.9997 L20,39.9997 L20,15.3847 Z" id="Fill-1" fill="#C2DDF9"></path>
+                <path d="M40,20 C40,31.046 31.046,40 20,40 C8.954,40 0,31.046 0,20 C0,8.954 8.954,0 20,0 C31.046,0 40,8.954 40,20" id="Fill-3" fill="#CCE4FF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
