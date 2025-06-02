@@ -5,11 +5,17 @@
     <div ref="areaC" class="area">C</div>
     <div ref="areaD" class="big-area">D</div>
     <canvas ref="canvas"></canvas>
+    <div class="alert-icon-container" @click="showAlertLog">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-count" v-if="alertCount > 0">{{ alertCount }}</div>
+    </div>
+    <AlertComponent ref="alertComponent" />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import AlertComponent from './AlertComponent.vue'
 
 const areaA = ref(null)
 const areaB = ref(null)
@@ -21,6 +27,9 @@ let ctx = null
 
 const NUM_ROBOTS = 5
 const robots = []
+
+const alertCount = ref(0)
+const alertComponent = ref(null)
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -238,4 +247,5 @@ canvas {
   left: 0;
   z-index: 0;
 }
+
 </style>
