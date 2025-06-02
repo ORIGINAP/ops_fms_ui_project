@@ -159,7 +159,20 @@ function animate() {
   drawArea(areaA.value, 'A')
   drawArea(areaB.value, 'B')
   drawArea(areaC.value, 'C')
-  drawArea(areaC.value, 'D')
+  drawArea(areaD.value, 'D')
+
+  // 화재 상태 표시
+  Object.entries(facilityStatus.value).forEach(([area, status]) => {
+    if (status.isOnFire) {
+      const areaEl = eval(`area${area}.value`)
+      const rect = areaEl.getBoundingClientRect()
+      // 점멸 효과를 위한 투명도 계산
+      const opacity = Math.abs(Math.sin(Date.now() / 500)) * 0.5 + 0.3
+      ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`
+      ctx.fillRect(rect.left, rect.top, rect.width, rect.height)
+    }
+  })
+
   // 모든 로봇 그리기 및 이동
   for (const robot of robots) {
     moveRobot(robot)
@@ -336,4 +349,13 @@ canvas {
   font-weight: bold;
 }
 
+.area.on-fire, .big-area.on-fire {
+  animation: fire-alert 1s infinite;
+}
+
+@keyframes fire-alert {
+  0% { box-shadow: 0 0 10px #ff0000; }
+  50% { box-shadow: 0 0 20px #ff0000; }
+  100% { box-shadow: 0 0 10px #ff0000; }
+}
 </style>
