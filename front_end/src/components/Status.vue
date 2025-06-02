@@ -10,21 +10,30 @@
       </div>
 
       <div class="menu-row">
-        <div class="menu-temperature">
+        <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
           <div>
-            <!-- 날씨 아이콘 -->
             <img
                 v-if="weatherIconUrl"
                 class="weather-svg-icon"
                 :src="weatherIconUrl"
                 alt="weather icon"
             />
-            <p v-if="temperature">{{ temperature }}℃</p>
+            <p v-if="temperature !== null">{{ temperature }}℃</p>
             <p v-else>로딩 중...</p>
           </div>
         </div>
         <div class="menu-temperature">
-          <p>내부 온도</p>
+          <div class="internal-block" v-if="internalTemperature !== null">
+            <img
+                class="thermometer-icon"
+                :src="thermometerIconUrl"
+                alt="thermometer icon"
+            />
+            <p>{{ internalTemperature }}℃</p>
+          </div>
+          <div v-else>
+            <p>로딩 중...</p>
+          </div>
         </div>
       </div>
 
@@ -40,29 +49,53 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   name: 'Status',
   data() {
     return {
       temperature: null,
       weatherIcon: null,
+      internalTemperature: null,
       updateInterval: null,
+      isNight: false,
     };
   },
   computed: {
     weatherIconUrl() {
       if (!this.weatherIcon) return null;
       return new URL(`../assets/icon/${this.weatherIcon}.svg`, import.meta.url).href;
+    },
+    thermometerIconUrl() {
+      const iconName = this.internalTemperature > this.temperature ? 'tp_up' : 'tp_down';
+      return new URL(`../assets/icon/${iconName}.svg`, import.meta.url).href;
     }
   },
   mounted() {
     this.init();
-    this.updateInterval = setInterval(this.init, 3600000); // 10분마다 업데이트
+    this.updateInterval = setInterval(this.init, 3600000); // 1시간마다 날씨 갱신
+
+    this.updateIsNight(); // 초기 판단
+    setInterval(this.updateIsNight, 60000); // 매 1분마다 갱신
   },
   beforeUnmount() {
-    clearInterval(this.updateInterval); // 컴포넌트 종료 시 타이머 제거
+    clearInterval(this.updateInterval);
+  },
+  watch: {
+    temperature(newVal) {
+      if (newVal !== null) {
+        const randomOffset = Math.floor(Math.random() * 6) + 5; // 5~10
+        this.internalTemperature = Number(newVal) + randomOffset;
+      } else {
+        this.internalTemperature = null;
+      }
+    }
   },
   methods: {
+    updateIsNight() {
+      const hour = new Date().getHours();
+      this.isNight = hour < 6 || hour >= 18;
+    },
     async init() {
       try {
         const position = await this.getCurrentLocation();
@@ -125,7 +158,6 @@ export default {
     },
 
     async fetchWeatherData(nx, ny) {
-
       const serviceKey = 'QnGWF0isjBPG%2FEXxLVhwkts%2FGtuhtD3cAEf3bEzXPvt73kfBsPflla8lVoK8VtBQLaTw1rhvMpiMHjIFoX6Pew%3D%3D';
       const baseDate = this.getBaseDate();
       const baseTime = this.getBaseTime();
@@ -140,22 +172,19 @@ export default {
         base_time: baseTime,
         nx,
         ny,
-
       };
+
       try {
         const response = await axios.get(url, { params });
-
         console.log("요청 시간:", baseDate, baseTime);
 
         const result = response.data.response;
 
-        // 응답 코드 확인
         if (result?.header?.resultCode !== '00') {
           console.error('기상청 API 오류:', result?.header?.resultMsg || '알 수 없음');
           return;
         }
 
-        // 데이터 유효성 검사
         const items = result?.body?.items?.item;
         if (!items || items.length === 0) {
           console.error('날씨 데이터가 없습니다.', result?.body);
@@ -178,22 +207,26 @@ export default {
     },
 
     getWeatherIcon(pty, sky) {
-      if (pty === 1) return 'rain'; // 비
-      if (pty === 2 || pty === 6) return 'rain-snow'; // 비/눈
-      if (pty === 3 || pty === 7) return 'snow'; // 눈
-      if (pty === 5) return 'rain'; // 빗방울
+      const hour = new Date().getHours();
+      const isNight = hour < 6 || hour >= 18;
+
+      if (pty === 1) return 'rain';
+      if (pty === 2 || pty === 6) return 'rain-snow';
+      if (pty === 3 || pty === 7) return 'snow';
+      if (pty === 5) return 'rain';
+
       if (pty === 0) {
-        if (sky === 1) return 'clear'; // 맑음
-        if (sky === 3) return 'clear-cloudy'; // 구름 많음
-        if (sky === 4) return 'cloudy'; // 흐림
+        if (sky === 1) return isNight ? 'clear-n' : 'clear';
+        if (sky === 3) return isNight ? 'clear-cloudy-n' : 'clear-cloudy';
+        if (sky === 4) return 'cloudy';
       }
-      return 'unknown'; // 알 수 없음
+
+      return 'unknown';
     },
 
     getBaseDate() {
       const now = new Date();
       now.setMinutes(now.getMinutes() - 60); // 안정적으로 1시간 전
-
       const yyyy = now.getFullYear();
       const mm = String(now.getMonth() + 1).padStart(2, '0');
       const dd = String(now.getDate()).padStart(2, '0');
@@ -202,21 +235,19 @@ export default {
 
     getBaseTime() {
       const now = new Date();
-      now.setMinutes(now.getMinutes() - 60); // 마찬가지로 1시간 전
-
+      now.setMinutes(now.getMinutes() - 60); // 안정적으로 1시간 전
       const hour = now.getHours();
       return `${String(hour).padStart(2, '0')}30`;
-    },
-  },
+    }
+  }
 };
 </script>
-
 
 <style scoped>
 .side-menu {
   position: fixed;
   top: 20px;
-  right: 135px;
+  right: 145px;
   width: 26%;
   height: 93%;
   margin: 0;
@@ -240,7 +271,7 @@ export default {
 }
 
 .menu-network {
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(21,100,191,0.2);
   background-color: white;
   height: 350px;
   border-radius: 20px;
@@ -254,12 +285,13 @@ export default {
 }
 
 .menu-temperature {
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
   height: 230px;
   border-radius: 20px;
   flex-grow: 1;
   color: darkgray;
+  transition: box-shadow 0.3s ease;
 }
 
 .menu-temperature > div {
@@ -269,7 +301,7 @@ export default {
   justify-content: center;
   text-align: center;
   font-size: 30px;
-  gap: 25px;
+  gap: 20px;
   line-height: 1;
   margin-top: 54px;
   padding: 0;
@@ -282,10 +314,17 @@ export default {
   line-height: 1;
 }
 
+.day-block {
+  box-shadow: 2px 0 6px rgba(231,242,255,0.2);
+}
+
+.night-block {
+  box-shadow: 2px 0 6px rgba(0,63,136,0.2);
+}
 .menu-other {
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(21,100,191,0.2);
   background-color: white;
-  height: 260px;
+  height: 270px;
   border-radius: 20px;
   flex-grow: 1;
   display: flex;
@@ -297,7 +336,11 @@ export default {
 }
 
 .weather-svg-icon {
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
+}
+.thermometer-icon {
+  width: 45px;
+  height: 80px;
 }
 </style>
