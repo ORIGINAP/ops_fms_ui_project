@@ -9,10 +9,19 @@
         </div>
       </div>
 
-      <!-- 두 번째 줄: 온도 -->
       <div class="menu-row">
         <div class="menu-temperature">
-          <p>외부 온도</p>
+          <div>
+            <!-- 날씨 아이콘 -->
+            <img
+                v-if="weatherIconUrl"
+                class="weather-svg-icon"
+                :src="weatherIconUrl"
+                alt="weather icon"
+            />
+            <p v-if="temperature">{{ temperature }}℃</p>
+            <p v-else>로딩 중...</p>
+          </div>
         </div>
         <div class="menu-temperature">
           <p>내부 온도</p>
@@ -22,19 +31,186 @@
       <!-- 세 번째 줄: 미정상태 -->
       <div class="menu-row">
         <div class="menu-other">
-          <p>other</p>s
+          <p>other</p>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Status',
-}
+  data() {
+    return {
+      temperature: null,
+      weatherIcon: null,
+      updateInterval: null,
+    };
+  },
+  computed: {
+    weatherIconUrl() {
+      if (!this.weatherIcon) return null;
+      return new URL(`../assets/icon/${this.weatherIcon}.svg`, import.meta.url).href;
+    }
+  },
+  mounted() {
+    this.init();
+    this.updateInterval = setInterval(this.init, 3600000); // 10분마다 업데이트
+  },
+  beforeUnmount() {
+    clearInterval(this.updateInterval); // 컴포넌트 종료 시 타이머 제거
+  },
+  methods: {
+    async init() {
+      try {
+        const position = await this.getCurrentLocation();
+        const { x: nx, y: ny } = this.convertToGrid(position.latitude, position.longitude);
+        await this.fetchWeatherData(nx, ny);
+      } catch (error) {
+        console.error('초기화 실패 (위치 정보 가져오기 실패):', error);
+      }
+    },
+
+    async getCurrentLocation() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            pos => {
+              resolve({
+                latitude: pos.coords.latitude,
+                longitude: pos.coords.longitude,
+              });
+            },
+            err => reject(err)
+        );
+      });
+    },
+
+    convertToGrid(lat, lon) {
+      const RE = 6371.00877;
+      const GRID = 5.0;
+      const SLAT1 = 30.0;
+      const SLAT2 = 60.0;
+      const OLON = 126.0;
+      const OLAT = 38.0;
+      const XO = 43;
+      const YO = 136;
+
+      const DEGRAD = Math.PI / 180.0;
+      const re = RE / GRID;
+      const slat1 = SLAT1 * DEGRAD;
+      const slat2 = SLAT2 * DEGRAD;
+      const olon = OLON * DEGRAD;
+      const olat = OLAT * DEGRAD;
+
+      let sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+      sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+      let sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+      sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
+      let ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+      ro = re * sf / Math.pow(ro, sn);
+
+      let ra = Math.tan(Math.PI * 0.25 + lat * DEGRAD * 0.5);
+      ra = re * sf / Math.pow(ra, sn);
+      let theta = lon * DEGRAD - olon;
+      if (theta > Math.PI) theta -= 2.0 * Math.PI;
+      if (theta < -Math.PI) theta += 2.0 * Math.PI;
+      theta *= sn;
+
+      const x = Math.floor(ra * Math.sin(theta) + XO + 0.5);
+      const y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
+
+      return { x, y };
+    },
+
+    async fetchWeatherData(nx, ny) {
+
+      const serviceKey = 'QnGWF0isjBPG%2FEXxLVhwkts%2FGtuhtD3cAEf3bEzXPvt73kfBsPflla8lVoK8VtBQLaTw1rhvMpiMHjIFoX6Pew%3D%3D';
+      const baseDate = this.getBaseDate();
+      const baseTime = this.getBaseTime();
+
+      const url = 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst';
+      const params = {
+        serviceKey: decodeURIComponent(serviceKey),
+        numOfRows: 1000,
+        pageNo: 1,
+        dataType: 'JSON',
+        base_date: baseDate,
+        base_time: baseTime,
+        nx,
+        ny,
+
+      };
+      try {
+        const response = await axios.get(url, { params });
+
+        console.log("요청 시간:", baseDate, baseTime);
+
+        const result = response.data.response;
+
+        // 응답 코드 확인
+        if (result?.header?.resultCode !== '00') {
+          console.error('기상청 API 오류:', result?.header?.resultMsg || '알 수 없음');
+          return;
+        }
+
+        // 데이터 유효성 검사
+        const items = result?.body?.items?.item;
+        if (!items || items.length === 0) {
+          console.error('날씨 데이터가 없습니다.', result?.body);
+          return;
+        }
+
+        const tempItem = items.find(item => item.category === 'T1H');
+        const ptyItem = items.find(item => item.category === 'PTY');
+        const skyItem = items.find(item => item.category === 'SKY');
+
+        this.temperature = tempItem ? tempItem.fcstValue : null;
+
+        const pty = ptyItem ? Number(ptyItem.fcstValue) : 0;
+        const sky = skyItem ? Number(skyItem.fcstValue) : 1;
+
+        this.weatherIcon = this.getWeatherIcon(pty, sky);
+      } catch (error) {
+        console.error('날씨 API 요청 실패:', error);
+      }
+    },
+
+    getWeatherIcon(pty, sky) {
+      if (pty === 1) return 'rain'; // 비
+      if (pty === 2 || pty === 6) return 'rain-snow'; // 비/눈
+      if (pty === 3 || pty === 7) return 'snow'; // 눈
+      if (pty === 5) return 'rain'; // 빗방울
+      if (pty === 0) {
+        if (sky === 1) return 'clear'; // 맑음
+        if (sky === 3) return 'clear-cloudy'; // 구름 많음
+        if (sky === 4) return 'cloudy'; // 흐림
+      }
+      return 'unknown'; // 알 수 없음
+    },
+
+    getBaseDate() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - 60); // 안정적으로 1시간 전
+
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}${mm}${dd}`;
+    },
+
+    getBaseTime() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - 60); // 마찬가지로 1시간 전
+
+      const hour = now.getHours();
+      return `${String(hour).padStart(2, '0')}30`;
+    },
+  },
+};
 </script>
+
 
 <style scoped>
 .side-menu {
@@ -83,12 +259,27 @@ export default {
   height: 230px;
   border-radius: 20px;
   flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: bold;
   color: darkgray;
+}
+
+.menu-temperature > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+  gap: 25px;
+  line-height: 1;
+  margin-top: 54px;
+  padding: 0;
+}
+
+.menu-temperature > div img,
+.menu-temperature > div p {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
 }
 
 .menu-other {
@@ -103,5 +294,10 @@ export default {
   font-size: 16px;
   font-weight: bold;
   color: darkgray;
+}
+
+.weather-svg-icon {
+  width: 75px;
+  height: 75px;
 }
 </style>
