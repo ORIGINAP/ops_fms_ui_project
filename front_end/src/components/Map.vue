@@ -365,13 +365,6 @@ canvas {
   align-items: center;
   font-size: 14px;
   font-weight: bold;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
 }
 
 .area.on-fire, .big-area.on-fire {
