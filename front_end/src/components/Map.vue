@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div ref="areaA" class="area">A</div>
-    <div ref="areaB" class="area">B</div>
-    <div ref="areaC" class="area">C</div>
-    <div ref="areaD" class="big-area">D</div>
+    <div ref="areaA" class="area" :class="{ 'on-fire': facilityStatus.A.isOnFire }">A</div>
+    <div ref="areaB" class="area" :class="{ 'on-fire': facilityStatus.B.isOnFire }">B</div>
+    <div ref="areaC" class="area" :class="{ 'on-fire': facilityStatus.C.isOnFire }">C</div>
+    <div ref="areaD" class="big-area" :class="{ 'on-fire': facilityStatus.D.isOnFire }">D</div>
     <div class="safety-facility safety-facility-left">소방시설</div>
     <div class="safety-facility safety-facility-right">소방시설</div>
     <canvas ref="canvas"></canvas>
@@ -32,6 +32,17 @@ const robots = []
 
 const alertCount = ref(0)
 const alertComponent = ref(null)
+
+// 시설 상태 관리를 위한 ref
+const facilityStatus = ref({
+  A: { isOnFire: false, lastCheck: Date.now() },
+  B: { isOnFire: false, lastCheck: Date.now() },
+  C: { isOnFire: false, lastCheck: Date.now() },
+  D: { isOnFire: false, lastCheck: Date.now() }
+})
+
+// 화재 발생 확률 (1%)
+const FIRE_PROBABILITY = 0.0005
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -127,6 +138,20 @@ function moveRobot(robot) {
   }
 }
 
+// 시설 상태 업데이트 함수
+function updateFacilityStatus() {
+  Object.keys(facilityStatus.value).forEach(area => {
+    // 1% 확률로 화재 발생
+    if (Math.random() < FIRE_PROBABILITY) {
+      facilityStatus.value[area].isOnFire = true
+      // 화재 발생 시 경보
+      alertCount.value++
+      alertComponent.value.activateAlert(`${area} 영역에서 화재가 발생했습니다!`)
+    }
+  })
+}
+
+// 애니메이션 함수 수정
 function animate() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
@@ -135,13 +160,15 @@ function animate() {
   drawArea(areaB.value, 'B')
   drawArea(areaC.value, 'C')
   drawArea(areaC.value, 'D')
-
   // 모든 로봇 그리기 및 이동
   for (const robot of robots) {
     moveRobot(robot)
     drawPath(robot.path) // 각 로봇 경로 시각화(원한다면 제거 가능)
     drawRobot(robot)
   }
+
+  // 시설 상태 업데이트
+  updateFacilityStatus()
 
   requestAnimationFrame(animate)
 }
@@ -308,4 +335,5 @@ canvas {
   font-size: 14px;
   font-weight: bold;
 }
+
 </style>
