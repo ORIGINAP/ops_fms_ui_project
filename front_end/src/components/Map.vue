@@ -4,6 +4,8 @@
     <div ref="areaB" class="area">B</div>
     <div ref="areaC" class="area">C</div>
     <div ref="areaD" class="big-area">D</div>
+    <div class="safety-facility safety-facility-left">소방시설</div>
+    <div class="safety-facility safety-facility-right">소방시설</div>
     <canvas ref="canvas"></canvas>
     <div class="alert-icon-container" @click="showAlertLog">
       <div class="alert-icon">⚠️</div>
@@ -243,6 +245,33 @@ onMounted(() => {
 .big-area:nth-of-type(4) {
   top: 50%;
   left: 15%;
+}
+
+/* 소방시설 스타일 수정 */
+.safety-facility {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: #ff4444;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.safety-facility-left {
+  bottom: 100px;
+  left: 150px;
+}
+
+.safety-facility-right {
+  top: 20px;
+  right: 700px;
 }
 
 /* 캔버스는 화면 전체 */
