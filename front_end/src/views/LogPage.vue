@@ -11,11 +11,14 @@
             <th>상세</th>
           </tr>
         </thead>
-
-
-
-
-
+        <tbody>
+          <tr v-for="(log, index) in logs" :key="index">
+            <td>{{ log.time }}</td>
+            <td>{{ log.location }}</td>
+            <td>{{ log.battery }}%</td>
+            <td><button @click="showDetail(log)">상세</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <Menu />
