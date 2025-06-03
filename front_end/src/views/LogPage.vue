@@ -27,11 +27,18 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Menu from "../components/Menu.vue";
 
 export default {
   name: 'LogPage',
-  components: {Menu},
+  components: { Menu },
+  data() {
+    return {
+      logs: []
+    };
+  }
+
 };
 </script>
 
