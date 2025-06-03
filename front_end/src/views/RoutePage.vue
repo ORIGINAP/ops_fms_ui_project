@@ -25,11 +25,12 @@
       </div>
 
       <!-- 로그 및 커맨드 패널 -->
-      <div class="log-panel">
-        <h2>  이동 로그 <span v-if="selectedRobot">({{ selectedRobot.name }})</span></h2>
-
-        <ul ref="logList">
-          <li v-for="(log, idx) in (selectedRobot?.logs || [])" :key="idx">{{ log }}</li>
+      <div class="cmd-panel">
+        <h2 class="cmd-header">
+          명령어 입력 <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
+        </h2>
+        <ul ref="cmdList">
+          <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
         </ul>
 
         <div class="command-box" v-if="selectedRobot">
@@ -40,7 +41,7 @@
           />
           <button @click="sendCommand">전송</button>
         </div>
-        <p v-else class="log-hint">왼쪽에서 로봇을 선택하면 명령어를 입력할 수 있습니다.</p>
+        <p v-else class="cmd-hint">왼쪽에서 로봇을 선택하면 명령어를 입력할 수 있습니다.</p>
       </div>
     </div>
   </div>
@@ -110,8 +111,8 @@ export default {
 .main-panel {
   flex: 1;
   display: flex;
-  padding: 30px 60px 40px 40px; /* 이미 상태 카드 오른쪽 이동한 상태 유지 */
-  gap: 16px; /* 기존 20px → 8px 로 줄이면 로그 패널이 더 왼쪽으로 붙음 */
+  padding: 30px 60px 40px 40px;
+  gap: 16px;
 }
 
 /* 상태 카드 */
@@ -127,7 +128,7 @@ export default {
 }
 
 .robot-info p {
-  margin-bottom: 12px;
+  margin-bottom: 40px;
 }
 
 .form-group {
@@ -142,8 +143,8 @@ select {
   border: 1px solid #ccc;
 }
 
-/* 로그 패널 */
-.log-panel {
+/* cmd 패널 */
+.cmd-panel {
   flex: 0.933; /* 기존 1 → 더 좁게 조정 */
   background: #fff;
   padding: 20px;
@@ -153,18 +154,26 @@ select {
   flex-direction: column;
 }
 
-.log-panel ul {
+.cmd-panel ul {
   flex: 1;
   overflow-y: auto;
   margin: 16px 0;
   padding-left: 20px;
 }
 
+.cmd-header {
+  color: rgba(0,0,0,0.6);
+  margin-left: 20px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 30px;
+}
+
 .command-box {
   display: flex;
   gap: 10px;
   margin-top: 16px;
-  align-items: flex-start; /* 버튼과 높이 정렬 */
+  align-items: flex-start;
 }
 
 .command-box input {
@@ -191,7 +200,7 @@ select {
   background: #005ecb;
 }
 
-.log-hint {
+.cmd-hint {
   font-size: 14px;
   color: #888;
 }
