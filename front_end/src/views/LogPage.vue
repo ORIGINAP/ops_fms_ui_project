@@ -3,12 +3,19 @@
     <div class="table-wrapper">
       <p class="title">LogPage</p>
       <table>
+        <thead>
+          <tr>
+            <th>시간</th>
+            <th>현재 위치</th>
+            <th>배터리 잔량</th>
+            <th>상세</th>
+          </tr>
+        </thead>
 
 
 
 
 
-        
       </table>
     </div>
     <Menu />
