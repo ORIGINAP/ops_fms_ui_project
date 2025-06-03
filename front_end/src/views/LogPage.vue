@@ -1,6 +1,16 @@
 <template>
   <div class="body">
-    <p>LogPage</p>
+    <div class="table-wrapper">
+      <p class="title">LogPage</p>
+      <table>
+
+
+
+
+
+        
+      </table>
+    </div>
     <Menu />
   </div>
 
