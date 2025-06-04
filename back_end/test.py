@@ -9,7 +9,17 @@ def robot():
         "version": "1.0",
         "description": "This is a robot API",
     }
-    return robot, 200, {"Content-Type": "application/json"}
+    field = request.args.get('field', default='name', type=str)
+    if field == 'name':
+        return robot['name'], 200, {'Content-Type': 'text/plain'}
+    elif field == 'version':
+        return robot['version'], 200, {'Content-Type': 'text/plain'}
+    elif field == 'description':
+        return robot['description'], 200, {'Content-Type': 'text/plain'}
+    elif field == 'robot':
+        return robot, 200, {'Content-Type': 'application/json'}
+    else:   
+        return {"error": "Field not found"}, 404
 
 if __name__ == '__main__':
     api.run(debug=True, port=5000)
