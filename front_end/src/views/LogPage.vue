@@ -42,6 +42,7 @@ export default {
     async fetchLogs() {
       try {
         const response = await axios.get('http://localhost:5000/api/logs');
+        this.logs = response.data;
       } catch (error) {
         console.error("로그 불러오기 실패", error);
       }
