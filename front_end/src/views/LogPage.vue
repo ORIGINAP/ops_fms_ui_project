@@ -45,7 +45,13 @@ export default {
       } catch (error) {
         console.error("로그 불러오기 실패", error);
       }
+    },
+    showDetail(log) {
+      alert('임시 작업')
     }
+  },
+  mounted() {
+    this.fetchLogs();
   }
 };
 </script>
