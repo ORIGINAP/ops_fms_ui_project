@@ -95,4 +95,13 @@ th, td {
   border-bottom: 1px solid #ccc;
 }
 
+button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #1564bf;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 </style>
