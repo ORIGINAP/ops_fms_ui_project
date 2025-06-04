@@ -104,4 +104,8 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #0f4ea0;
+}
+
 </style>
