@@ -1,9 +1,15 @@
-from fastapi import FastAPI
+from flask import Flask,request
 
-api = FastAPI()
+api = Flask(__name__)
 
-@api.get('/hello')
-def hello(name):
-    result_str = 'Hello. ' + name
+@api.route('/robot', methods=['GET'])
+def robot():
+    robot= {
+        "name": "Robot",
+        "version": "1.0",
+        "description": "This is a robot API",
+    }
+    return robot, 200, {"Content-Type": "application/json"}
 
-    return result_str
+if __name__ == '__main__':
+    api.run(debug=True, port=5000)
