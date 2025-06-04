@@ -78,4 +78,10 @@ export default {
   width: 100%;
   overflow-x: auto;
 }
+
+.title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
 </style>
