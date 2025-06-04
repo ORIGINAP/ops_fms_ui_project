@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from db import logs_collection
 
 app = Flask(__name__)
 CORS(app)
@@ -46,7 +47,10 @@ def login():
     else:
         return jsonify({"message": "로그인 실패"}), 401
 
-
+@app.route('/api/logs', methods=['GET'])
+def get_logs():
+    logs = list(logs_collection.find({}, {'_id': 0}))
+    return jsonify(logs)
 
 if __name__ == '__main__':
     with app.app_context():
