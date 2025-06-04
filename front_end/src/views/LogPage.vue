@@ -84,4 +84,9 @@ export default {
   margin-bottom: 10px;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 </style>
