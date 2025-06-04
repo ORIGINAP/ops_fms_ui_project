@@ -89,4 +89,10 @@ table {
   border-collapse: collapse;
 }
 
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
 </style>
