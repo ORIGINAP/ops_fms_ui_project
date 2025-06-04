@@ -68,9 +68,14 @@ export default {
   box-shadow: 3px 3px 7px rgba(21,100,191, 0.13);
   background-color: white;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
   align-items: center;
   border-radius: 30px;
 }
 
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
 </style>
