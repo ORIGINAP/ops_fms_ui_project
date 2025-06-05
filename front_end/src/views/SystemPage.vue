@@ -63,18 +63,18 @@
             </select>
           </div>
         </div>
-
+        <!-- edit function -->
         <div v-if="activeTab === 'EditProfile'">
           <h1>Edit Profile</h1>
           <div class="form-group">
             <label>New Name</label>
-            <input type="text" placeholder="Enter new name" />
+            <input type="text" placeholder="Enter new name" v-model="newUsername" />
           </div>
           <div class="form-group">
             <label>New Email</label>
-            <input type="email" placeholder="Enter new email" />
+            <input type="email" placeholder="Enter new email" v-model="newEmail" />
           </div>
-          <button class="save-button" @click="activeTab = 'Profile'">Save</button>
+          <button class="save-button" @click="saveProfile">Save</button>
         </div>
       </div>
     </div>
@@ -91,9 +91,15 @@ export default {
   data() {
     return {
       activeTab: 'Profile',
-      username: ''
+      username: '',
+      newUsername: '',
+      newEmail: ''
     }
   },
+  method: {},
+
+
+
 
 created() {
   axios.get('http://localhost:5000/me', {withCredentials: true})
