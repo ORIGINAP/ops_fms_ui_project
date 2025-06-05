@@ -11,7 +11,6 @@
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
         <h2 class="settings-title">Admin</h2>
-        <button class="edit-button" @click="activeTab = 'EditProfile'">Edit</button>
       </div>
 
       <!-- 탭 메뉴 -->
@@ -24,14 +23,23 @@
 
       <!-- 탭 콘텐츠 -->
       <div class="form-section">
-        <div v-if="activeTab === 'Profile'">
+        <div v-if="activeTab === 'Profile'" class="profile-view">
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" placeholder="Enter your full name" />
+            <p class="profile-text">{{ profileData.name }}</p>
           </div>
           <div class="form-group">
             <label>Email Address</label>
-            <input type="email" placeholder="example@robotfms.com" />
+            <p class="profile-text">{{ profileData.email }}</p>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <p class="profile-text">{{ profileData.phone }}</p>
+          </div>
+
+          <!-- Edit 버튼 -->
+          <div class="edit-footer">
+            <button class="edit-button" @click="activeTab = 'EditProfile'">Edit</button>
           </div>
         </div>
 
@@ -68,14 +76,19 @@
           <h1>Edit Profile</h1>
           <div class="form-group">
             <label>New Name</label>
-            <input type="text" placeholder="Enter new name" />
+            <input type="text" v-model="profileData.name" placeholder="Enter new name" />
           </div>
           <div class="form-group">
             <label>New Email</label>
-            <input type="email" placeholder="Enter new email" />
+            <input type="email" v-model="profileData.email" placeholder="Enter new email" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" v-model="profileData.phone" placeholder="Enter phone number" />
           </div>
           <button class="save-button" @click="activeTab = 'Profile'">Save</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -89,8 +102,13 @@ export default {
   components: { Menu },
   data() {
     return {
-      activeTab: 'Profile'
-    }
+      activeTab: 'Profile',
+      profileData: {
+        name: 'Admin',
+        email: 'example@robotfms.com',
+        phone: '010-1234-5678'
+      }
+    };
   }
 }
 </script>
@@ -111,7 +129,7 @@ html, body {
 
 .settings-container {
   flex: 1;
-  padding: 40px 20px; /* 좌우 padding 줄이기 */
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -145,9 +163,29 @@ html, body {
   margin-left: 20px;
 }
 
+.profile-view {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.profile-text {
+  font-size: 20px;
+  color: #333;
+  margin: 6px 0 20px;
+}
+
+.edit-footer {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+}
+
 .edit-button {
-  margin-right: 40px;
-  padding: 6px 18px;
+  margin-right: 20px;
+  padding: 11px 24px;
   font-size: 14px;
   border: 2px solid #0878ff;
   background-color: white;
@@ -221,7 +259,8 @@ html, body {
 }
 
 .form-group label {
-  font-size: 14px;
+  font-weight: bold;
+  font-size: 30px;
   color: #333;
   margin-bottom: 6px;
 }
