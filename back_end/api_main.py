@@ -14,28 +14,28 @@ robots = {
         "name": "Robot-A",
         "version": "1.0",
         "velocity": "1",
-        "battery": "100%",
+        "battery": 100,
         "route": "A#B",
     },
     "robotB": {
         "name": "Robot-B",
         "version": "1.0",
         "velocity": "1",
-        "battery": "70%",
+        "battery": 70,
         "route": "B#C",
     },
     "robotC": {
         "name": "Robot-C",
         "version": "1.0",
         "velocity": "1",
-        "battery": "90%",
+        "battery": 90,
         "route": "C",
     },
     "robotD": {
         "name": "Robot-D",
         "version": "1.0",
         "velocity": "1",
-        "battery": "10%",
+        "battery":  10,
         "route": "D",
     }
 }
@@ -44,17 +44,16 @@ robots = {
 def update_robot_status(robot_id):
     while True:
         state = robots[robot_id]
-        state['battery'] = max(0, int(state['battery'].replace('%', '')) - 1)  # 배터리 감소
+        state['battery'] = max(0, state['battery'] - 1)  # 배터리 감소
         socketio.emit('robot_status_update', {robot_id: state})
-        time.sleep(1)
+        print(f"Updated {robot_id} status: {state}")
+        time.sleep(5)
 
 @socketio.on('connect')
 def handle_connect():
     for robot_id, state in robots.items():
         socketio.emit('robot_status_update', {robot_id: state})
     print('Client connected')
-
-
 
 @api.route('/robotA', methods=['GET'])
 def robotA():
@@ -115,4 +114,7 @@ def output(robot):
 
 
 if __name__ == '__main__':
+    for robot_id in robots.keys():
+        threading.Thread(target=update_robot_status, args=(robot_id,), daemon=True).start()
+    socketio.run(api, debug=True, port=5002, host='0.0.0.0')
     api.run(debug=True, port=5001, host='0.0.0.0')
