@@ -96,37 +96,33 @@ export default {
       newEmail: ''
     }
   },
-  method: {
+  methods: {
     saveProfile() {
       axios.post('http://localhost:5000/update-profile', {
-        username: this.username,
+        username: this.newUsername,
         email: this.newEmail
-      }, {withCredential: true})
+      }, { withCredentials: true })
         .then(res => {
           this.username = this.newUsername;
-          this.activeTab = 'Profile'
-          alert('프로파일 수정 완료')
+          this.activeTab = 'Profile';
+          alert('프로파일 수정 완료');
         })
         .catch(err => {
           console.error(err);
-          alert('gone wrong')
-        })
-
-
-
-    },
-    created() {
-      axios.get('http://localhost:5000/me', {withCredentials: true})
-        .then(res => {
-          this.username = res.data.username
-        })
-      }
+          alert('Something went wrong');
+        });
     }
+  },
+  created() {
+    axios.get('http://localhost:5000/me', { withCredentials: true })
+      .then(res => {
+        this.username = res.data.username;
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
-
-
-
-
+}
 
 </script>
 
