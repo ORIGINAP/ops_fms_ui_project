@@ -214,7 +214,7 @@ function showAlertLog() {
 onMounted(async () => {
   try {
     // field 쿼리 파라미터로 name/version/description/robot 중 하나를 지정
-    const response = await axios.get('http://localhost:5000/robot', {
+    const response = await axios.get('http://localhost:5001/robot1', {
       params: {
         field: 'name'  // 또는 'version', 'description', 'robot'
       }
