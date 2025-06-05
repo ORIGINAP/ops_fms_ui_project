@@ -1,8 +1,45 @@
-from flask import Flask, request
+from flask import Flask, request,jsonify
+from flask_socketio import SocketIO
 from flask_cors import CORS
+import threading
+import time
+
 
 api = Flask(__name__)
 CORS(api)  # 모든 출처 허용
+socketio = SocketIO(api, cors_allowed_origins='*')
+
+robots = {
+    "robotA": {
+        "name": "Robot-A",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "100%",
+        "route": "A#B",
+    },
+    "robotB": {
+        "name": "Robot-B",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "70%",
+        "route": "B#C",
+    },
+    "robotC": {
+        "name": "Robot-C",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "90%",
+        "route": "C",
+    },
+    "robotD": {
+        "name": "Robot-D",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "10%",
+        "route": "D",
+    }
+}
+
 
 @api.route('/robotA', methods=['GET'])
 def robotA():
