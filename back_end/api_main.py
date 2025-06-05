@@ -41,6 +41,21 @@ robots = {
 }
 
 
+def update_robot_status(robot_id):
+    while True:
+        state = robots[robot_id]
+        state['battery'] = max(0, int(state['battery'].replace('%', '')) - 1)  # 배터리 감소
+        socketio.emit('robot_status_update', {robot_id: state})
+        time.sleep(1)
+
+@socketio.on('connect')
+def handle_connect():
+    for robot_id, state in robots.items():
+        socketio.emit('robot_status_update', {robot_id: state})
+    print('Client connected')
+
+
+
 @api.route('/robotA', methods=['GET'])
 def robotA():
     robot= {
