@@ -1,6 +1,7 @@
 <template>
   <div class="login-container"> <!--로그인 css 재사용-->
     <h2>회원가입 페이지</h2> 
+    <input v-model="email" type="email" placeholder="Your Email" required />
     <input v-model="username" placeholder="Your ID" />
     <input v-model="password" placeholder="Your PW" />
     <button @click="SendServer">가입</button>
@@ -12,12 +13,17 @@
     import { useRouter } from 'vue-router'
     import axios from 'axios'
 
+    const email = ref('')
     const username = ref('')
     const password = ref('')
     const router = useRouter()
 
     const SendServer = async () => {
-        
+      if (!email.value || !username.value || !password.value) {
+        alert('모든 필드를 입력해주세요.')
+        return
+      }
+      
       
       try{
         const res = await axios.post('http://localhost:5000/register', {
@@ -33,10 +39,6 @@
           alert('gone wrong')
         }
       }
-    
-    
-    
-    
     }
 </script>
 
@@ -63,7 +65,7 @@
 }
 
 .login-container input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
