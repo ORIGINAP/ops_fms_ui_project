@@ -107,6 +107,10 @@ export default {
           this.activeTab = 'Profile'
           alert('프로파일 수정 완료')
         })
+        .catch(err => {
+          console.error(err);
+          alert('gone wrong')
+        })
 
 
 
