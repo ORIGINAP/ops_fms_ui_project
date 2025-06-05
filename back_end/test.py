@@ -1,6 +1,8 @@
-from flask import Flask,request
+from flask import Flask, request
+from flask_cors import CORS
 
 api = Flask(__name__)
+CORS(api)  # 모든 출처 허용
 
 @api.route('/robot', methods=['GET'])
 def robot():

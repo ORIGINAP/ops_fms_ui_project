@@ -30,7 +30,7 @@ let ctx = null
 
 const NUM_ROBOTS = 5
 const robots = []
-const api_robot = ref({name: "", version: "",description:""})
+const api_robot = ref({"name": "", "version": "","description":""})
 
 const alertCount = ref(0)
 const alertComponent = ref(null)
@@ -213,12 +213,23 @@ function showAlertLog() {
 
 onMounted(async () => {
   try {
-    const response = await axios.get('https://5000-5gvxgvggwx5xfps4g-originap.app.github.dev/robot')
-    api_robot.value = response.data
-    alert(`로봇 API 호출 성공: ${api_robot.value.name} v${api_robot.value.version}`)
+    // field 쿼리 파라미터로 name/version/description/robot 중 하나를 지정
+    const response = await axios.get('http://localhost:5000/robot', {
+      params: {
+        field: 'name'  // 또는 'version', 'description', 'robot'
+      }
+    })
+
+    // text/plain 응답일 경우
+    alert(response.data)
+
+    // console로 응답 전체 확인
+    console.log('응답 상태:', response.status)
+    console.log('응답 헤더:', response.headers)
+    console.log('응답 데이터:', response.data)
+
   } catch (error) {
-    console.error('로봇 API 호출 실패:', error)
-    alert('로봇 API 호출 실패. 서버가 실행 중인지 확인하세요.')
+    console.error('API 요청 실패:', error)
   }
 })
 
