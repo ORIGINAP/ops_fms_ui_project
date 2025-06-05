@@ -96,18 +96,29 @@ export default {
       newEmail: ''
     }
   },
-  method: {},
+  method: {
+    saveProfile() {
+      axios.post('http://localhost:5000/update-profile', {
+        username: this.username,
+        email: this.newEmail
+      }, {withCredential: true})
 
 
 
-
-created() {
-  axios.get('http://localhost:5000/me', {withCredentials: true})
-    .then(res => {
-      this.username = res.data.username
-    })
+    },
+    created() {
+      axios.get('http://localhost:5000/me', {withCredentials: true})
+        .then(res => {
+          this.username = res.data.username
+        })
+      }
+    }
   }
-}
+
+
+
+
+
 </script>
 
 <style scoped>
