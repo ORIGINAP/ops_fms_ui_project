@@ -211,27 +211,7 @@ function showAlertLog() {
   }
 }
 
-onMounted(async () => {
-  try {
-    // field 쿼리 파라미터로 name/version/description/robot 중 하나를 지정
-    const response = await axios.get('http://localhost:5001/robot1', {
-      params: {
-        field: 'name'  // 또는 'version', 'description', 'robot'
-      }
-    })
 
-    // text/plain 응답일 경우
-    alert(response.data)
-
-    // console로 응답 전체 확인
-    console.log('응답 상태:', response.status)
-    console.log('응답 헤더:', response.headers)
-    console.log('응답 데이터:', response.data)
-
-  } catch (error) {
-    console.error('API 요청 실패:', error)
-  }
-})
 
 onMounted(() => {
   const canvasEl = canvas.value

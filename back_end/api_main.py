@@ -27,7 +27,7 @@ def robotB():
     return output(robot)
 
 @api.route('/robotC', methods=['GET'])
-def robotB():
+def robotC():
     robot= {
         "name": "Robot-C",
         "version": "1.0",
@@ -38,7 +38,7 @@ def robotB():
     return output(robot)
 
 @api.route('/robotD', methods=['GET'])
-def robotB():
+def robotD():
     robot= {
         "name": "Robot-D",
         "version": "1.0",

@@ -3,6 +3,7 @@
     <Status />
     <Map />
     <Menu />
+    <Robot />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import Status from '../components/Status.vue';
 import Menu from '../components/Menu.vue';
 import Map from '../components/Map.vue';
+import Robot from '../components/Robot.vue';
 
 export default {
   name: 'HomeView',
@@ -17,6 +19,7 @@ export default {
     Status,
     Menu,
     Map,
+    Robot,
   },
 };
 </script>
