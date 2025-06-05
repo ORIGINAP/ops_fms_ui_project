@@ -1,6 +1,5 @@
 <template>
   <div class="side-menu">
-    <!-- 메뉴 내용 -->
     <div class="menu-body">
       <!-- 첫 번째 줄: 네트워크 -->
       <div class="menu-row">
@@ -9,35 +8,28 @@
         </div>
       </div>
 
+      <!-- 두 번째 줄: 실외 / 실내 온도 -->
       <div class="menu-row">
+        <!-- 실외 온도 -->
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
           <div>
-            <img
-                v-if="weatherIconUrl"
-                class="weather-svg-icon"
-                :src="weatherIconUrl"
-                alt="weather icon"
-            />
+            <p style="font-size: 30px; color: gray;">실외 온도</p>
             <p v-if="temperature !== null">{{ temperature }}℃</p>
             <p v-else>로딩 중...</p>
           </div>
         </div>
+
+        <!-- 실내 온도 -->
         <div class="menu-temperature">
-          <div class="internal-block" v-if="internalTemperature !== null">
-            <img
-                class="thermometer-icon"
-                :src="thermometerIconUrl"
-                alt="thermometer icon"
-            />
-            <p>{{ internalTemperature }}℃</p>
-          </div>
-          <div v-else>
-            <p>로딩 중...</p>
+          <div>
+            <p style="font-size: 30px; color: gray;">실내 온도</p>
+            <p v-if="internalTemperature !== null">{{ internalTemperature }}℃</p>
+            <p v-else>로딩 중...</p>
           </div>
         </div>
       </div>
 
-      <!-- 세 번째 줄: 미정상태 -->
+      <!-- 세 번째 줄: 기타 -->
       <div class="menu-row">
         <div class="menu-other">
           <p>other</p>
@@ -290,7 +282,7 @@ export default {
   height: 230px;
   border-radius: 20px;
   flex-grow: 1;
-  color: darkgray;
+  color: rgba(73,135,207,0.5);
   transition: box-shadow 0.3s ease;
 }
 
@@ -301,9 +293,9 @@ export default {
   justify-content: center;
   text-align: center;
   font-size: 30px;
-  gap: 20px;
+  gap: 23px;
   line-height: 1;
-  margin-top: 54px;
+  margin-top: 78px;
   padding: 0;
 }
 
