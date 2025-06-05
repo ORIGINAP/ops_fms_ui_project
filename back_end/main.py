@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
+app.secret_key = 'shit'
 
 #패스워드 평문이라 나중에 암호화 해야 함
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -42,6 +43,8 @@ def login():
     user = User.query.filter_by(username=username, password=password).first()
 
     if user:
+        session['user_id'] = user.id
+        session['username'] = user.username
         return jsonify({"message":"로그인 성공"}), 200
     else:
         return jsonify({"message": "로그인 실패"}), 401
