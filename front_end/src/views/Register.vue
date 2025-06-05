@@ -23,12 +23,19 @@
         alert('모든 필드를 입력해주세요.')
         return
       }
-      
+
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email.value)) {
+        alert('올바른 이메일 형식을 입력해주세요.')
+        return
+      }
       
       try{
         const res = await axios.post('http://localhost:5000/register', {
-            username : username.value,
-            password : password.value
+            email: email.value,
+            username: username.value,
+            password: password.value
         })
         alert(res.data.message)
         router.push('/');
