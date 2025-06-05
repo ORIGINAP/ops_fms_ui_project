@@ -10,7 +10,7 @@
       <!-- 상단 배너 -->
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
-        <h2 class="settings-title">Admin</h2>
+        <h2 class="settings-title">{{ username }}</h2>
         <button class="edit-button" @click="activeTab = 'EditProfile'">Edit</button>
       </div>
 
@@ -83,14 +83,23 @@
 
 <script>
 import Menu from '../components/Menu.vue'
+import axios from 'axios'
 
 export default {
   name: 'SystemSettings',
   components: { Menu },
   data() {
     return {
-      activeTab: 'Profile'
+      activeTab: 'Profile',
+      username: ''
     }
+  },
+
+created() {
+  axios.get('http://localhost:5000/me', {withCredentials: true})
+    .then(res => {
+      this.username = res.data.username
+    })
   }
 }
 </script>
