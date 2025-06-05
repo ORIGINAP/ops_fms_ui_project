@@ -49,7 +49,11 @@ def login():
     else:
         return jsonify({"message": "로그인 실패"}), 401
 
-
+@app.route('/me')
+def me():
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    
 
 if __name__ == '__main__':
     with app.app_context():
