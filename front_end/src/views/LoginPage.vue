@@ -37,6 +37,9 @@ const handleLogin = async () => {
     const res = await axios.post('http://localhost:5000/login', {
       username: email.value,
       password: password.value,
+    }, 
+    {
+      withCredentials: true
     });
     alert(res.data.message); 
     router.push('/main');
