@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import AlertComponent from './AlertComponent.vue'
 
 const areaA = ref(null)
@@ -29,6 +30,7 @@ let ctx = null
 
 const NUM_ROBOTS = 5
 const robots = []
+const api_robot = ref({name: "", version: "",description:""})
 
 const alertCount = ref(0)
 const alertComponent = ref(null)
@@ -42,7 +44,7 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.001
+const FIRE_PROBABILITY = 0.000
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
@@ -208,6 +210,17 @@ function showAlertLog() {
     alertComponent.value.activateAlert('현재 감지된 위험 없음')
   }
 }
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('https://5000-5gvxgvggwx5xfps4g-originap.app.github.dev/robot')
+    api_robot.value = response.data
+    alert(`로봇 API 호출 성공: ${api_robot.value.name} v${api_robot.value.version}`)
+  } catch (error) {
+    console.error('로봇 API 호출 실패:', error)
+    alert('로봇 API 호출 실패. 서버가 실행 중인지 확인하세요.')
+  }
+})
 
 onMounted(() => {
   const canvasEl = canvas.value
