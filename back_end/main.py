@@ -53,7 +53,10 @@ def login():
 def me():
     user_id = session.get('user_id')
     user = User.query.get(user_id)
-    
+    if user:
+        return jsonify({
+            "username": user.username
+        }), 200
 
 if __name__ == '__main__':
     with app.app_context():
