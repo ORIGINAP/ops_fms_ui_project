@@ -282,7 +282,7 @@ export default {
   height: 230px;
   border-radius: 20px;
   flex-grow: 1;
-  color: rgba(73,135,207,0.5);
+  color: rgba(73,135,207,0.8);
   transition: box-shadow 0.3s ease;
 }
 
