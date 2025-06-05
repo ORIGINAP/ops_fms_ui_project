@@ -25,7 +25,7 @@
       <div class="form-section">
         <div v-if="activeTab === 'Profile'" class="profile-view">
           <div class="form-group">
-            <label>Full Name</label>
+            <label>Name</label>
             <p class="profile-text">{{ profileData.name }}</p>
           </div>
           <div class="form-group">
@@ -65,10 +65,13 @@
         <div v-if="activeTab === 'Notification'">
           <div class="form-group">
             <label>System Theme</label>
-            <select>
-              <option>Light</option>
-              <option>Dark</option>
-            </select>
+            <div class="toggle-group">
+              <label class="switch">
+                <input type="checkbox" v-model="isDarkTheme">
+                <span class="slider round"></span>
+              </label>
+              <span>{{ isDarkTheme ? 'Dark Mode' : 'Light Mode' }}</span>
+            </div>
           </div>
         </div>
 
@@ -260,9 +263,15 @@ html, body {
 
 .form-group label {
   font-weight: bold;
-  font-size: 30px;
+  font-size: 28px;
   color: #333;
   margin-bottom: 6px;
+}
+
+.form-section h1 {
+  margin: 0 0 2px;
+  font-size: 35px;
+  line-height: 1.2;
 }
 
 .form-group input,
@@ -275,10 +284,11 @@ html, body {
 
 .toggle-group {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: center; /* ⬅️ 수직 가운데 정렬 */
+  gap: 12px;            /* ⬅️ 토글과 글자 사이 간격 */
   padding-top: 6px;
 }
+
 
 .save-button {
   margin-top: 20px;
@@ -299,4 +309,61 @@ html, body {
   background-color: #005ecb;
 
 }
+/* 토글 스위치 스타일 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* 슬라이더 바 */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* 슬라이더 원 */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* 체크 시 배경색 */
+input:checked + .slider {
+  background-color: #0878ff;
+}
+
+/* 체크 시 원 위치 */
+input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* 둥근 스타일 클래스 */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round::before {
+  border-radius: 50%;
+}
+
+
 </style>
