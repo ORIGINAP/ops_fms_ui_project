@@ -5,7 +5,36 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import axios from 'axios'
-// 특별한 JS 로직은 필요 없습니다
+    import { io } from 'socket.io-client'
+
+    const socke = io('http://localhost:5002')
+    const robots = ref({})
+
+
+    onMounted(() => {
+      // 소켓 연결
+      socke.on('connect', () => {
+        console.log('소켓 연결 성공:', socke.id)
+      })
+
+      // 서버로부터 'robot' 이벤트 수신
+      socke.on('robot', (data) => {
+        robots.value = data
+        console.log('로봇 데이터 수신:', data)
+      })
+
+      // 에러 핸들링
+      socke.on('error', (error) => {
+        console.error('소켓 에러:', error)
+      })
+    })
+
+    onBeforeUnmount(() => {
+      // 컴포넌트 언마운트 시 소켓 연결 해제
+      socke.disconnect()
+      console.log('소켓 연결 해제')
+    })
+
 onMounted(async () => {
   try {
     // field 쿼리 파라미터로 name/version/description/robot 중 하나를 지정
