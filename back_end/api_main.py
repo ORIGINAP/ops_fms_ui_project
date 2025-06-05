@@ -26,7 +26,27 @@ def robotB():
     }
     return output(robot)
 
+@api.route('/robotC', methods=['GET'])
+def robotB():
+    robot= {
+        "name": "Robot-C",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "90%",
+        "route": "C",
+    }
+    return output(robot)
 
+@api.route('/robotD', methods=['GET'])
+def robotB():
+    robot= {
+        "name": "Robot-D",
+        "version": "1.0",
+        "velocity": "1",
+        "battery": "10%",
+        "route": "D",
+    }
+    return output(robot)
 
 def output(robot):
     field = request.args.get('field', default='name', type=str)
