@@ -1,15 +1,23 @@
 <template>
   <div class="container">
-    <div ref="areaA" class="area">A</div>
-    <div ref="areaB" class="area">B</div>
-    <div ref="areaC" class="area">C</div>
-    <div ref="areaD" class="big-area">D</div>
+    <div ref="areaA" class="area" :class="{ 'on-fire': facilityStatus.A.isOnFire }">A</div>
+    <div ref="areaB" class="area" :class="{ 'on-fire': facilityStatus.B.isOnFire }">B</div>
+    <div ref="areaC" class="area" :class="{ 'on-fire': facilityStatus.C.isOnFire }">C</div>
+    <div ref="areaD" class="big-area" :class="{ 'on-fire': facilityStatus.D.isOnFire }">D</div>
+    <div class="safety-facility safety-facility-left">소방시설</div>
+    <div class="safety-facility safety-facility-right">소방시설</div>
     <canvas ref="canvas"></canvas>
+    <div class="alert-icon-container" @click="showAlertLog">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-count" v-if="alertCount > 0">{{ alertCount }}</div>
+    </div>
+    <AlertComponent ref="alertComponent" />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import AlertComponent from './AlertComponent.vue'
 
 const areaA = ref(null)
 const areaB = ref(null)
@@ -21,6 +29,23 @@ let ctx = null
 
 const NUM_ROBOTS = 5
 const robots = []
+
+const alertCount = ref(0)
+const alertComponent = ref(null)
+
+// 시설 상태 관리를 위한 ref
+const facilityStatus = ref({
+  A: { isOnFire: false, lastCheck: Date.now() },
+  B: { isOnFire: false, lastCheck: Date.now() },
+  C: { isOnFire: false, lastCheck: Date.now() },
+  D: { isOnFire: false, lastCheck: Date.now() }
+})
+
+// 화재 발생 확률 (1%)
+const FIRE_PROBABILITY = 0.001
+
+// 화재 로그를 저장할 배열
+const fireLogs = ref([])
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -116,6 +141,26 @@ function moveRobot(robot) {
   }
 }
 
+// 시설 상태 업데이트 함수
+function updateFacilityStatus() {
+  Object.keys(facilityStatus.value).forEach(area => {
+    if (Math.random() < FIRE_PROBABILITY) {
+      facilityStatus.value[area].isOnFire = true
+      // 화재 발생 시 로그 추가
+      const log = {
+        id: Date.now(),
+        area,
+        timestamp: new Date().toLocaleTimeString(),
+        message: `${area} 영역에서 화재가 발생했습니다!`
+      }
+      fireLogs.value.unshift(log)
+      alertCount.value++
+      alertComponent.value.activateAlert(log.message)
+    }
+  })
+}
+
+// 애니메이션 함수 수정
 function animate() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
@@ -123,7 +168,19 @@ function animate() {
   drawArea(areaA.value, 'A')
   drawArea(areaB.value, 'B')
   drawArea(areaC.value, 'C')
-  drawArea(areaC.value, 'D')
+  drawArea(areaD.value, 'D')
+
+  // 화재 상태 표시
+  Object.entries(facilityStatus.value).forEach(([area, status]) => {
+    if (status.isOnFire) {
+      const areaEl = eval(`area${area}.value`)
+      const rect = areaEl.getBoundingClientRect()
+      // 점멸 효과를 위한 투명도 계산
+      const opacity = Math.abs(Math.sin(Date.now() / 500)) * 0.5 + 0.3
+      ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`
+      ctx.fillRect(rect.left, rect.top, rect.width, rect.height)
+    }
+  })
 
   // 모든 로봇 그리기 및 이동
   for (const robot of robots) {
@@ -132,7 +189,24 @@ function animate() {
     drawRobot(robot)
   }
 
+  // 시설 상태 업데이트
+  updateFacilityStatus()
+
   requestAnimationFrame(animate)
+}
+
+// 경보 로그 표시 함수 수정
+function showAlertLog() {
+  if (fireLogs.value.length > 0) {
+    // 최근 5개의 로그만 표시
+    const recentLogs = fireLogs.value.slice(0, 5)
+    const logMessage = recentLogs
+      .map(log => `[${log.timestamp}] ${log.message}`)
+      .join('\n')  // 일반 줄바꿈 사용
+    alertComponent.value.activateAlert(logMessage)
+  } else {
+    alertComponent.value.activateAlert('현재 감지된 위험 없음')
+  }
 }
 
 onMounted(() => {
@@ -231,11 +305,82 @@ onMounted(() => {
   left: 15%;
 }
 
+/* 소방시설 스타일 수정 */
+.safety-facility {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: #ff4444;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  user-select: none;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.safety-facility-left {
+  bottom: 100px;
+  left: 150px;
+}
+
+.safety-facility-right {
+  top: 20px;
+  right: 700px;
+}
+
 /* 캔버스는 화면 전체 */
 canvas {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+.alert-icon-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.alert-icon {
+  font-size: 32px;
+}
+
+.alert-count {
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.area.on-fire, .big-area.on-fire {
+  animation: fire-alert 1s infinite;
+}
+
+@keyframes fire-alert {
+  0% { box-shadow: 0 0 10px #ff0000; }
+  50% { box-shadow: 0 0 20px #ff0000; }
+  100% { box-shadow: 0 0 10px #ff0000; }
 }
 </style>
