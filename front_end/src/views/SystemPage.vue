@@ -102,6 +102,11 @@ export default {
         username: this.username,
         email: this.newEmail
       }, {withCredential: true})
+        .then(res => {
+          this.username = this.newUsername;
+          this.activeTab = 'Profile'
+          alert('프로파일 수정 완료')
+        })
 
 
 
