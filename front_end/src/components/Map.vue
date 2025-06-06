@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import AlertComponent from './AlertComponent.vue'
 
 const areaA = ref(null)
@@ -46,6 +46,9 @@ const FIRE_PROBABILITY = 0.0005
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
+
+// 경보 활성화 함수 주입
+const activateAlert = inject('activateAlert')
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -155,9 +158,24 @@ function updateFacilityStatus() {
       }
       fireLogs.value.unshift(log)
       alertCount.value++
-      alertComponent.value.activateAlert(log.message)
+      // 전체화면 경보 활성화
+      activateAlert(log.message)
     }
   })
+}
+
+// 경보 로그 표시 함수
+function showAlertLog() {
+  if (fireLogs.value.length > 0) {
+    // 최근 5개의 로그만 표시
+    const recentLogs = fireLogs.value.slice(0, 5)
+    const logMessage = recentLogs
+      .map(log => `[${log.timestamp}] ${log.message}`)
+      .join('\n')
+    alertComponent.value.activateAlert(logMessage)
+  } else {
+    alertComponent.value.activateAlert('현재 감지된 위험 없음')
+  }
 }
 
 // 애니메이션 함수 수정
