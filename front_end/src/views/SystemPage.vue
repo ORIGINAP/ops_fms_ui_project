@@ -392,4 +392,92 @@ export default {
 .language-field select option {
   padding: 10px;
 }
+
+.sound-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sound-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sound-field label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 토글 스위치 스타일 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* 슬라이더 바 */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* 슬라이더 원 */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* 체크 시 배경색 */
+input:checked + .slider {
+  background-color: #0878ff;
+}
+
+/* 체크 시 원 위치 */
+input:checked + .slider::before {
+  transform: translateX(24px);
+}
+
+/* 둥근 스타일 클래스 */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round::before {
+  border-radius: 50%;
+}
+
+.toggle-label {
+  font-size: 14px;
+  color: #333;
+}
 </style>
