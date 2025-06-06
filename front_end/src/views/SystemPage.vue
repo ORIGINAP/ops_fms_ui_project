@@ -10,88 +10,94 @@
       <!-- 상단 배너 -->
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
-        <h2 class="settings-title">{{ username }}</h2>
+        <h2 class="settings-title">{{ $t('system.title') }}</h2>
       </div>
 
       <!-- 탭 메뉴 -->
       <div class="tabs">
-        <button class="tab" :class="{ active: activeTab === 'Profile' }" @click="activeTab = 'Profile'">Profile</button>
-        <button class="tab" :class="{ active: activeTab === 'Account' }" @click="activeTab = 'Account'">Account</button>
-        <button class="tab" :class="{ active: activeTab === 'Sound' }" @click="activeTab = 'Sound'">Sound</button>
-        <button class="tab" :class="{ active: activeTab === 'Notification' }" @click="activeTab = 'Notification'">Notification</button>
+        <button class="tab" :class="{ active: activeTab === 'Profile' }" @click="activeTab = 'Profile'">{{ $t('system.profile.edit') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Account' }" @click="activeTab = 'Account'">{{ $t('system.account.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Sound' }" @click="activeTab = 'Sound'">{{ $t('system.sound.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Notification' }" @click="activeTab = 'Notification'">{{ $t('system.notification.title') }}</button>
       </div>
 
       <!-- 탭 콘텐츠 -->
       <div class="form-section">
         <div v-if="activeTab === 'Profile'" class="profile-view">
           <div class="form-group">
-            <label>Full Name</label>
+            <label>{{ $t('system.profile.name') }}</label>
             <p class="profile-text">{{ profileData.name }}</p>
           </div>
           <div class="form-group">
-            <label>Email Address</label>
+            <label>{{ $t('system.profile.email') }}</label>
             <p class="profile-text">{{ profileData.email }}</p>
           </div>
           <div class="form-group">
-            <label>Phone Number</label>
+            <label>{{ $t('system.profile.phone') }}</label>
             <p class="profile-text">{{ profileData.phone }}</p>
           </div>
 
           <!-- Edit 버튼 -->
           <div class="edit-footer">
-            <button class="edit-button" @click="activeTab = 'EditProfile'">Edit</button>
+            <button class="edit-button" @click="activeTab = 'EditProfile'">{{ $t('system.profile.edit') }}</button>
           </div>
         </div>
 
-        <div v-if="activeTab === 'Account'">
-          <div class="form-group">
-            <label>Language</label>
-            <select>
-              <option>Korean</option>
-              <option>English</option>
-            </select>
-          </div>
+        <div v-if="activeTab === 'Account'" class="language-settings">
+          <h2>{{ $t('system.language.title') }}</h2>
+          <select v-model="selectedLanguage" @change="changeLanguage">
+            <option value="ko">{{ $t('system.language.ko') }}</option>
+            <option value="en">{{ $t('system.language.en') }}</option>
+          </select>
         </div>
 
         <div v-if="activeTab === 'Sound'">
           <div class="form-group">
-            <label>Sound Notification</label>
+            <label>{{ $t('system.sound.title') }}</label>
             <div class="toggle-group">
-              <label><input type="checkbox" /> Enable Sounds</label>
+              <label><input type="checkbox" /> {{ $t('system.sound.enable') }}</label>
             </div>
           </div>
         </div>
 
         <div v-if="activeTab === 'Notification'">
           <div class="form-group">
-            <label>System Theme</label>
+            <label>{{ $t('system.notification.theme') }}</label>
             <div class="toggle-group">
               <label class="switch">
                 <input type="checkbox" v-model="isDarkTheme">
                 <span class="slider round"></span>
               </label>
-              <span>{{ isDarkTheme ? 'Dark Mode' : 'Light Mode' }}</span>
+              <span>{{ isDarkTheme ? $t('system.notification.dark') : $t('system.notification.light') }}</span>
             </div>
           </div>
         </div>
-        <!-- edit function -->
-        <div v-if="activeTab === 'EditProfile'">
-          <h1>Edit Profile</h1>
-          <div class="form-group">
-            <label>New Name</label>
-            <input type="text" v-model="newUsername" placeholder="Enter new name" />
-          </div>
-          <div class="form-group">
-            <label>New Email</label>
-            <input type="email" v-model="newEmail" placeholder="Enter new email" />
-          </div>
-          <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" v-model="newNumber" placeholder="Enter phone number" />
-          </div>
-          <button class="save-button" @click="saveProfile">Save</button>
-        </div>
 
+        <div v-if="activeTab === 'EditProfile'" class="profile-settings">
+          <h2>{{ $t('system.profile.edit') }}</h2>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.name') }}</label>
+            <input type="text" v-model="profileData.name" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.email') }}</label>
+            <input type="email" v-model="profileData.email" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.role') }}</label>
+            <input type="text" v-model="profileData.role" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.department') }}</label>
+            <input type="text" v-model="profileData.department" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.phone') }}</label>
+            <input type="text" v-model="profileData.phone" />
+          </div>
+          <button class="save-button" @click="saveProfile">{{ $t('system.profile.save') }}</button>
+          <button class="cancel-button" @click="activeTab = 'Profile'">{{ $t('system.profile.cancel') }}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -100,52 +106,61 @@
 <script>
 import Menu from '../components/Menu.vue'
 import axios from 'axios'
+
 export default {
   name: 'SystemSettings',
   components: { Menu },
   data() {
     return {
       activeTab: 'Profile',
-      username: '',
-      newUsername: '',
-      newEmail: '',
-      newNumver:'',
       profileData: {
-        name:'',
-        email:'',
-        phone:''
-      }
+        name: '',
+        email: '',
+        phone: '',
+        role: '',
+        department: ''
+      },
+      selectedLanguage: localStorage.getItem('language') || 'ko',
+      isDarkTheme: false
     }
   },
   methods: {
+    changeLanguage() {
+      this.$i18n.locale = this.selectedLanguage;
+      localStorage.setItem('language', this.selectedLanguage);
+    },
     saveProfile() {
       axios.post('http://localhost:5000/update-profile', {
-        username: this.newUsername,
-        email: this.newEmail,
-        phone: this.newNumber
+        username: this.profileData.name,
+        email: this.profileData.email,
+        phone: this.profileData.phone,
+        role: this.profileData.role,
+        department: this.profileData.department
       }, { withCredentials: true })
         .then(res => {
-          this.username = this.newUsername;
           this.activeTab = 'Profile';
-          alert('프로파일 수정 완료');
+          alert(this.$t('system.profile.saveSuccess'));
         })
         .catch(err => {
           console.error(err);
-          alert('Something went wrong');
+          alert(this.$t('system.profile.saveError'));
         });
     }
   },
   created() {
     axios.get('http://localhost:5000/me', { withCredentials: true })
       .then(res => {
-        this.username = res.data.username;
+        this.profileData.name = res.data.username;
+        this.profileData.email = res.data.email;
+        this.profileData.phone = res.data.phone;
+        this.profileData.role = res.data.role;
+        this.profileData.department = res.data.department;
       })
       .catch(err => {
         console.error(err);
       });
   }
 }
-
 </script>
 
 <style scoped>
@@ -399,6 +414,5 @@ input:checked + .slider::before {
 .slider.round::before {
   border-radius: 50%;
 }
-
 
 </style>
