@@ -34,6 +34,18 @@ const messages = {
         dark: '다크 모드',
         light: '라이트 모드'
       }
+    },
+    login: {
+      title: '로그인',
+      email: '이메일',
+      password: '비밀번호',
+      loginButton: '로그인',
+      registerButton: '회원가입',
+      emailRequired: '이메일을 입력하세요.',
+      passwordRequired: '비밀번호를 입력하세요.',
+      loginSuccess: '로그인 성공',
+      loginFailed: '로그인 실패',
+      error: '오류가 발생했습니다.'
     }
   },
   en: {
@@ -69,11 +81,24 @@ const messages = {
         dark: 'Dark Mode',
         light: 'Light Mode'
       }
+    },
+    login: {
+      title: 'Login',
+      email: 'Email',
+      password: 'Password',
+      loginButton: 'Login',
+      registerButton: 'Register',
+      emailRequired: 'Please enter your email.',
+      passwordRequired: 'Please enter your password.',
+      loginSuccess: 'Login successful',
+      loginFailed: 'Login failed',
+      error: 'An error occurred.'
     }
   }
 }
 
 const i18n = createI18n({
+  legacy: false,
   locale: localStorage.getItem('language') || 'ko',
   fallbackLocale: 'en',
   messages
