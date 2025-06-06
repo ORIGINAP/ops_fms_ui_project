@@ -23,6 +23,11 @@ export default {
       this.message = message
       this.isActive = true
       this.isBlinking = true
+      
+      // 3초 후에 점멸 중지
+      setTimeout(() => {
+        this.isBlinking = false
+      }, 3000)
     },
     deactivateAlert() {
       this.isActive = false
