@@ -241,12 +241,33 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-width: 500px;
 }
 
 .form-group label {
   font-size: 14px;
   color: #666;
   font-weight: 500;
+}
+
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 200px;
+}
+
+.form-group select:focus {
+  border-color: #0878ff;
+  outline: none;
+}
+
+.form-group select option {
+  padding: 10px;
 }
 
 .profile-text {
@@ -332,5 +353,43 @@ export default {
 
 .cancel-button:hover {
   background-color: #e0e0e0;
+}
+
+.language-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.language-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.language-field label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.language-field select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 200px;
+}
+
+.language-field select:focus {
+  border-color: #0878ff;
+  outline: none;
+}
+
+.language-field select option {
+  padding: 10px;
 }
 </style>
