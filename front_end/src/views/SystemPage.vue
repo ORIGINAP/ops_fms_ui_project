@@ -166,7 +166,7 @@ export default {
 <style scoped>
 .system-page {
   display: flex;
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
@@ -259,11 +259,11 @@ export default {
 .edit-footer {
   margin-top: 20px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .edit-button {
-  padding: 8px 20px;
+  padding: 8px 16px;
   background-color: #0878ff;
   color: white;
   border: none;
@@ -271,6 +271,7 @@ export default {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  min-width: 80px;
 }
 
 .edit-button:hover {
@@ -309,11 +310,14 @@ export default {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  min-width: 100px;
+  width: 100px;
 }
 
 .save-button {
   background-color: #0878ff;
   color: white;
+  margin-left: 10px;
 }
 
 .save-button:hover {
