@@ -5,6 +5,7 @@
 ```bash
 cd front_end
 npm install
+npm npm install vue-router
 npm install vue-i18n@9
 npm run dev
 ```
