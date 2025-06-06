@@ -13,25 +13,25 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=True)
     password = db.Column(db.String(80), nullable=False)
-    email = db.Column(db.String(20), unique=True)
+    email = db.Column(db.String(20), unique=True, nullable=False)
     phone = db.Column(db.String(20), unique=True)
 
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
 
-    if not username or not password:
+    if not email or not password:
         return jsonify({"message":"누락"}), 400
     
-    if User.query.filter_by(username=username).first():
+    if User.query.filter_by(email=email).first():
         return jsonify({"message":"중복"}), 409
 
-    new_user = User(username=username,password=password)
+    new_user = User(email=email,password=password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -40,10 +40,10 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     data =  request.get_json()
-    username = data.get("username")
+    email = data.get("email")
     password = data.get("password")
 
-    user = User.query.filter_by(username=username, password=password).first()
+    user = User.query.filter_by(email=email, password=password).first()
 
     if user:
         session['user_id'] = user.id

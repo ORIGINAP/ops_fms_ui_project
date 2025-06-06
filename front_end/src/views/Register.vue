@@ -1,7 +1,7 @@
 <template>
   <div class="login-container"> <!--로그인 css 재사용-->
     <h2>회원가입 페이지</h2> 
-    <input v-model="username" placeholder="Your ID" />
+    <input v-model="email" placeholder="Your Email" />
     <input v-model="password" placeholder="Your PW" />
     <button @click="SendServer">가입</button>
   </div>
@@ -12,7 +12,7 @@
     import { useRouter } from 'vue-router'
     import axios from 'axios'
 
-    const username = ref('')
+    const email = ref('')
     const password = ref('')
     const router = useRouter()
 
@@ -21,7 +21,7 @@
       
       try{
         const res = await axios.post('http://localhost:5000/register', {
-            username : username.value,
+            email : email.value,
             password : password.value
         })
         alert(res.data.message)

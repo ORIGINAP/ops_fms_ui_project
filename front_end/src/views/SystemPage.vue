@@ -10,7 +10,7 @@
       <!-- 상단 배너 -->
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
-        <h2 class="settings-title">Admin</h2>
+        <h2 class="settings-title">{{ username }}</h2>
       </div>
 
       <!-- 탭 메뉴 -->
@@ -96,7 +96,7 @@
 
 <script>
 import Menu from '../components/Menu.vue'
-
+import axios from 'axios'
 export default {
   name: 'SystemSettings',
   components: { Menu },
@@ -105,7 +105,12 @@ export default {
       activeTab: 'Profile',
       username: '',
       newUsername: '',
-      newEmail: ''
+      newEmail: '',
+      profileData: {
+        name:'',
+        email:'',
+        phone:''
+      }
     }
   },
   methods: {
