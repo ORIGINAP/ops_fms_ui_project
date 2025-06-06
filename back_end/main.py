@@ -15,6 +15,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(20), unique=True)
+    phone = db.Column(db.String(20), unique=True)
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -58,6 +61,9 @@ def me():
             "username": user.username
         }), 200
 
+@app.route('/update-profile', methods=['POST'])
+def update_profile():
+    
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
