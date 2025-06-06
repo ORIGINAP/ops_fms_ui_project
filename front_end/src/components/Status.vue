@@ -40,9 +40,13 @@
       <!-- 원형차트 + 레이블 행 (추가) -->
       <div class="menu-chart-row">
         <div class="chart-labels">
-          <div v-for="(value, key) in chartData" :key="key" class="chart-label">
-            <span class="label-key">{{ key }}</span>
-            <span class="label-value">{{ value }}</span>
+          <div v-for="(label, index) in labels" :key="index" class="chart-label">
+    <span
+        class="color-box"
+        :style="{ backgroundColor: colors[index % colors.length] }"
+    ></span>
+            <span class="label-key">{{ label }}</span>
+            <span class="label-value">{{ chartData[index] }}</span>
           </div>
         </div>
         <svg
@@ -83,9 +87,10 @@ export default {
       internalTemperature: null,
       updateInterval: null,
       isNight: false,
-      chartData: ['A구역', 'B구역', 'C구역', 'D구역'],
+      labels: ['A구역', 'B구역', 'C구역', 'D구역'],  // 이름 배열
+      chartData: [25, 25, 25, 25],
       colors: ['rgba(0,63,136,1)', 'rgba(8,120,255,1)', 'rgba(178,214,255,1)', 'rgba(231,242,255,1)'],
-      center: 80,
+      center: 100,
       radius: 60,
     };
   },
@@ -429,5 +434,14 @@ export default {
 .thermometer-icon {
   width: 45px;
   height: 80px;
+}
+.color-box {
+  margin-top: 7px;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 </style>
