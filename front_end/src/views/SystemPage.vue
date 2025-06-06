@@ -230,4 +230,103 @@ export default {
   padding: 30px;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
 }
+
+.profile-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.profile-text {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.edit-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-button {
+  padding: 8px 20px;
+  background-color: #0878ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #005ecb;
+}
+
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-field input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.profile-field input:focus {
+  border-color: #0878ff;
+  outline: none;
+}
+
+.save-button, .cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
+  background-color: #0878ff;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #005ecb;
+}
+
+.cancel-button {
+  background-color: #f5f5f5;
+  color: #666;
+  margin-left: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
 </style>
