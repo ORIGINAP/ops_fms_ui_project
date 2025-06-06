@@ -61,11 +61,18 @@ def me():
             "username": user.username
         }), 200
 
-""" @app.route('/update-profile', methods=['POST'])
+@app.route('/update-profile', methods=['POST'])
 def update_profile():
     data =  request.get_json()
     new_username = data.get('username')
-    new_email """
+    new_email = data.get('email')
+    new_phone = data.get('phone')
+    
+    user = User.query.get(1)
+    
+    if not user:
+        return jsonify({'message': '사용자 없음'}), 404
+    
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
