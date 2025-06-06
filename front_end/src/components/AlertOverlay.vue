@@ -3,6 +3,7 @@
     <div class="alert-content">
       <div class="alert-icon">⚠️</div>
       <div class="alert-message">{{ message }}</div>
+      <button class="alert-close" @click="deactivateAlert">경보 해제</button>
     </div>
   </div>
 </template>
@@ -73,6 +74,22 @@ export default {
   font-size: 1.5rem;
   color: #d32f2f;
   font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.alert-close {
+  padding: 0.5rem 1rem;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.alert-close:hover {
+  background-color: #b71c1c;
 }
 
 @keyframes blink {
