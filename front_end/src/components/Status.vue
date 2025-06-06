@@ -37,11 +37,35 @@
         </div>
       </div>
 
-      <!-- 세 번째 줄: 미정상태 -->
-      <div class="menu-row">
-        <div class="menu-other">
-          <p>other</p>
+      <!-- 원형차트 + 레이블 행 (추가) -->
+      <div class="menu-chart-row">
+        <div class="chart-labels">
+          <div v-for="(value, key) in chartData" :key="key" class="chart-label">
+            <span class="label-key">{{ key }}</span>
+            <span class="label-value">{{ value }}</span>
+          </div>
         </div>
+        <svg
+            class="pie-chart"
+            viewBox="0 0 200 200"
+            width="200"
+            height="200"
+            aria-label="원형 차트"
+            role="img"
+        >
+          <circle
+              v-for="(slice, index) in pieSlices"
+              :key="index"
+              :r="radius"
+              :cx="center"
+              :cy="center"
+              :stroke="slice.color"
+              :stroke-dasharray="slice.dashArray"
+              :stroke-dashoffset="slice.dashOffset"
+              fill="transparent"
+              stroke-width="40"
+          />
+        </svg>
       </div>
     </div>
   </div>
@@ -59,6 +83,10 @@ export default {
       internalTemperature: null,
       updateInterval: null,
       isNight: false,
+      chartData: ['A구역', 'B구역', 'C구역', 'D구역'],
+      colors: ['rgba(0,63,136,1)', 'rgba(8,120,255,1)', 'rgba(178,214,255,1)', 'rgba(231,242,255,1)'],
+      center: 80,
+      radius: 60,
     };
   },
   computed: {
@@ -69,6 +97,25 @@ export default {
     thermometerIconUrl() {
       const iconName = this.internalTemperature > this.temperature ? 'tp_up' : 'tp_down';
       return new URL(`../assets/icon/${iconName}.svg`, import.meta.url).href;
+    },
+    totalValue() {
+      return this.chartData.reduce((a, b) => a + b, 0);
+    },
+    pieSlices() {
+      const circumference = 2 * Math.PI * this.radius;
+      let offset = 0;
+
+      return this.chartData.map((value, i) => {
+        const sliceLength = (value / this.totalValue) * circumference;
+        const dashArray = `${sliceLength} ${circumference - sliceLength}`;
+        const dashOffset = circumference - offset;
+        offset += sliceLength;
+        return {
+          color: this.colors[i % this.colors.length],
+          dashArray,
+          dashOffset,
+        };
+      });
     }
   },
   mounted() {
@@ -77,6 +124,8 @@ export default {
 
     this.updateIsNight(); // 초기 판단
     setInterval(this.updateIsNight, 60000); // 매 1분마다 갱신
+
+    this.generateRandomChartData(); // 랜덤 차트 데이터 생성
   },
   beforeUnmount() {
     clearInterval(this.updateInterval);
@@ -92,6 +141,13 @@ export default {
     }
   },
   methods: {
+    generateRandomChartData() {
+      this.chartData = this.chartData.map(() => Math.floor(Math.random() * 101));
+
+      if (this.totalValue === 0) {
+        this.chartData = [25, 25, 25, 25];
+      }
+    },
     updateIsNight() {
       const hour = new Date().getHours();
       this.isNight = hour < 6 || hour >= 18;
@@ -246,7 +302,7 @@ export default {
 <style scoped>
 .side-menu {
   position: fixed;
-  top: 20px;
+  top: 15px;
   right: 145px;
   width: 26%;
   height: 93%;
@@ -273,8 +329,8 @@ export default {
 .menu-network {
   box-shadow: 2px 0 5px rgba(21,100,191,0.2);
   background-color: white;
-  height: 350px;
-  border-radius: 20px;
+  height: 300px;
+  border-radius: 10px;
   flex-grow: 1;
   display: flex;
   justify-content: center;
@@ -287,8 +343,8 @@ export default {
 .menu-temperature {
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
-  height: 230px;
-  border-radius: 20px;
+  height: 200px;
+  border-radius: 10px;
   flex-grow: 1;
   color: darkgray;
   transition: box-shadow 0.3s ease;
@@ -301,9 +357,9 @@ export default {
   justify-content: center;
   text-align: center;
   font-size: 30px;
-  gap: 20px;
+  gap: 10px;
   line-height: 1;
-  margin-top: 54px;
+  margin-top: 40px;
   padding: 0;
 }
 
@@ -321,18 +377,49 @@ export default {
 .night-block {
   box-shadow: 2px 0 6px rgba(0,63,136,0.2);
 }
-.menu-other {
-  box-shadow: 2px 0 5px rgba(21,100,191,0.2);
-  background-color: white;
-  height: 270px;
-  border-radius: 20px;
-  flex-grow: 1;
+
+
+.menu-chart-row {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
-  font-weight: bold;
+  gap: 20px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(178,214,255,0.5);
+  height: 230px;
   color: darkgray;
+}
+
+.chart-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: left;
+  user-select: none;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.label-key {
+  min-width: 20px;
+}
+
+.label-value {
+  min-width: 30px;
+}
+
+
+.pie-chart {
+  transform: rotate(-90deg); /* 시작점을 12시 방향으로 조정 */
 }
 
 .weather-svg-icon {
