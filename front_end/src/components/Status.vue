@@ -89,7 +89,7 @@ export default {
       isNight: false,
       labels: ['A구역', 'B구역', 'C구역', 'D구역'],  // 이름 배열
       chartData: [25, 25, 25, 25],
-      colors: ['rgba(0,63,136,1)', 'rgba(8,120,255,1)', 'rgba(178,214,255,1)', 'rgba(231,242,255,1)'],
+      colors: ['rgba(0,63,136,1)', 'rgba(8,120,255,1)', 'rgba(110,180,255,1)', 'rgba(180,222,245,1)'],
       center: 100,
       radius: 60,
     };
@@ -308,7 +308,7 @@ export default {
 .side-menu {
   position: fixed;
   top: 15px;
-  right: 145px;
+  right: 130px;
   width: 26%;
   height: 93%;
   margin: 0;
@@ -428,12 +428,12 @@ export default {
 }
 
 .weather-svg-icon {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
 }
 .thermometer-icon {
-  width: 45px;
-  height: 80px;
+  width: 30px;
+  height: 60px;
 }
 .color-box {
   margin-top: 7px;

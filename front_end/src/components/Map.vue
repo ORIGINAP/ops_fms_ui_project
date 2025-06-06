@@ -42,7 +42,7 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.0005
+const FIRE_PROBABILITY = 0.0000000000000005
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
