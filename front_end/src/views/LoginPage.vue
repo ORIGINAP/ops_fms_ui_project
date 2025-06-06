@@ -1,17 +1,17 @@
 <template>
   <div class="login-container">
-    <h1>Login</h1>
+    <h1>{{ $t('login.title') }}</h1>
     <form @submit.prevent="handleLogin">
       <div>
-        <label>Email:</label>
+        <label>{{ $t('login.email') }}:</label>
         <input v-model="email" type="email" required />
       </div>
       <div>
-        <label>Password:</label>
+        <label>{{ $t('login.password') }}:</label>
         <input v-model="password" type="password" required />
       </div>
-      <button type="submit">Login</button>
-      <button @click="GotoRegister">Register</button>
+      <button type="submit">{{ $t('login.loginButton') }}</button>
+      <button @click="GotoRegister">{{ $t('login.registerButton') }}</button>
     </form>
   </div>
 
@@ -20,8 +20,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import axios from 'axios';
 
+const { t } = useI18n();
 const email = ref('');
 const password = ref('');
 const router = useRouter();
@@ -30,7 +32,7 @@ const handleLogin = async () => {
   console.log('로그인 시도:', email.value, password.value);
 
   if (!email.value || !password.value) {
-    alert('이메일과 비밀번호를 입력하세요.');
+    alert(t('login.emailRequired'));
     return;
   }
   try {
@@ -41,13 +43,13 @@ const handleLogin = async () => {
     {
       withCredentials: true
     });
-    alert(res.data.message); 
+    alert(t('login.loginSuccess')); 
     router.push('/main');
   } catch (err) {
     if (err.response) {
       alert(err.response.data.message);
     } else {
-      alert('gone wrong');
+      alert(t('login.error'));
     }
   }
   
