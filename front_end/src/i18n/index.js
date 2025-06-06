@@ -46,6 +46,14 @@ const messages = {
       loginSuccess: '로그인 성공',
       loginFailed: '로그인 실패',
       error: '오류가 발생했습니다.'
+    },
+    register: {
+      title: '회원가입 페이지',
+      email: '이메일',
+      password: '비밀번호',
+      registerButton: '가입',
+      allFieldsRequired: '모든 필드를 입력해주세요.',
+      invalidEmail: '올바른 이메일 형식을 입력해주세요.'
     }
   },
   en: {
@@ -93,6 +101,14 @@ const messages = {
       loginSuccess: 'Login successful',
       loginFailed: 'Login failed',
       error: 'An error occurred.'
+    },
+    register: {
+      title: 'Register Page',
+      email: 'Email',
+      password: 'Password',
+      registerButton: 'Register',
+      allFieldsRequired: 'Please fill in all fields.',
+      invalidEmail: 'Please enter a valid email format.'
     }
   }
 }
