@@ -356,4 +356,19 @@ canvas {
 .alert-icon {
   font-size: 32px;
 }
+
+.alert-count {
+  background-color: #dc3545;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  animation: pulse 2s infinite;
+}
+
 </style>
