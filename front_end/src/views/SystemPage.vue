@@ -164,12 +164,6 @@ export default {
 </script>
 
 <style scoped>
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .system-page {
   display: flex;
   width: 100%;
@@ -185,8 +179,6 @@ html, body {
 }
 
 .header-banner {
-  left: 10px;
-  width: 89.8%;
   background-color: white;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
   border-radius: 16px;
@@ -194,225 +186,48 @@ html, body {
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .user-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 4px solid #ffffff;
-  object-fit: cover;
-  background-color: #e0e0e0;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .settings-title {
-  font-size: 28px;
-  color: rgba(0,63,136,100);
-  flex-grow: 1;
-  margin-left: 20px;
-}
-
-.profile-view {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
-.profile-text {
-  font-size: 20px;
+  font-size: 24px;
   color: #333;
-  margin: 6px 0 20px;
-}
-
-.edit-footer {
-  position: absolute;
-  top: 0px;
-  right: 20px;
-}
-
-.edit-button {
-  margin-right: 20px;
-  padding: 11px 24px;
-  font-size: 14px;
-  border: 2px solid #0878ff;
-  background-color: white;
-  color: #0878ff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.edit-button:hover {
-  background-color: #eaf3ff;
+  margin: 0;
 }
 
 .tabs {
   display: flex;
-  margin: 30px 0 -1px 0;
-  position: relative;
-  z-index: 2;
-  padding-left: 10px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .tab {
-  height: 55px;
-  padding: 10px 50px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #666;
-  background: transparent;
+  padding: 10px 20px;
   border: none;
-  transition: all 0.2s;
-  position: relative;
-  z-index: 2;
-  letter-spacing: 1px;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.3s ease;
 }
 
 .tab.active {
-  background-color: white;
-  color: #222;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 -1px 0 white;
+  background: #0878ff;
+  color: white;
 }
 
 .form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  background-color: white;
-  padding: 70px 30px 30px 70px;
-  border-radius: 0 15px 15px 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  flex-grow: 1;
-  height: 545px;
-  overflow-y: auto;
-  margin-bottom: 100px;
-  width: 86.5%;
-  margin-left: 10px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 2px 0 5px rgba(8,120,255,0.2);
 }
-
-.form-section > div {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-.form-section h1 {
-  margin-top: 2px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  width: 100%;
-}
-
-.form-group label {
-  font-weight: bold;
-  font-size: 25px;
-  color: #333;
-  margin-bottom: 6px;
-}
-
-.form-section h1 {
-  margin: 0 0 2px;
-  font-size: 35px;
-  line-height: 1.2;
-}
-
-.form-group input,
-.form-group select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.toggle-group {
-  display: flex;
-  align-items: center; /* ⬅️ 수직 가운데 정렬 */
-  gap: 12px;            /* ⬅️ 토글과 글자 사이 간격 */
-  padding-top: 6px;
-}
-
-
-.save-button {
-  margin-top: 20px;
-  margin-left: 24%;
-  padding: 10px 20px;
-  font-size: 14px;
-  border: 2px solid #0878ff;
-  background-color: #0878ff;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  max-width: 100px;
-  width: 100%;
-  align-self: flex-start;
-}
-
-.save-button:hover {
-  background-color: #005ecb;
-
-}
-/* 토글 스위치 스타일 */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 52px;
-  height: 28px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* 슬라이더 바 */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 34px;
-}
-
-/* 슬라이더 원 */
-.slider::before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-/* 체크 시 배경색 */
-input:checked + .slider {
-  background-color: #0878ff;
-}
-
-/* 체크 시 원 위치 */
-input:checked + .slider::before {
-  transform: translateX(24px);
-}
-
-/* 둥근 스타일 클래스 */
-.slider.round {
-  border-radius: 34px;
-}
-.slider.round::before {
-  border-radius: 50%;
-}
-
 </style>
