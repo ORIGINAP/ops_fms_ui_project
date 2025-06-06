@@ -104,14 +104,14 @@ export default {
 <style scoped>
 .robot-control-container {
   display: flex;
-  height: 100vh;
+  height: 101vh;
   background: #f0f4f8;
 }
 
 .main-panel {
   flex: 1;
   display: flex;
-  padding: 30px 60px 40px 40px;
+  padding: 35px 58px 40px 36px;
   gap: 16px;
 }
 
@@ -120,11 +120,11 @@ export default {
   width: 280px;
   background: #fff;
   padding: 30px;
-  border-radius: 18px;
+  border-radius: 15px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 .robot-info p {
@@ -148,10 +148,11 @@ select {
   flex: 0.933; /* 기존 1 → 더 좁게 조정 */
   background: #fff;
   padding: 20px;
-  border-radius: 18px;
+  border-radius: 13px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
+  margin-right: 9px;
 }
 
 .cmd-panel ul {
@@ -202,6 +203,6 @@ select {
 
 .cmd-hint {
   font-size: 14px;
-  color: #888;
+  color: #889;
 }
 </style>

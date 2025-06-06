@@ -19,17 +19,17 @@ export default {
 
 .body {
   position: fixed;
-  top: 40px;
-  left: 40px;
+  top: 35px;
+  left: 41px;
 
   width: 89%;
   height: 92%;
-  box-shadow: 3px 3px 7px rgba(21,100,191, 0.13);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 30px;
+  border-radius:10px;
 }
 
 </style>
