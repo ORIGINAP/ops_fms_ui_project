@@ -17,6 +17,18 @@ export default {
       message: '',
       blinkInterval: null
     }
+  },
+  methods: {
+    activateAlert(message) {
+      this.message = message
+      this.isActive = true
+      this.isBlinking = true
+    },
+    deactivateAlert() {
+      this.isActive = false
+      this.isBlinking = false
+      this.message = ''
+    }
   }
 }
 </script>
