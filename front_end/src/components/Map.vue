@@ -341,4 +341,19 @@ canvas {
   50% { box-shadow: 0 0 20px #ff0000; }
   100% { box-shadow: 0 0 10px #ff0000; }
 }
+
+.alert-icon-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 1000;
+}
+
+.alert-icon {
+  font-size: 32px;
+}
 </style>
