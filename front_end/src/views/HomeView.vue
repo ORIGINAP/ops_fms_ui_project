@@ -3,6 +3,7 @@
     <Status />
     <Map />
     <Menu />
+    <AlertOverlay ref="alertOverlay" />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import Status from '../components/Status.vue';
 import Menu from '../components/Menu.vue';
 import Map from '../components/Map.vue';
+import AlertOverlay from '../components/AlertOverlay.vue';
 
 export default {
   name: 'HomeView',
@@ -17,7 +19,15 @@ export default {
     Status,
     Menu,
     Map,
+    AlertOverlay,
   },
+  provide() {
+    return {
+      activateAlert: (message) => {
+        this.$refs.alertOverlay.activateAlert(message);
+      }
+    }
+  }
 };
 </script>
 
