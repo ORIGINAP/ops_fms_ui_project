@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div ref="areaA" class="area" :class="{ 'on-fire': facilityStatus.A.isOnFire }">A</div>
-    <div ref="areaB" class="area" :class="{ 'on-fire': facilityStatus.B.isOnFire }">B</div>
-    <div ref="areaC" class="area" :class="{ 'on-fire': facilityStatus.C.isOnFire }">C</div>
-    <div ref="areaD" class="big-area" :class="{ 'on-fire': facilityStatus.D.isOnFire }">D</div>
+    <div ref="areaA" class="area">A</div>
+    <div ref="areaB" class="area">B</div>
+    <div ref="areaC" class="area">C</div>
+    <div ref="areaD" class="big-area">D</div>
     <div class="safety-facility safety-facility-left">소방시설</div>
     <div class="safety-facility safety-facility-right">소방시설</div>
     <canvas ref="canvas"></canvas>
@@ -42,7 +42,7 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.001
+const FIRE_PROBABILITY = 0.0005
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
@@ -170,18 +170,6 @@ function animate() {
   drawArea(areaC.value, 'C')
   drawArea(areaD.value, 'D')
 
-  // 화재 상태 표시
-  Object.entries(facilityStatus.value).forEach(([area, status]) => {
-    if (status.isOnFire) {
-      const areaEl = eval(`area${area}.value`)
-      const rect = areaEl.getBoundingClientRect()
-      // 점멸 효과를 위한 투명도 계산
-      const opacity = Math.abs(Math.sin(Date.now() / 500)) * 0.5 + 0.3
-      ctx.fillStyle = `rgba(255, 0, 0, ${opacity})`
-      ctx.fillRect(rect.left, rect.top, rect.width, rect.height)
-    }
-  })
-
   // 모든 로봇 그리기 및 이동
   for (const robot of robots) {
     moveRobot(robot)
@@ -193,20 +181,6 @@ function animate() {
   updateFacilityStatus()
 
   requestAnimationFrame(animate)
-}
-
-// 경보 로그 표시 함수 수정
-function showAlertLog() {
-  if (fireLogs.value.length > 0) {
-    // 최근 5개의 로그만 표시
-    const recentLogs = fireLogs.value.slice(0, 5)
-    const logMessage = recentLogs
-      .map(log => `[${log.timestamp}] ${log.message}`)
-      .join('\n')  // 일반 줄바꿈 사용
-    alertComponent.value.activateAlert(logMessage)
-  } else {
-    alertComponent.value.activateAlert('현재 감지된 위험 없음')
-  }
 }
 
 onMounted(() => {
@@ -338,40 +312,6 @@ canvas {
   top: 0;
   left: 0;
   z-index: 0;
-}
-
-.alert-icon-container {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.alert-icon {
-  font-size: 32px;
-}
-
-.alert-count {
-  background-color: #dc3545;
-  color: white;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  font-weight: bold;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
 }
 
 .area.on-fire, .big-area.on-fire {
