@@ -73,6 +73,16 @@ def update_profile():
     if not user:
         return jsonify({'message': '사용자 없음'}), 404
     
+    if new_username:
+        user.username = new_username
+    if new_email:
+        user.email = new_email
+    if new_phone:
+        user.phone = new_phone
+
+    db.session.commit()
+
+    return jsonify({'message': '프로필 수정 완료'})
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
