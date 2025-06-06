@@ -32,3 +32,47 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 0, 0, 0.3);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert-overlay.blinking {
+  animation: blink 1s infinite;
+}
+
+.alert-content {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.alert-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.alert-message {
+  font-size: 1.5rem;
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+  100% { opacity: 0.3; }
+}
+</style> 
