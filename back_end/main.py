@@ -12,22 +12,27 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    email = data.get("email")
     username = data.get("username")
     password = data.get("password")
 
-    if not username or not password:
-        return jsonify({"message":"누락"}), 400
+    if not email or not username or not password:
+        return jsonify({"message":"모든 필드를 입력해주세요"}), 400
     
+    if User.query.filter_by(email=email).first():
+        return jsonify({"message":"이미 등록된 이메일입니다"}), 409
+        
     if User.query.filter_by(username=username).first():
-        return jsonify({"message":"중복"}), 409
+        return jsonify({"message":"이미 사용중인 아이디입니다"}), 409
 
-    new_user = User(username=username,password=password)
+    new_user = User(email=email, username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
 
