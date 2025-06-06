@@ -106,6 +106,7 @@ export default {
       username: '',
       newUsername: '',
       newEmail: '',
+      newNumver:'',
       profileData: {
         name:'',
         email:'',
@@ -117,7 +118,8 @@ export default {
     saveProfile() {
       axios.post('http://localhost:5000/update-profile', {
         username: this.newUsername,
-        email: this.newEmail
+        email: this.newEmail,
+        phone: this.newNumber
       }, { withCredentials: true })
         .then(res => {
           this.username = this.newUsername;
