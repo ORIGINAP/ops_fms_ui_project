@@ -17,7 +17,17 @@
     const router = useRouter()
 
     const SendServer = async () => {
-        
+      if (!email.value || !username.value || !password.value) {
+        alert('모든 필드를 입력해주세요.')
+        return
+      }
+
+      // 이메일 형식 검증
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email.value)) {
+        alert('올바른 이메일 형식을 입력해주세요.')
+        return
+      }
       
       try{
         const res = await axios.post('http://localhost:5000/register', {
@@ -33,10 +43,6 @@
           alert('gone wrong')
         }
       }
-    
-    
-    
-    
     }
 </script>
 
@@ -63,7 +69,7 @@
 }
 
 .login-container input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
