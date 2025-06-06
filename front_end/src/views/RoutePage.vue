@@ -203,6 +203,6 @@ select {
 
 .cmd-hint {
   font-size: 14px;
-  color: #888;
+  color: #889;
 }
 </style>

@@ -89,7 +89,7 @@ export default {
       isNight: false,
       labels: ['A구역', 'B구역', 'C구역', 'D구역'],  // 이름 배열
       chartData: [25, 25, 25, 25],
-      colors: ['rgba(0,63,136,1)', 'rgba(8,120,255,1)', 'rgba(110,180,255,1)', 'rgba(180,222,245,1)'],
+      colors: ['rgba(0,62,136,1)', 'rgba(8,120,255,1)', 'rgba(110,180,255,1)', 'rgba(180,222,245,1)'],
       center: 100,
       radius: 60,
     };

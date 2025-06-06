@@ -265,7 +265,7 @@ onMounted(() => {
   position: absolute;
   width: 200px;
   height: 300px; /* 세로로 더 길게 */
-  background: #444;
+  background: #445;
   color: white;
   font-weight: bold;
   display: flex;
