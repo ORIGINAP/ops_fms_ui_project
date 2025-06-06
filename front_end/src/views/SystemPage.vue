@@ -10,7 +10,7 @@
       <!-- 상단 배너 -->
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
-        <h2 class="settings-title">Admin</h2>
+        <h2 class="settings-title">{{ username }}</h2>
       </div>
 
       <!-- 탭 메뉴 -->
@@ -25,7 +25,7 @@
       <div class="form-section">
         <div v-if="activeTab === 'Profile'" class="profile-view">
           <div class="form-group">
-            <label>Name</label>
+            <label>Full Name</label>
             <p class="profile-text">{{ profileData.name }}</p>
           </div>
           <div class="form-group">
@@ -74,22 +74,22 @@
             </div>
           </div>
         </div>
-
+        <!-- edit function -->
         <div v-if="activeTab === 'EditProfile'">
           <h1>Edit Profile</h1>
           <div class="form-group">
             <label>New Name</label>
-            <input type="text" v-model="profileData.name" placeholder="Enter new name" />
+            <input type="text" v-model="newUsername" placeholder="Enter new name" />
           </div>
           <div class="form-group">
             <label>New Email</label>
-            <input type="email" v-model="profileData.email" placeholder="Enter new email" />
+            <input type="email" v-model="newEmail" placeholder="Enter new email" />
           </div>
           <div class="form-group">
             <label>Phone Number</label>
-            <input type="tel" v-model="profileData.phone" placeholder="Enter phone number" />
+            <input type="tel" v-model="newNumber" placeholder="Enter phone number" />
           </div>
-          <button class="save-button" @click="activeTab = 'Profile'">Save</button>
+          <button class="save-button" @click="saveProfile">Save</button>
         </div>
 
       </div>
@@ -99,21 +99,53 @@
 
 <script>
 import Menu from '../components/Menu.vue'
-
+import axios from 'axios'
 export default {
   name: 'SystemSettings',
   components: { Menu },
   data() {
     return {
       activeTab: 'Profile',
+      username: '',
+      newUsername: '',
+      newEmail: '',
+      newNumver:'',
       profileData: {
-        name: 'Admin',
-        email: 'example@robotfms.com',
-        phone: '010-1234-5678'
+        name:'',
+        email:'',
+        phone:''
       }
-    };
+    }
+  },
+  methods: {
+    saveProfile() {
+      axios.post('http://localhost:5000/update-profile', {
+        username: this.newUsername,
+        email: this.newEmail,
+        phone: this.newNumber
+      }, { withCredentials: true })
+        .then(res => {
+          this.username = this.newUsername;
+          this.activeTab = 'Profile';
+          alert('프로파일 수정 완료');
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Something went wrong');
+        });
+    }
+  },
+  created() {
+    axios.get('http://localhost:5000/me', { withCredentials: true })
+      .then(res => {
+        this.username = res.data.username;
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 }
+
 </script>
 
 <style scoped>
@@ -253,6 +285,9 @@ html, body {
   flex-direction: column;
   gap: 40px;
 }
+.form-section h1 {
+  margin-top: 2px;
+}
 
 .form-group {
   display: flex;
@@ -263,7 +298,7 @@ html, body {
 
 .form-group label {
   font-weight: bold;
-  font-size: 28px;
+  font-size: 25px;
   color: #333;
   margin-bottom: 6px;
 }
