@@ -3,6 +3,7 @@
     <Status />
     <Map />
     <Menu />
+    <Robot />
     <AlertOverlay ref="alertOverlay" />
   </div>
 </template>
@@ -12,6 +13,7 @@ import Status from '../components/Status.vue';
 import Menu from '../components/Menu.vue';
 import Map from '../components/Map.vue';
 import AlertOverlay from '../components/AlertOverlay.vue';
+import Robot from '../components/Robot.vue';
 
 export default {
   name: 'HomeView',
