@@ -83,12 +83,12 @@ export default {
         const loc = cmd.split(" ")[1];
         if (["A", "B", "C", "D"].includes(loc)) {
           this.selectedRobot.location = loc;
-          this.appendLog(`로봇이 ${loc} 위치로 이동했습니다.`);
+          this.appendLog(this.$t("command.log_moved", { loc }));
         } else {
-          this.appendLog("❗ 올바르지 않은 위치입니다 (A~D)");
+          this.appendLog(this.$t("command.error_invalid_location"));
         }
       } else {
-        this.appendLog("❗ 알 수 없는 명령어입니다.");
+        this.appendLog(this.$t("command.error_unknown_command"));
       }
 
       this.commandText = "";
