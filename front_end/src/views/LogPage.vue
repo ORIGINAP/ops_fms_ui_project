@@ -127,4 +127,8 @@ button:hover {
 .pagination {
   margin-top: 20px;
 }
+.pagination button {
+  margin: 0 5px;
+  padding: 6px 10px;
+}
 </style>
