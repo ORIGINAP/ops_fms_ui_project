@@ -11,19 +11,23 @@
 
       <div class="menu-row">
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <div>
+          <p class="temp-label">실외 온도</p> <!-- 글씨만 따로 -->
+
+          <div class="temp-content"> <!-- 아이콘 + 온도 숫자 묶음 -->
             <img
                 v-if="weatherIconUrl"
                 class="weather-svg-icon"
                 :src="weatherIconUrl"
                 alt="weather icon"
             />
-            <p v-if="temperature !== null">{{ temperature }}℃</p>
+            <p v-if="temperature !== null" class="temp-value">{{ temperature }}℃</p>
             <p v-else>로딩 중...</p>
           </div>
         </div>
+
         <div class="menu-temperature">
-          <div class="internal-block" v-if="internalTemperature !== null">
+          <p class="temp-label">실외 온도</p>
+          <div class="temp-content" v-if="internalTemperature !== null">
             <img
                 class="thermometer-icon"
                 :src="thermometerIconUrl"
@@ -40,6 +44,7 @@
       <!-- 원형차트 + 레이블 행 (추가) -->
       <div class="menu-chart-row">
         <div class="chart-labels">
+          <p> 적재 차트 </p>
           <div v-for="(label, index) in labels" :key="index" class="chart-label">
     <span
         class="color-box"
@@ -236,7 +241,7 @@ export default {
       };
 
       try {
-        const response = await axios.get(url, { params });
+        const response = await axios.get(url, { params, withCredentials: false });
         console.log("요청 시간:", baseDate, baseTime);
 
         const result = response.data.response;
@@ -334,7 +339,7 @@ export default {
 .menu-network {
   box-shadow: 2px 0 5px rgba(21,100,191,0.2);
   background-color: white;
-  height: 300px;
+  height: 320px;
   border-radius: 10px;
   flex-grow: 1;
   display: flex;
@@ -348,11 +353,16 @@ export default {
 .menu-temperature {
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
-  height: 200px;
+  height: 230px;
   border-radius: 10px;
   flex-grow: 1;
   color: darkgray;
   transition: box-shadow 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px 16px 30px; /* 위쪽에 공간 확보 */
+  box-sizing: border-box;
 }
 
 .menu-temperature > div {
@@ -364,7 +374,6 @@ export default {
   font-size: 30px;
   gap: 10px;
   line-height: 1;
-  margin-top: 40px;
   padding: 0;
 }
 
@@ -375,6 +384,7 @@ export default {
   line-height: 1;
 }
 
+
 .day-block {
   box-shadow: 2px 0 6px rgba(231,242,255,0.2);
 }
@@ -382,7 +392,6 @@ export default {
 .night-block {
   box-shadow: 2px 0 6px rgba(0,63,136,0.2);
 }
-
 
 .menu-chart-row {
   display: flex;
@@ -422,14 +431,15 @@ export default {
   min-width: 30px;
 }
 
-
 .pie-chart {
-  transform: rotate(-90deg); /* 시작점을 12시 방향으로 조정 */
+  transform: rotate(-90deg);
 }
 
 .weather-svg-icon {
   width: 60px;
   height: 60px;
+  display: block;
+  margin: 0 auto;
 }
 .thermometer-icon {
   width: 30px;
