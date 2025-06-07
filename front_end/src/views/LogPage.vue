@@ -49,10 +49,12 @@ export default {
     }
   },
   methods: {
-    async fetchLogs() {
+    async fetchLogs(page = 1) {
       try {
-        const response = await axios.get('http://localhost:5000/api/logs');
-        this.logs = response.data;
+        const response = await axios.get(`http://localhost:5000/api/logs?page=${page}&limit=${this.pageSize}`);
+        this.logs = response.data.logs;
+        this.totalLogs = response.data.total;
+        this.currentPage = page;
       } catch (error) {
         console.error("로그 불러오기 실패", error);
       }
