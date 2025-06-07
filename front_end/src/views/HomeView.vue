@@ -1,9 +1,9 @@
 <template>
   <div>
     <Status />
+    <Robot />
     <Map />
     <Menu />
-    <Robot />
     <AlertOverlay ref="alertOverlay" />
   </div>
 </template>

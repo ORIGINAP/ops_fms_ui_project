@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div ref="areaA" class="area">A</div>
+    <!-- <div ref="areaA" class="area">A</div>
     <div ref="areaB" class="area">B</div>
     <div ref="areaC" class="area">C</div>
-    <div ref="areaD" class="big-area">D</div>
+    <div ref="areaD" class="big-area">D</div> -->
     <div class="safety-facility safety-facility-left">소방시설</div>
     <div class="safety-facility safety-facility-right">소방시설</div>
     <canvas ref="canvas"></canvas>
