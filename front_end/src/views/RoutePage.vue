@@ -121,7 +121,10 @@ export default {
   background: #fff;
   padding: 30px;
   border-radius: 15px;
-
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .robot-info p {
