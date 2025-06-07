@@ -60,7 +60,13 @@ class RobotServerTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.get_json())
 
-   
+    def test_socket_connect_initial_status(self):
+        """소켓 연결 시 모든 로봇 상태 수신"""
+        received = self.socket_client.get_received()
+        status_events = [e for e in received if e['name'] == 'robot_status_update']
+        self.assertGreaterEqual(len(status_events), len(robots))
+
+    
     
     
 
