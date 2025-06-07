@@ -99,4 +99,4 @@ SOFTWARE.
 # Contributor
 |문영민(팀장)|이창형|이강민|양시경|
 |------|---|---|---|
-| [originap](https://github.com/ORIGINAP)              |      [zxczxczczz](github.com/zxczxczczz)         |   [DaveLEE777]()      | [mountaindew93](https://github.com/mountaindew93)|
+| [originap](https://github.com/ORIGINAP)              |      [zxczxczczz](github.com/zxczxczczz)         |   [DaveLEE777](https://github.com/DaveLEE777)      | [mountaindew93](https://github.com/mountaindew93)|
