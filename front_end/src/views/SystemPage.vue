@@ -66,10 +66,10 @@
             <label>{{ $t('system.notification.theme') }}</label>
             <div class="toggle-group">
               <label class="switch">
-                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation" />
+                <input type="checkbox" v-model="isDarkTheme">
                 <span class="slider round"></span>
               </label>
-              <span>{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
+              <span>{{ isDarkTheme ? $t('system.notification.dark') : $t('system.notification.light') }}</span>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ export default {
 }
 
 .profile-text {
-  font-size: 20px;
+  font-size: 16px;
   color: #333;
   margin: 0;
   padding: 8px 0;
@@ -442,10 +442,6 @@ export default {
   gap : 50px;
 }
 
-.alert-tab .description {
-  margin-left: 20px; /* 원하는 만큼 숫자 조절 */
-}
-
 .sound-field label {
 
   font-size: 14px;
@@ -456,7 +452,7 @@ export default {
 
 .alert-tab label {
   line-height: 1.8;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .toggle-group {
