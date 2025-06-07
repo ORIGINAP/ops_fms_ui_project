@@ -135,9 +135,10 @@ function drawZones() {
 }
 
 function drawZoneLinks() {
+  // Draw outer path
   const path = getCombinedRectanglePath(Object.keys(zones))
   ctx.strokeStyle = 'lightblue'
-  ctx.lineWidth = 1
+  ctx.lineWidth = 2
   ctx.beginPath()
   path.forEach((pt, idx) => {
     if (idx === 0) ctx.moveTo(pt.x, pt.y)
@@ -145,6 +146,22 @@ function drawZoneLinks() {
   })
   ctx.closePath()
   ctx.stroke()
+
+  // Draw individual inner zone outlines again for clarity
+  ctx.strokeStyle = 'lightblue'
+  ctx.lineWidth = 1
+  for (const key in zones) {
+    const z = zones[key]
+    ctx.strokeRect(z.x, z.y, z.width, z.height)
+  }
+
+  // Draw center rectangle between zones (inferred from image)
+  ctx.strokeStyle = 'lightblue'
+  ctx.lineWidth = 2
+  const midX = 200
+  const midY = 200
+  const midSize = 100
+  ctx.strokeRect(midX, midY, midSize, midSize)
 }
 
 function getBatteryColor(battery) {
