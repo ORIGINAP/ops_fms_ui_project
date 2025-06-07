@@ -302,8 +302,8 @@ export default {
 .profile-text {
   font-size: 16px;
   color: #333;
-  margin: 0;
   padding: 8px 0;
+  margin-left: 20px;
 }
 
 .edit-footer {
@@ -392,13 +392,6 @@ export default {
   flex-direction: column;
   gap: 20px;
 }
-
-.language-field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .alert-label {
   font-size: 15px;
   color: #333;
@@ -440,7 +433,7 @@ export default {
   margin-left: 20px;
   margin-top: 20px;
   letter-spacing: 0.08em;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #333;
   gap : 50px;
