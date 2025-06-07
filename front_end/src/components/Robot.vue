@@ -104,6 +104,20 @@
       ctx.arc(point.x, point.y, 5, 0, Math.PI * 2)
       ctx.fill()
     }
+    // 선 그리기
+    ctx.strokeStyle = 'black'
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    for (let i = 0; i < points.length; i++) {
+      const { x, y } = points[i]
+      if (i === 0) ctx.moveTo(x, y)
+      else ctx.lineTo(x, y)
+    }
+    ctx.stroke()
+
+    // 로봇(네모) 그리기
+    ctx.fillStyle = 'blue'
+    ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
   }
 </script>
 
