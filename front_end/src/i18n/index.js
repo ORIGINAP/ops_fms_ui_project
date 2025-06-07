@@ -53,6 +53,23 @@ const messages = {
     alert: {
       close: '닫기'
     },
+    route: {
+      robotSelect: '로봇 선택',
+      selectRobot: '로봇을 선택하세요',
+      batteryStatus: '배터리 상태',
+      currentLocation: '현재 위치',
+      faultStatus: '결함 여부',
+      hasFault: '결함 있음',
+      normal: '정상',
+      commandInput: '명령어 입력',
+      commandHint: '왼쪽에서 로봇을 선택하면 명령어를 입력할 수 있습니다.',
+      send: '전송',
+      moveCommand: '이동',
+      commandSent: '명령 전송: {command}',
+      robotMoved: '로봇이 {location} 위치로 이동했습니다.',
+      invalidLocation: '올바르지 않은 위치입니다 (A~D)',
+      unknownCommand: '알 수 없는 명령어입니다.'
+    },
     login: {
       title: '로그인',
       email: '이메일',
@@ -125,6 +142,23 @@ const messages = {
     },
     alert: {
       close: 'Close'
+    },
+    route: {
+      robotSelect: 'Select Robot',
+      selectRobot: 'Please select a robot',
+      batteryStatus: 'Battery Status',
+      currentLocation: 'Current Location',
+      faultStatus: 'Fault Status',
+      hasFault: 'Has Fault',
+      normal: 'Normal',
+      commandInput: 'Command Input',
+      commandHint: 'Select a robot from the left to enter commands.',
+      send: 'Send',
+      moveCommand: 'Move',
+      commandSent: 'Command sent: {command}',
+      robotMoved: 'Robot moved to location {location}.',
+      invalidLocation: 'Invalid location (A~D)',
+      unknownCommand: 'Unknown command.'
     },
     login: {
       title: 'Login',
