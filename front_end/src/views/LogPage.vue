@@ -92,9 +92,9 @@ export default {
 <style scoped>
 
 .body {
-  position: fixed;
-  top: 40px;
-  left: 40px;
+position: fixed;
+top: 35px;
+left: 41px;
 
   width: 89%;
   height: 92%;

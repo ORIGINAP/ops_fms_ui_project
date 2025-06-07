@@ -1,43 +1,51 @@
 <template>
-  <div class="login-container"> <!--로그인 css 재사용-->
-    <h2>회원가입 페이지</h2> 
-    <input v-model="username" placeholder="Your ID" />
-    <input v-model="password" placeholder="Your PW" />
-    <button @click="SendServer">가입</button>
+  <div class="login-container">
+    <h2>{{ $t('register.title') }}</h2>
+    <input v-model="email" :placeholder="$t('register.email')" />
+    <input v-model="password" :placeholder="$t('register.password')" />
+    <button @click="SendServer">{{ $t('register.registerButton') }}</button>
   </div>
 </template>
 
 <script setup>
-    import { ref } from 'vue'
-    import { useRouter } from 'vue-router'
-    import axios from 'axios'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import axios from 'axios';
 
-    const username = ref('')
-    const password = ref('')
-    const router = useRouter()
+const { t } = useI18n();
+const email = ref('');
+const password = ref('');
+const router = useRouter();
 
-    const SendServer = async () => {
-        
-      
-      try{
-        const res = await axios.post('http://localhost:5000/register', {
-            username : username.value,
-            password : password.value
-        })
-        alert(res.data.message)
-        router.push('/');
-      } catch(err){
-        if(err.response) {
-          alert(err.response.data.message)
-        } else {
-          alert('gone wrong')
-        }
-      }
-    
-    
-    
-    
+const SendServer = async () => {
+  if (!email.value || !password.value) {
+    alert(t('register.allFieldsRequired'));
+    return;
+  }
+
+  // 이메일 형식 검증
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value)) {
+    alert(t('register.invalidEmail'));
+    return;
+  }
+
+  try {
+    const res = await axios.post('http://localhost:5000/register', {
+      email: email.value,
+      password: password.value
+    });
+    alert(res.data.message);
+    router.push('/login');
+  } catch (err) {
+    if (err.response) {
+      alert(err.response.data.message);
+    } else {
+      alert('gone wrong');
     }
+  }
+};
 </script>
 
 <style scoped>
@@ -63,7 +71,7 @@
 }
 
 .login-container input {
-  width: 100%;
+  width: 95%;
   padding: 8px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
@@ -72,6 +80,7 @@
 
 .login-container button {
   width: 100%;
+  margin-top: 15px;
   padding: 10px;
   background-color: #254081;
   color: white;

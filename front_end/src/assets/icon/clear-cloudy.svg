@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="44px" viewBox="0 0 60 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Weather4.0/Partly Suunny</title>
+    <g id="Icons-and-infographics" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Weather-Status-Icons" transform="translate(-1348.000000, -1566.000000)">
+            <g id="Group-8" transform="translate(1348.000000, 1566.000000)">
+                <path d="M54.7178,13 C54.7178,20.18 48.8978,26 41.7178,26 C34.5378,26 28.7178,20.18 28.7178,13 C28.7178,5.82 34.5378,0 41.7178,0 C48.8978,0 54.7178,5.82 54.7178,13" id="Sun" fill="#FFBC09"></path>
+                <path d="M48,20 L20,20 L20,44 L48,44 C54.627,44 60,38.627 60,32 C60,25.373 54.627,20 48,20" id="Cloud_back" fill="#C2DDF9"></path>
+                <path d="M40,24 C40,35.046 31.045,44 20,44 C8.954,44 0,35.046 0,24 C0,12.954 8.954,4 20,4 C31.045,4 40,12.954 40,24" id="Cloud_front" fill="#CCE4FF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

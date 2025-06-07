@@ -2,8 +2,8 @@
   <div class="alert-container" v-if="isAlertActive">
     <div class="alert-box">
       <div class="alert-icon">⚠️</div>
-      <div class="alert-message">{{ alertMessage }}</div>
-      <button class="alert-close" @click="closeAlert">닫기</button>
+      <div class="alert-message" v-html="alertMessage"></div>
+      <button class="alert-close" @click="closeAlert">{{ $t('alert.close') }}</button>
     </div>
   </div>
 </template>
@@ -52,6 +52,9 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  max-width: 80%;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .alert-icon {
@@ -62,6 +65,7 @@ export default {
   font-size: 18px;
   color: #333;
   text-align: center;
+  white-space: pre-line;
 }
 
 .alert-close {
