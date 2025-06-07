@@ -7,4 +7,6 @@ cd front_end
 npm install
 npm npm install vue-router
 npm run dev
+chart.js
+vue-chartjs
 ```
