@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
+
 const messages = {
   ko: {
     system: {
@@ -43,6 +44,8 @@ const messages = {
     status: {
       network: '네트워크',
       loading: '로딩 중...',
+      indoor:'실내 온도',
+      outdoor:'실외 온도',
       areas: {
         a: 'A구역',
         b: 'B구역',
@@ -139,6 +142,8 @@ const messages = {
     status: {
       network: 'Network',
       loading: 'Loading...',
+      indoor:'indoor',
+      outdoor:'outdoor',
       areas: {
         a: 'Area A',
         b: 'Area B',

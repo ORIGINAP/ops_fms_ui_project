@@ -52,7 +52,7 @@
           </select>
         </div>
 
-        <div v-if="activeTab === 'Sound'">
+        <div v-if="activeTab === 'Sound'" class="sound-settings">
           <div class="form-group">
             <label>{{ $t('system.sound.title') }}</label>
             <div class="toggle-group">
@@ -74,16 +74,16 @@
           </div>
         </div>
 
-        <div v-if="activeTab === 'Alert'">
+        <div v-if="activeTab === 'Alert'" class="alert-tab">
           <div class="form-group">
             <label>{{ $t('system.alert.title') }}</label>
             <p class="description">{{ $t('system.alert.description') }}</p>
             <div class="toggle-group">
               <label class="switch">
-                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation">
+                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation" />
                 <span class="slider round"></span>
               </label>
-              <span>{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
+              <span class="alert-label">{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
             </div>
           </div>
         </div>
@@ -110,8 +110,10 @@
             <label>{{ $t('system.profile.phone') }}</label>
             <input type="text" v-model="profileData.phone" />
           </div>
-          <button class="save-button" @click="saveProfile">{{ $t('system.profile.save') }}</button>
-          <button class="cancel-button" @click="activeTab = 'Profile'">{{ $t('system.profile.cancel') }}</button>
+          <div class="profile-buttons">
+            <button class="save-button" @click="saveProfile">{{ $t('system.profile.save') }}</button>
+            <button class="cancel-button" @click="activeTab = 'Profile'">{{ $t('system.profile.cancel') }}</button>
+          </div>
         </div>
       </div>
     </div>
@@ -160,28 +162,28 @@ export default {
         role: this.profileData.role,
         department: this.profileData.department
       }, { withCredentials: true })
-        .then(res => {
-          this.activeTab = 'Profile';
-          alert(this.$t('system.profile.saveSuccess'));
-        })
-        .catch(err => {
-          console.error(err);
-          alert(this.$t('system.profile.saveError'));
-        });
+          .then(res => {
+            this.activeTab = 'Profile';
+            alert(this.$t('system.profile.saveSuccess'));
+          })
+          .catch(err => {
+            console.error(err);
+            alert(this.$t('system.profile.saveError'));
+          });
     }
   },
   created() {
     axios.get('http://localhost:5000/me', { withCredentials: true })
-      .then(res => {
-        this.profileData.name = res.data.username;
-        this.profileData.email = res.data.email;
-        this.profileData.phone = res.data.phone;
-        this.profileData.role = res.data.role;
-        this.profileData.department = res.data.department;
-      })
-      .catch(err => {
-        console.error(err);
-      });
+        .then(res => {
+          this.profileData.name = res.data.username;
+          this.profileData.email = res.data.email;
+          this.profileData.phone = res.data.phone;
+          this.profileData.role = res.data.role;
+          this.profileData.department = res.data.department;
+        })
+        .catch(err => {
+          console.error(err);
+        });
   }
 }
 </script>
@@ -270,9 +272,11 @@ export default {
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 20px;
   color: #666;
   font-weight: 500;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
 .form-group select {
@@ -327,7 +331,7 @@ export default {
 .profile-settings {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .profile-field {
@@ -381,6 +385,9 @@ export default {
 }
 
 .language-settings {
+  width: 500px;
+  font-size: 16px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -392,6 +399,10 @@ export default {
   gap: 8px;
 }
 
+.alert-label {
+  font-size: 15px;
+  color: #333;
+}
 .language-field label {
   font-size: 14px;
   color: #666;
@@ -418,22 +429,44 @@ export default {
   padding: 10px;
 }
 
-.sound-settings {
+.profile-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: flex-start;
 }
 
-.sound-field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.sound-settings label {
+  margin-left: 20px;
+  margin-top: 20px;
+  letter-spacing: 0.08em;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  gap : 50px;
 }
 
+.description {
+  font-size: 14px;
+  color: #666;
+  margin-left: 20px;
+}
 .sound-field label {
+
   font-size: 14px;
   color: #666;
   font-weight: 500;
+
+}
+.profile-field label {
+  font-size: 14px!important;
+  color: #666;
+  font-weight: 500;
+}
+
+.alert-tab label {
+  line-height: 1.8;
+  font-size: 20px;
 }
 
 .toggle-group {
