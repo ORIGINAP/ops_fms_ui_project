@@ -118,11 +118,7 @@ function drawZones() {
 }
 
 function getBatteryColor(battery) {
-  if (battery < 50) return 'red'
-  const percent = battery / 100
-  const r = Math.floor(255 * (1 - percent))
-  const g = Math.floor(255 * percent)
-  return `rgb(${r},${g},0)`
+  return battery < 50 ? 'red' : 'green'
 }
 
 function draw() {
