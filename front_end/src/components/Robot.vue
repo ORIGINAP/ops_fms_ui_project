@@ -11,22 +11,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, inject } from 'vue'
 import { io } from 'socket.io-client'
 
 const canvas = ref(null)
 let ctx = null
 
-const SCALE = 1.6
+const SCALE = 1.3
 const EXTRA_SCALE = 1.2 // 추가 스케일링
 const PADDING = 6 * SCALE
 const selectedRobot = ref(null)
 const popupStyle = ref({ top: '0px', left: '0px', position: 'fixed', background: 'white', border: '1px solid gray', padding: '8px', zIndex: 20 })
 
 const zones = reactive({
-  A: { x: 150 * SCALE, y: 100 * SCALE, width: 120 * SCALE *EXTRA_SCALE , height: 100 * SCALE *EXTRA_SCALE },
-  B: { x: 500 * SCALE, y: 120 * SCALE, width: 130 * SCALE *EXTRA_SCALE, height: 110 * SCALE *EXTRA_SCALE },
-  C: { x: 550 * SCALE, y: 300 * SCALE, width: 150 * SCALE *EXTRA_SCALE, height: 90 * SCALE *EXTRA_SCALE },
+  A: { x: 150 * SCALE, y: 100 * SCALE, width: 200 * SCALE *EXTRA_SCALE , height: 100 * SCALE *EXTRA_SCALE },
+  B: { x: 500 * SCALE, y: 120 * SCALE, width: 250 * SCALE *EXTRA_SCALE, height: 110 * SCALE *EXTRA_SCALE },
+  C: { x: 550 * SCALE, y: 300 * SCALE, width: 150 * SCALE *EXTRA_SCALE, height: 200 * SCALE *EXTRA_SCALE },
   D: { x: 200 * SCALE, y: 300 * SCALE, width: 110 * SCALE *EXTRA_SCALE, height: 120 * SCALE *EXTRA_SCALE }
 })
 

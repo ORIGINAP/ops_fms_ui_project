@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <div ref="areaA" class="area">A</div>
-    <div ref="areaB" class="area">B</div>
-    <div ref="areaC" class="area">C</div>
-    <div ref="areaD" class="big-area">D</div>
     <div class="safety-facility safety-facility-left">{{ $t('map.safetyFacility') }}</div>
     <div class="safety-facility safety-facility-right">{{ $t('map.safetyFacility') }}</div>
     <canvas ref="canvas"></canvas>
@@ -29,7 +25,6 @@ let ctx = null
 const alertCount = ref(0)
 const alertComponent = ref(null)
 const isAlertSimulationEnabled = ref(localStorage.getItem('alertSimulation') === 'true')
-
 // 시설 상태 관리를 위한 ref
 const facilityStatus = ref({
   A: { isOnFire: false, lastCheck: Date.now() },
@@ -39,7 +34,7 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.0001
+const FIRE_PROBABILITY = 0.00001
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
@@ -54,25 +49,11 @@ onMounted(() => {
   });
 });
 
-function makePerimeterLoop(el) {
-  const rect = el.getBoundingClientRect()
-  const { left, top, width, height } = rect
-  const right = left + width
-  const bottom = top + height
-  // 시계방향으로 네 모서리
-  return [
-    { x: left,  y: top    },
-    { x: right, y: top    },
-    { x: right, y: bottom },
-    { x: left,  y: bottom },
-    { x: left,  y: top    } // 루프를 닫기 위해 다시 시작점
-  ]
-}
-
 // 시설 상태 업데이트 함수
 function updateFacilityStatus() {
-  if (!isAlertSimulationEnabled.value) return;
   
+  if (!isAlertSimulationEnabled.value) return;
+    console.log('Alert simulation is enabled, checking facility status...')
   Object.keys(facilityStatus.value).forEach(area => {
     if (Math.random() < FIRE_PROBABILITY) {
       facilityStatus.value[area].isOnFire = true
@@ -107,13 +88,21 @@ function showAlertLog() {
 
 // 애니메이션 함수 수정
 function animate() {
-  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
+  //ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
   // 시설 상태 업데이트
   updateFacilityStatus()
-
   requestAnimationFrame(animate)
 }
+
+onMounted(() => {
+  ctx = canvas.value.getContext('2d')
+  canvas.value.width = window.innerWidth
+  canvas.value.height = window.innerHeight
+
+  // 애니메이션 시작
+  animate()
+})
 
 </script>
 
