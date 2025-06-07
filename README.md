@@ -1,5 +1,17 @@
-# ops_fms_ui_project
-오픈소스기초 FMS UI/UX 개선프로젝트
+# FMS - 자동화 시스템 관리 프로그램 UI 개선 프로젝트
+오픈소스 기초 프로젝트, 자동화 시스템 관리 프로그램 UI 개선 프로젝트 Repo
+
+# 설치 방법
+front-end
+```
+$cd front-end
+$npm install
+```
+*package*.json 의존성 파일에 의한 자동 설치
+back-end
+```
+$pip install -r requirements.txt
+```
 
 # 의존성
 ```bash
