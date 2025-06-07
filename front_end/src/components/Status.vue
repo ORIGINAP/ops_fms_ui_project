@@ -5,7 +5,7 @@
       <!-- 첫 번째 줄: 네트워크 -->
       <div class="menu-row">
         <div class="menu-network">
-          <p>{{ $t('status.network') }}</p>
+          <NetworkGraph />
         </div>
       </div>
 
@@ -80,6 +80,7 @@
 
 <script>
 import axios from 'axios';
+import NetworkGraph from './NetworkGraph.vue'; 
 
 export default {
   name: 'Status',
@@ -101,6 +102,9 @@ export default {
       center: 100,
       radius: 60,
     };
+  },
+  components: {
+    NetworkGraph
   },
   computed: {
     weatherIconUrl() {

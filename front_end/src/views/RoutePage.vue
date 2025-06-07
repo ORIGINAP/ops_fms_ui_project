@@ -1,16 +1,14 @@
 <template>
   <div class="robot-control-container">
-    <!-- 좌측 메뉴 -->
     <Menu />
 
-    <!-- 우측 메인 패널 -->
     <div class="main-panel">
-      <!-- 로봇 상태 카드 -->
+      <!-- 로봇 정보 카드 -->
       <div class="robot-info-card">
         <div class="form-group">
-          <label>{{ $t('route.robotSelect') }}</label>
+          <label>로봇 선택</label>
           <select v-model="selectedRobotId">
-            <option disabled value="">{{ $t('route.selectRobot') }}</option>
+            <option disabled value="">로봇을 선택하세요</option>
             <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
               {{ robot.name }}
             </option>
@@ -18,37 +16,41 @@
         </div>
 
         <div v-if="selectedRobot" class="robot-info">
-          <p><strong>{{ $t('route.batteryStatus') }} : </strong> {{ selectedRobot.battery }}%</p>
-          <p><strong>{{ $t('route.currentLocation') }} : </strong> {{ selectedRobot.location }}</p>
-          <p><strong>{{ $t('route.faultStatus') }} : </strong> {{ selectedRobot.fault ? $t('route.hasFault') : $t('route.normal') }}</p>
+          <p><strong>배터리 상태 :</strong> {{ selectedRobot.battery }}%</p>
+          <p><strong>이동 루트 :</strong> {{ selectedRobot.location.replaceAll('#', '→') }}</p>
+          <p><strong>고장 상태 :</strong> {{ selectedRobot.fault ? '⚠️ 고장' : '정상' }}</p>
         </div>
       </div>
 
-      <!-- 로그 및 커맨드 패널 -->
+      <!-- 커맨드 입력 -->
       <div class="cmd-panel">
         <h2 class="cmd-header">
-          {{ $t('route.commandInput') }} <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
+          명령어 입력 <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
         </h2>
-        <ul ref="cmdList">
-          <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
+        <ul ref="logList">
+          <li v-for="(log, idx) in (selectedRobot?.logs || [])" :key="idx">{{ log }}</li>
         </ul>
 
         <div class="command-box" v-if="selectedRobot">
           <input
-              v-model="commandText"
-              @keyup.enter="sendCommand"
-              :placeholder="$t('route.moveCommand') + ' A'"
+            v-model="commandText"
+            @keyup.enter="sendCommand"
+            placeholder="예: 이동 A B / 충전완료"
           />
-          <button @click="sendCommand">{{ $t('route.send') }}</button>
+          <button @click="sendCommand">전송</button>
         </div>
-        <p v-else class="cmd-hint">{{ $t('route.commandHint') }}</p>
+        <p v-else class="cmd-hint">먼저 로봇을 선택하세요.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import { io } from "socket.io-client";
 import Menu from "../components/Menu.vue";
+
+const socket = io("http://localhost:5002");
 
 export default {
   name: "RobotControlPage",
@@ -57,11 +59,7 @@ export default {
     return {
       selectedRobotId: "",
       commandText: "",
-      robotList: [
-        { id: 1, name: "로봇 1", battery: 100, location: "A", fault: false, logs: [] },
-        { id: 2, name: "로봇 2", battery: 80, location: "B", fault: false, logs: [] },
-        { id: 3, name: "로봇 3", battery: 60, location: "C", fault: true, logs: [] },
-      ],
+      robotList: [],
     };
   },
   computed: {
@@ -70,26 +68,71 @@ export default {
     },
   },
   methods: {
-    sendCommand() {
+    async fetchRobotsFromServer() {
+      try {
+        const res = await axios.get("http://127.0.0.1:5002/robots", {
+          withCredentials: true,
+        });
+
+        this.robotList = res.data.map((rid, index) => ({
+          id: index + 1,
+          name: `로봇 ${index + 1}`,
+          battery: 100,
+          location: "A",
+          fault: false,
+          logs: [],
+          backendId: rid
+        }));
+
+        if (!this.selectedRobotId && this.robotList.length > 0) {
+          this.selectedRobotId = this.robotList[0].id;
+        }
+      } catch (err) {
+        console.error("❌ 로봇 목록 불러오기 실패:", err);
+      }
+    },
+
+    async sendCommand() {
       if (!this.selectedRobot || !this.commandText.trim()) return;
 
       const cmd = this.commandText.trim();
-      this.appendLog(this.$t('route.commandSent', { command: cmd }));
+      this.appendLog(`📤 명령 전송: ${cmd}`);
 
-      if (cmd.startsWith(this.$t('route.moveCommand') + " ")) {
-        const loc = cmd.split(" ")[1];
-        if (["A", "B", "C", "D"].includes(loc)) {
-          this.selectedRobot.location = loc;
-          this.appendLog(this.$t('route.robotMoved', { location: loc }));
+      if (cmd.startsWith("이동 ")) {
+        const parts = cmd.split(" ").slice(1); // ["A", "B"]
+        if (parts.every(loc => ["A", "B", "C", "D"].includes(loc))) {
+          const route = parts.join("#");
+          try {
+            await axios.post("http://127.0.0.1:5002/update_robot", {
+              robot_id: this.selectedRobot.backendId,
+              route
+            }, { withCredentials: true });
+
+            this.appendLog(`🚗 이동 경로 설정: ${parts.join("→")}`);
+          } catch (err) {
+            this.appendLog("❗ 이동 명령 실패");
+          }
         } else {
-          this.appendLog("❗ " + this.$t('route.invalidLocation'));
+          this.appendLog("❗ 위치는 A~D만 허용됩니다.");
+        }
+      } else if (cmd === "충전완료") {
+        try {
+          await axios.post("http://127.0.0.1:5002/update_robot", {
+            robot_id: this.selectedRobot.backendId,
+            battery: 100
+          }, { withCredentials: true });
+
+          this.appendLog("🔋 배터리 100%로 충전 완료!");
+        } catch (err) {
+          this.appendLog("❗ 충전 실패");
         }
       } else {
-        this.appendLog("❗ " + this.$t('route.unknownCommand'));
+        this.appendLog("❗ 알 수 없는 명령입니다");
       }
 
       this.commandText = "";
     },
+
     appendLog(msg) {
       this.selectedRobot.logs.push(`[${new Date().toLocaleTimeString()}] ${msg}`);
       this.$nextTick(() => {
@@ -97,7 +140,25 @@ export default {
         if (list) list.scrollTop = list.scrollHeight;
       });
     },
+
+    handleSocketUpdate(data) {
+      for (const backendId in data) {
+        const incoming = data[backendId];
+        const robot = this.robotList.find(r => r.backendId === backendId);
+        if (robot) {
+          robot.battery = incoming.battery;
+          robot.location = incoming.route;
+        }
+      }
+    },
   },
+  mounted() {
+    this.fetchRobotsFromServer();
+    socket.on("robot_status_update", this.handleSocketUpdate);
+  },
+  unmounted() {
+    socket.off("robot_status_update", this.handleSocketUpdate);
+  }
 };
 </script>
 
@@ -115,7 +176,6 @@ export default {
   gap: 16px;
 }
 
-/* 상태 카드 */
 .robot-info-card {
   width: 280px;
   background: #fff;
@@ -128,7 +188,7 @@ export default {
 }
 
 .robot-info p {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .form-group {
@@ -143,9 +203,8 @@ select {
   border: 1px solid #ccc;
 }
 
-/* cmd 패널 */
 .cmd-panel {
-  flex: 0.94; /* 기존 1 → 더 좁게 조정 */
+  flex: 0.94;
   background: #fff;
   padding: 20px;
   border-radius: 13px;
