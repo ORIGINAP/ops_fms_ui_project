@@ -276,7 +276,6 @@ export default {
   color: #666;
   font-weight: 500;
   margin-top: 20px;
-  margin-left: 20px;
 }
 
 .form-group select {
@@ -459,11 +458,6 @@ export default {
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.system-page .form-section > div[v-if="activeTab === 'Notification'"] .toggle-group span {
-  margin-top: 4px;
-  display: inline-block;
 }
 
 /* 토글 스위치 스타일 */
