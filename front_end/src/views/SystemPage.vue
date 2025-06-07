@@ -422,6 +422,13 @@ export default {
   padding: 10px;
 }
 
+.language-settings h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #666;
+}
+
 .profile-buttons {
   display: flex;
   gap: 10px;
