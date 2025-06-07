@@ -84,8 +84,8 @@ def update_profile():
     db.session.commit()
 
     return jsonify({'message': '프로필 수정 완료'})
-    if __name__ == '__main__':
-        with app.app_context():
-            db.create_all()
-        
-        app.run(debug=True)
+if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+    
+    app.run(debug=True)

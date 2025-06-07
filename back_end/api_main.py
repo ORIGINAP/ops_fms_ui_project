@@ -18,7 +18,7 @@ robots = {
         "velocity": 0.5,
         "battery": 100,
         "route": "A",
-        "network": 100  # ✅ 네트워크 상태
+        "network": 50  # ✅ 네트워크 상태
     },
     "robotB": {
         "name": "Robot-B",
@@ -26,7 +26,7 @@ robots = {
         "velocity": 1,
         "battery": 70,
         "route": "B#C",
-        "network": 100
+        "network": 50
     },
     "robotC": {
         "name": "Robot-C",
@@ -34,7 +34,7 @@ robots = {
         "velocity": 0.8,
         "battery": 90,
         "route": "C#A",
-        "network": 100
+        "network": 50
     },
     "robotD": {
         "name": "Robot-D",
@@ -42,7 +42,7 @@ robots = {
         "velocity": 0.6,
         "battery": 100,
         "route": "A#B#D",
-        "network": 100
+        "network": 50
     },
     "robotE": {
         "name": "Robot-E",
@@ -50,7 +50,7 @@ robots = {
         "velocity": 1.2,
         "battery": 100,
         "route": "C",
-        "network": 100
+        "network": 50
     },
     "robotF": {
         "name": "Robot-F",
@@ -58,7 +58,7 @@ robots = {
         "velocity": 0.9,
         "battery": 100,
         "route": "B#C#D",
-        "network": 100
+        "network": 50
     },
     "robotG": {
         "name": "Robot-G",
@@ -66,7 +66,7 @@ robots = {
         "velocity": 0.7,
         "battery": 100,
         "route": "A#B#C#D",
-        "network": 100
+        "network": 50
     }
 }
 
@@ -79,11 +79,14 @@ def update_robot_status(robot_id):
         state['battery'] = max(0, state['battery'] - 1)
 
         # 📶 네트워크 상태를 랜덤하게 변경 (70~100)
-        state['network'] = random.randint(70, 100)
+        state['network'] = random.randint(30, 70)
 
         # 클라이언트에게 현재 상태 전송
         socketio.emit('robot_status_update', {robot_id: state})
         print(f"✅ Updated {robot_id} status: {state}")
+
+        # 네트워크 상태도 별도로 전송
+        socketio.emit('network', state['network'])
 
         time.sleep(1)
 
