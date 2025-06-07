@@ -134,4 +134,10 @@ button:hover {
   border: none;
   cursor: pointer;
 }
+.pagination button.active {
+  background-color: #1564bf;
+  color: white;
+  font-weight: bold;
+}
+
 </style>
