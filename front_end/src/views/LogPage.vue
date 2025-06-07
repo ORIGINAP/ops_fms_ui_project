@@ -104,7 +104,7 @@ left: 42px;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 10px;
 }
 
 .table-wrapper {

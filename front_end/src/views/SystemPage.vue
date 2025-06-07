@@ -206,7 +206,7 @@ export default {
 .header-banner {
   background-color: white;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 30px 20px;
   display: flex;
   align-items: center;
@@ -222,7 +222,7 @@ export default {
 }
 
 .settings-title {
-  font-size: 24px;
+  font-size: 25px;
   color: #333;
   margin: 0;
 }
@@ -252,7 +252,7 @@ export default {
 
 .form-section {
   background: white;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 30px;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
   height: 580px; /*비율 맞추려고 늘렸는데 가변길이로 하고싶다면 없애요..*/
@@ -345,7 +345,7 @@ export default {
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.5s ease;
 }
 
 .profile-field input:focus {
