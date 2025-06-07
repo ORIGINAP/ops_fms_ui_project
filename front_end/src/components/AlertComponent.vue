@@ -3,7 +3,7 @@
     <div class="alert-box">
       <div class="alert-icon">⚠️</div>
       <div class="alert-message" v-html="alertMessage"></div>
-      <button class="alert-close" @click="closeAlert">닫기</button>
+      <button class="alert-close" @click="closeAlert">{{ $t('alert.close') }}</button>
     </div>
   </div>
 </template>

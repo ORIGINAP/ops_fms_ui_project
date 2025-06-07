@@ -10,88 +10,109 @@
       <!-- 상단 배너 -->
       <div class="header-banner">
         <img class="user-avatar" src="../assets/icon/avatar.svg" alt="User" />
-        <h2 class="settings-title">{{ username }}</h2>
+        <h2 class="settings-title">{{ $t('system.title') }}</h2>
       </div>
 
       <!-- 탭 메뉴 -->
       <div class="tabs">
-        <button class="tab" :class="{ active: activeTab === 'Profile' }" @click="activeTab = 'Profile'">Profile</button>
-        <button class="tab" :class="{ active: activeTab === 'Account' }" @click="activeTab = 'Account'">Account</button>
-        <button class="tab" :class="{ active: activeTab === 'Sound' }" @click="activeTab = 'Sound'">Sound</button>
-        <button class="tab" :class="{ active: activeTab === 'Notification' }" @click="activeTab = 'Notification'">Notification</button>
+        <button class="tab" :class="{ active: activeTab === 'Profile' }" @click="activeTab = 'Profile'">{{ $t('system.profile.edit') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Account' }" @click="activeTab = 'Account'">{{ $t('system.account.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Sound' }" @click="activeTab = 'Sound'">{{ $t('system.sound.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Notification' }" @click="activeTab = 'Notification'">{{ $t('system.notification.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Alert' }" @click="activeTab = 'Alert'">{{ $t('system.alert.title') }}</button>
       </div>
 
       <!-- 탭 콘텐츠 -->
       <div class="form-section">
         <div v-if="activeTab === 'Profile'" class="profile-view">
           <div class="form-group">
-            <label>Full Name</label>
+            <label>{{ $t('system.profile.name') }}</label>
             <p class="profile-text">{{ profileData.name }}</p>
           </div>
           <div class="form-group">
-            <label>Email Address</label>
+            <label>{{ $t('system.profile.email') }}</label>
             <p class="profile-text">{{ profileData.email }}</p>
           </div>
           <div class="form-group">
-            <label>Phone Number</label>
+            <label>{{ $t('system.profile.phone') }}</label>
             <p class="profile-text">{{ profileData.phone }}</p>
           </div>
 
           <!-- Edit 버튼 -->
           <div class="edit-footer">
-            <button class="edit-button" @click="activeTab = 'EditProfile'">Edit</button>
+            <button class="edit-button" @click="activeTab = 'EditProfile'">{{ $t('system.profile.edit') }}</button>
           </div>
         </div>
 
-        <div v-if="activeTab === 'Account'">
-          <div class="form-group">
-            <label>Language</label>
-            <select>
-              <option>Korean</option>
-              <option>English</option>
-            </select>
-          </div>
+        <div v-if="activeTab === 'Account'" class="language-settings">
+          <h2>{{ $t('system.language.title') }}</h2>
+          <select v-model="selectedLanguage" @change="changeLanguage">
+            <option value="ko">{{ $t('system.language.ko') }}</option>
+            <option value="en">{{ $t('system.language.en') }}</option>
+          </select>
         </div>
 
         <div v-if="activeTab === 'Sound'">
           <div class="form-group">
-            <label>Sound Notification</label>
+            <label>{{ $t('system.sound.title') }}</label>
             <div class="toggle-group">
-              <label><input type="checkbox" /> Enable Sounds</label>
+              <label><input type="checkbox" /> {{ $t('system.sound.enable') }}</label>
             </div>
           </div>
         </div>
 
         <div v-if="activeTab === 'Notification'">
           <div class="form-group">
-            <label>System Theme</label>
+            <label>{{ $t('system.notification.theme') }}</label>
             <div class="toggle-group">
               <label class="switch">
                 <input type="checkbox" v-model="isDarkTheme">
                 <span class="slider round"></span>
               </label>
-              <span>{{ isDarkTheme ? 'Dark Mode' : 'Light Mode' }}</span>
+              <span>{{ isDarkTheme ? $t('system.notification.dark') : $t('system.notification.light') }}</span>
             </div>
           </div>
         </div>
-        <!-- edit function -->
-        <div v-if="activeTab === 'EditProfile'">
-          <h1>Edit Profile</h1>
+
+        <div v-if="activeTab === 'Alert'">
           <div class="form-group">
-            <label>New Name</label>
-            <input type="text" v-model="newUsername" placeholder="Enter new name" />
+            <label>{{ $t('system.alert.title') }}</label>
+            <p class="description">{{ $t('system.alert.description') }}</p>
+            <div class="toggle-group">
+              <label class="switch">
+                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation">
+                <span class="slider round"></span>
+              </label>
+              <span>{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label>New Email</label>
-            <input type="email" v-model="newEmail" placeholder="Enter new email" />
-          </div>
-          <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" v-model="newNumber" placeholder="Enter phone number" />
-          </div>
-          <button class="save-button" @click="saveProfile">Save</button>
         </div>
 
+        <div v-if="activeTab === 'EditProfile'" class="profile-settings">
+          <h2>{{ $t('system.profile.edit') }}</h2>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.name') }}</label>
+            <input type="text" v-model="profileData.name" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.email') }}</label>
+            <input type="email" v-model="profileData.email" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.role') }}</label>
+            <input type="text" v-model="profileData.role" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.department') }}</label>
+            <input type="text" v-model="profileData.department" />
+          </div>
+          <div class="profile-field">
+            <label>{{ $t('system.profile.phone') }}</label>
+            <input type="text" v-model="profileData.phone" />
+          </div>
+          <button class="save-button" @click="saveProfile">{{ $t('system.profile.save') }}</button>
+          <button class="cancel-button" @click="activeTab = 'Profile'">{{ $t('system.profile.cancel') }}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -100,64 +121,75 @@
 <script>
 import Menu from '../components/Menu.vue'
 import axios from 'axios'
+
 export default {
   name: 'SystemSettings',
   components: { Menu },
   data() {
     return {
       activeTab: 'Profile',
-      username: '',
-      newUsername: '',
-      newEmail: '',
-      newNumver:'',
       profileData: {
-        name:'',
-        email:'',
-        phone:''
-      }
+        name: '',
+        email: '',
+        phone: '',
+        role: '',
+        department: ''
+      },
+      selectedLanguage: localStorage.getItem('language') || 'ko',
+      isDarkTheme: false,
+      isAlertSimulationEnabled: localStorage.getItem('alertSimulation') === 'true'
     }
   },
   methods: {
+    changeLanguage() {
+      this.$i18n.locale = this.selectedLanguage;
+      localStorage.setItem('language', this.selectedLanguage);
+    },
+    toggleAlertSimulation() {
+      localStorage.setItem('alertSimulation', this.isAlertSimulationEnabled);
+      // 이벤트를 발생시켜 Map 컴포넌트에 알림
+      window.dispatchEvent(new CustomEvent('alertSimulationChanged', {
+        detail: { enabled: this.isAlertSimulationEnabled }
+      }));
+    },
     saveProfile() {
       axios.post('http://localhost:5000/update-profile', {
-        username: this.newUsername,
-        email: this.newEmail,
-        phone: this.newNumber
+        username: this.profileData.name,
+        email: this.profileData.email,
+        phone: this.profileData.phone,
+        role: this.profileData.role,
+        department: this.profileData.department
       }, { withCredentials: true })
         .then(res => {
-          this.username = this.newUsername;
           this.activeTab = 'Profile';
-          alert('프로파일 수정 완료');
+          alert(this.$t('system.profile.saveSuccess'));
         })
         .catch(err => {
           console.error(err);
-          alert('Something went wrong');
+          alert(this.$t('system.profile.saveError'));
         });
     }
   },
   created() {
     axios.get('http://localhost:5000/me', { withCredentials: true })
       .then(res => {
-        this.username = res.data.username;
+        this.profileData.name = res.data.username;
+        this.profileData.email = res.data.email;
+        this.profileData.phone = res.data.phone;
+        this.profileData.role = res.data.role;
+        this.profileData.department = res.data.department;
       })
       .catch(err => {
         console.error(err);
       });
   }
 }
-
 </script>
 
 <style scoped>
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .system-page {
   display: flex;
-  width: 100%;
+  width: 90%;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
@@ -170,8 +202,6 @@ html, body {
 }
 
 .header-banner {
-  left: 10px;
-  width: 89.8%;
   background-color: white;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
   border-radius: 16px;
@@ -179,171 +209,237 @@ html, body {
   display: flex;
   align-items: center;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .user-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: 4px solid #ffffff;
-  object-fit: cover;
-  background-color: #e0e0e0;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .settings-title {
-  font-size: 28px;
-  color: rgba(0,63,136,100);
-  flex-grow: 1;
-  margin-left: 20px;
-}
-
-.profile-view {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-
-.profile-text {
-  font-size: 20px;
+  font-size: 24px;
   color: #333;
-  margin: 6px 0 20px;
-}
-
-.edit-footer {
-  position: absolute;
-  top: 0px;
-  right: 20px;
-}
-
-.edit-button {
-  margin-right: 20px;
-  padding: 11px 24px;
-  font-size: 14px;
-  border: 2px solid #0878ff;
-  background-color: white;
-  color: #0878ff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.edit-button:hover {
-  background-color: #eaf3ff;
+  margin: 0;
 }
 
 .tabs {
   display: flex;
-  margin: 30px 0 -1px 0;
-  position: relative;
-  z-index: 2;
-  padding-left: 10px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .tab {
-  height: 55px;
-  padding: 10px 50px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  color: #666;
-  background: transparent;
+  padding: 10px 20px;
   border: none;
-  transition: all 0.2s;
-  position: relative;
-  z-index: 2;
-  letter-spacing: 1px;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.3s ease;
 }
 
 .tab.active {
-  background-color: white;
-  color: #222;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 -1px 0 white;
+  background: #0878ff;
+  color: white;
 }
 
 .form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  background-color: white;
-  padding: 70px 30px 30px 70px;
-  border-radius: 0 15px 15px 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  flex-grow: 1;
-  height: 545px;
-  overflow-y: auto;
-  margin-bottom: 100px;
-  width: 86.5%;
-  margin-left: 10px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 2px 0 5px rgba(8,120,255,0.2);
 }
 
-.form-section > div {
+.profile-view {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-}
-.form-section h1 {
-  margin-top: 2px;
+  gap: 20px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  gap: 8px;
   max-width: 500px;
-  width: 100%;
 }
 
 .form-group label {
-  font-weight: bold;
-  font-size: 25px;
-  color: #333;
-  margin-bottom: 6px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
 }
 
-.form-section h1 {
-  margin: 0 0 2px;
-  font-size: 35px;
-  line-height: 1.2;
-}
-
-.form-group input,
 .form-group select {
-  padding: 10px 12px;
-  border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 200px;
 }
 
-.toggle-group {
-  display: flex;
-  align-items: center; /* ⬅️ 수직 가운데 정렬 */
-  gap: 12px;            /* ⬅️ 토글과 글자 사이 간격 */
-  padding-top: 6px;
+.form-group select:focus {
+  border-color: #0878ff;
+  outline: none;
 }
 
+.form-group select option {
+  padding: 10px;
+}
 
-.save-button {
+.profile-text {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.edit-footer {
   margin-top: 20px;
-  margin-left: 24%;
-  padding: 10px 20px;
-  font-size: 14px;
-  border: 2px solid #0878ff;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.edit-button {
+  padding: 8px 16px;
   background-color: #0878ff;
   color: white;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
-  max-width: 100px;
-  width: 100%;
-  align-self: flex-start;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  min-width: 80px;
+}
+
+.edit-button:hover {
+  background-color: #005ecb;
+}
+
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-field input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.profile-field input:focus {
+  border-color: #0878ff;
+  outline: none;
+}
+
+.save-button, .cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+  width: 100px;
+}
+
+.save-button {
+  background-color: #0878ff;
+  color: white;
+  margin-left: 10px;
 }
 
 .save-button:hover {
   background-color: #005ecb;
-
 }
+
+.cancel-button {
+  background-color: #f5f5f5;
+  color: #666;
+  margin-left: 10px;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.language-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.language-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.language-field label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.language-field select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 200px;
+}
+
+.language-field select:focus {
+  border-color: #0878ff;
+  outline: none;
+}
+
+.language-field select option {
+  padding: 10px;
+}
+
+.sound-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sound-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sound-field label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* 토글 스위치 스타일 */
 .switch {
   position: relative;
@@ -362,8 +458,10 @@ html, body {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 34px;
@@ -396,9 +494,13 @@ input:checked + .slider::before {
 .slider.round {
   border-radius: 34px;
 }
+
 .slider.round::before {
   border-radius: 50%;
 }
 
-
+.toggle-label {
+  font-size: 14px;
+  color: #333;
+}
 </style>

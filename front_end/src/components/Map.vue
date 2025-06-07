@@ -4,8 +4,8 @@
     <div ref="areaB" class="area">B</div>
     <div ref="areaC" class="area">C</div>
     <div ref="areaD" class="big-area">D</div>
-    <div class="safety-facility safety-facility-left">소방시설</div>
-    <div class="safety-facility safety-facility-right">소방시설</div>
+    <div class="safety-facility safety-facility-left">{{ $t('map.safetyFacility') }}</div>
+    <div class="safety-facility safety-facility-right">{{ $t('map.safetyFacility') }}</div>
     <canvas ref="canvas"></canvas>
     <div class="alert-icon-container" @click="showAlertLog">
       <div class="alert-icon">⚠️</div>
@@ -18,6 +18,9 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
 import AlertComponent from './AlertComponent.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const areaA = ref(null)
 const areaB = ref(null)
@@ -32,6 +35,7 @@ const robots = []
 
 const alertCount = ref(0)
 const alertComponent = ref(null)
+const isAlertSimulationEnabled = ref(localStorage.getItem('alertSimulation') === 'true')
 
 // 시설 상태 관리를 위한 ref
 const facilityStatus = ref({
@@ -42,13 +46,20 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.0000000000000005
+const FIRE_PROBABILITY = 0.0001
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
 
 // 경보 활성화 함수 주입
 const activateAlert = inject('activateAlert')
+
+// 경보 시뮬레이션 설정 변경 이벤트 리스너
+onMounted(() => {
+  window.addEventListener('alertSimulationChanged', (event) => {
+    isAlertSimulationEnabled.value = event.detail.enabled;
+  });
+});
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -146,6 +157,8 @@ function moveRobot(robot) {
 
 // 시설 상태 업데이트 함수
 function updateFacilityStatus() {
+  if (!isAlertSimulationEnabled.value) return;
+  
   Object.keys(facilityStatus.value).forEach(area => {
     if (Math.random() < FIRE_PROBABILITY) {
       facilityStatus.value[area].isOnFire = true
@@ -154,7 +167,7 @@ function updateFacilityStatus() {
         id: Date.now(),
         area,
         timestamp: new Date().toLocaleTimeString(),
-        message: `${area} 영역에서 화재가 발생했습니다!`
+        message: t('map.fireAlert', { area })
       }
       fireLogs.value.unshift(log)
       alertCount.value++
@@ -174,7 +187,7 @@ function showAlertLog() {
       .join('\n')
     alertComponent.value.activateAlert(logMessage)
   } else {
-    alertComponent.value.activateAlert('현재 감지된 위험 없음')
+    alertComponent.value.activateAlert(t('map.noDanger'))
   }
 }
 
@@ -312,6 +325,11 @@ onMounted(() => {
   user-select: none;
   pointer-events: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 5px;
+  font-size: 15px;
+  line-height: 1.2;
+  word-break: keep-all;
 }
 
 .safety-facility-left {
