@@ -33,6 +33,11 @@ const messages = {
         theme: '시스템 테마',
         dark: '다크 모드',
         light: '라이트 모드'
+      },
+      alert: {
+        title: '경보 시뮬레이션',
+        enable: '경보 시뮬레이션 사용',
+        description: '화재 발생 시뮬레이션을 켜고 끌 수 있습니다.'
       }
     },
     status: {
@@ -123,6 +128,11 @@ const messages = {
         theme: 'System Theme',
         dark: 'Dark Mode',
         light: 'Light Mode'
+      },
+      alert: {
+        title: 'Alert Simulation',
+        enable: 'Enable Alert Simulation',
+        description: 'Turn fire detection simulation on and off.'
       }
     },
     status: {
