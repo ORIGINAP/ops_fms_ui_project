@@ -85,5 +85,5 @@ SOFTWARE.
 
 #Contributor
 |문영민(팀장)|이창형|이강민|양시경|
-|------|---|---|
-| [originap](https://github.com/ORIGINAP)              |      [zxczxczczz](github.com/zxczxczczz)         |   [DaveLEE777]()      |
+|------|---|---|---|
+| [originap](https://github.com/ORIGINAP)              |      [zxczxczczz](github.com/zxczxczczz)         |   [DaveLEE777]()      | --- |
