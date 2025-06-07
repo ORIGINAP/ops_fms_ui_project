@@ -461,6 +461,11 @@ export default {
   gap: 12px;
 }
 
+.system-page .form-section > div[v-if="activeTab === 'Notification'"] .toggle-group span {
+  margin-top: 4px;
+  display: inline-block;
+}
+
 /* 토글 스위치 스타일 */
 .switch {
   position: relative;
