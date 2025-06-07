@@ -5,7 +5,7 @@
       <!-- 첫 번째 줄: 네트워크 -->
       <div class="menu-row">
         <div class="menu-network">
-          <p>network</p>
+          <p>{{ $t('status.network') }}</p>
         </div>
       </div>
 
@@ -19,7 +19,7 @@
                 alt="weather icon"
             />
             <p v-if="temperature !== null">{{ temperature }}℃</p>
-            <p v-else>로딩 중...</p>
+            <p v-else>{{ $t('status.loading') }}</p>
           </div>
         </div>
         <div class="menu-temperature">
@@ -32,7 +32,7 @@
             <p>{{ internalTemperature }}℃</p>
           </div>
           <div v-else>
-            <p>로딩 중...</p>
+            <p>{{ $t('status.loading') }}</p>
           </div>
         </div>
       </div>
@@ -87,7 +87,12 @@ export default {
       internalTemperature: null,
       updateInterval: null,
       isNight: false,
-      labels: ['A구역', 'B구역', 'C구역', 'D구역'],  // 이름 배열
+      labels: [
+        this.$t('status.areas.a'),
+        this.$t('status.areas.b'),
+        this.$t('status.areas.c'),
+        this.$t('status.areas.d')
+      ],
       chartData: [25, 25, 25, 25],
       colors: ['rgba(0,62,136,1)', 'rgba(8,120,255,1)', 'rgba(110,180,255,1)', 'rgba(180,222,245,1)'],
       center: 100,

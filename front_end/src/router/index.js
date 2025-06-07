@@ -9,8 +9,7 @@ import logicTest from '../views/logictest.vue';
 
 //여기서 라우터 설정을 하시면 됩니다.
 const routes = [
-  { path: '/', name: 'Login', component: Login },
-  { path: '/logic', name: 'logicTest', component: logicTest },
+  { path: '/', name: 'Login', component: HomeView },
   { path: '/main', name: 'home', component: HomeView },
   { path: '/register', name: 'register', component: Register },
   { path: '/LogPage', name: 'LogPage', component: LogPage },
