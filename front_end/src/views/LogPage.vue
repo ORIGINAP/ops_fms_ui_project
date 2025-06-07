@@ -26,6 +26,22 @@
     <Menu />
   </div>
 
+
+
+<div class="pagination">
+  <button
+    v-for="page in totalPages"
+    :key="page"
+    @click="changePage(page)"
+    :class="{ active: currentPage === page }"
+  >
+    {{ page }}
+  </button>
+</div>
+
+
+
+
 </template>
 
 <script>
@@ -43,7 +59,7 @@ export default {
       totalLogs: 0
     };
   },
-    computed: {
+  computed: {
     totalPages() {
       return Math.ceil(this.totalLogs / this.pageSize);
     }
@@ -59,11 +75,11 @@ export default {
         console.error("로그 불러오기 실패", error);
       }
     },
-        changePage(page) {
+    changePage(page) {
       this.fetchLogs(page);
     },
     showDetail(log) {
-      alert('임시 작업')
+      alert('임시 작업');
     }
   },
   mounted() {
@@ -71,6 +87,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 
