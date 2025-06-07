@@ -74,7 +74,7 @@
           </div>
         </div>
 
-        <div v-if="activeTab === 'Alert'" class="alert-tab">
+        <div v-if="activeTab === 'Alert'">
           <div class="form-group">
             <label>{{ $t('system.alert.title') }}</label>
             <p class="description">{{ $t('system.alert.description') }}</p>
@@ -431,9 +431,8 @@ export default {
 }
 
 .sound-settings label {
-  margin-left: 20px;
-  margin-top: 20px;
-  letter-spacing: 0.08em;
+  margin-left: 50px;
+  letter-spacing: 0.05em;
   font-size: 18px;
   font-weight: 600;
   color: #333;
@@ -446,11 +445,6 @@ export default {
   color: #666;
   font-weight: 500;
 
-}
-
-.alert-tab label {
-  line-height: 1.8;
-  font-size: 16px;
 }
 
 .toggle-group {
