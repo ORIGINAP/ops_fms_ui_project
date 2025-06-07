@@ -422,7 +422,7 @@ export default {
 }
 
 .day-block {
-  box-shadow: 2px 0 6px rgba(231,242,255,0.2);
+  box-shadow: 2px 0 6px rgba(231,242,255,0.5);
 }
 
 .night-block {
