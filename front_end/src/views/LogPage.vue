@@ -130,5 +130,8 @@ button:hover {
 .pagination button {
   margin: 0 5px;
   padding: 6px 10px;
+  background-color: #f2f2f2;
+  border: none;
+  cursor: pointer;
 }
 </style>
