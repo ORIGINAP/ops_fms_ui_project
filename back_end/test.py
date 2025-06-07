@@ -50,6 +50,16 @@ class RobotServerTestCase(unittest.TestCase):
         self.assertEqual(updated["route"], "Z#Y")
         self.assertEqual(updated["battery"], 70)  # 기존 값 유지
 
+    def test_update_robot_invalid_id(self):
+        """POST /update_robot: 존재하지 않는 로봇 ID"""
+        payload = {
+            "robot_id": "invalid_robot",
+            "battery": 90
+        }
+        response = self.client.post('/update_robot', json=payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("error", response.get_json())
+
    
     
     
