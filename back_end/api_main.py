@@ -94,10 +94,14 @@ def handle_connect():
     for robot_id, state in robots.items():
         socketio.emit('robot_status_update', {robot_id: state})
 
-# 서버 실행
-if __name__ == '__main__':
-    # 각 로봇마다 개별 쓰레드로 상태 업데이트 실행
+
+def start_robot_threads():
     for robot_id in robots.keys():
         threading.Thread(target=update_robot_status, args=(robot_id,), daemon=True).start()
 
+
+# 서버 실행
+if __name__ == '__main__':
+    start_robot_threads()
     socketio.run(api, debug=True, port=5002, host='0.0.0.0')
+
