@@ -94,6 +94,17 @@
       robot.y = current.y + (next.y - current.y) * ratio
     }
   }
+    function draw() {
+    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
+
+    // 점 그리기
+    ctx.fillStyle = 'red'
+    for (const point of points) {
+      ctx.beginPath()
+      ctx.arc(point.x, point.y, 5, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
 </script>
 
 <style scoped>
