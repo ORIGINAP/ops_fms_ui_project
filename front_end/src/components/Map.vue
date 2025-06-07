@@ -35,6 +35,7 @@ const robots = []
 
 const alertCount = ref(0)
 const alertComponent = ref(null)
+const isAlertSimulationEnabled = ref(localStorage.getItem('alertSimulation') === 'true')
 
 // 시설 상태 관리를 위한 ref
 const facilityStatus = ref({
@@ -52,6 +53,13 @@ const fireLogs = ref([])
 
 // 경보 활성화 함수 주입
 const activateAlert = inject('activateAlert')
+
+// 경보 시뮬레이션 설정 변경 이벤트 리스너
+onMounted(() => {
+  window.addEventListener('alertSimulationChanged', (event) => {
+    isAlertSimulationEnabled.value = event.detail.enabled;
+  });
+});
 
 function makePerimeterLoop(el) {
   const rect = el.getBoundingClientRect()
@@ -149,6 +157,8 @@ function moveRobot(robot) {
 
 // 시설 상태 업데이트 함수
 function updateFacilityStatus() {
+  if (!isAlertSimulationEnabled.value) return;
+  
   Object.keys(facilityStatus.value).forEach(area => {
     if (Math.random() < FIRE_PROBABILITY) {
       facilityStatus.value[area].isOnFire = true
