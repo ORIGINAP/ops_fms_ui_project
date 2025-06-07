@@ -18,6 +18,9 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
 import AlertComponent from './AlertComponent.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const areaA = ref(null)
 const areaB = ref(null)
@@ -42,7 +45,7 @@ const facilityStatus = ref({
 })
 
 // 화재 발생 확률 (1%)
-const FIRE_PROBABILITY = 0.0000000000000005
+const FIRE_PROBABILITY = 0.0001
 
 // 화재 로그를 저장할 배열
 const fireLogs = ref([])
@@ -154,7 +157,7 @@ function updateFacilityStatus() {
         id: Date.now(),
         area,
         timestamp: new Date().toLocaleTimeString(),
-        message: this.$t('map.fireAlert', { area })
+        message: t('map.fireAlert', { area })
       }
       fireLogs.value.unshift(log)
       alertCount.value++
@@ -174,7 +177,7 @@ function showAlertLog() {
       .join('\n')
     alertComponent.value.activateAlert(logMessage)
   } else {
-    alertComponent.value.activateAlert(this.$t('map.noDanger'))
+    alertComponent.value.activateAlert(t('map.noDanger'))
   }
 }
 
