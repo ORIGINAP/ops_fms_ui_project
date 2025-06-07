@@ -5,18 +5,20 @@
       <table>
         <thead>
           <tr>
+            <th>로봇명</th>
             <th>시간</th>
             <th>현재 위치</th>
             <th>배터리 잔량</th>
-            <th>상세</th>
+            <th>관리자</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(log, index) in logs" :key="index">
+            <td>{{ log.name }}</td>
             <td>{{ log.time }}</td>
             <td>{{ log.location }}</td>
             <td>{{ log.battery }}%</td>
-            <td><button @click="showDetail(log)">상세</button></td>
+            <td>{{ log.admin }}</td>
           </tr>
         </tbody>
       </table>
