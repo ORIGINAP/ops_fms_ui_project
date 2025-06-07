@@ -145,7 +145,7 @@ select {
 
 /* cmd 패널 */
 .cmd-panel {
-  flex: 0.933; /* 기존 1 → 더 좁게 조정 */
+  flex: 0.94; /* 기존 1 → 더 좁게 조정 */
   background: #fff;
   padding: 20px;
   border-radius: 13px;
@@ -163,7 +163,7 @@ select {
 }
 
 .cmd-header {
-  color: rgba(0,0,0,0.6);
+  color: rgba(0,0,0,0.5);
   margin-left: 20px;
   margin-bottom: 12px;
   font-weight: 600;
@@ -173,7 +173,7 @@ select {
 .command-box {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 15px;
   align-items: flex-start;
 }
 
@@ -188,7 +188,7 @@ select {
 
 .command-box button {
   padding: 10px 20px;
-  height: 80px;
+  height: 81px;
   border: none;
   border-radius: 10px;
   background: #0878ff;

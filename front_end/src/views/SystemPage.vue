@@ -458,6 +458,11 @@ export default {
   font-weight: 500;
 
 }
+.profile-field label {
+  font-size: 14px!important;
+  color: #666;
+  font-weight: 500;
+}
 
 .alert-tab label {
   line-height: 1.8;
