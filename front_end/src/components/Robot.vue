@@ -119,6 +119,12 @@
     ctx.fillStyle = 'blue'
     ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
   }
+
+  function animate() {
+  requestAnimationFrame(animate)
+  updateRobot()
+  draw()
+  }
 </script>
 
 <style scoped>
