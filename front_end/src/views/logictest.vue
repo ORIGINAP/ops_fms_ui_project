@@ -1,102 +1,136 @@
 <template>
   <div>
     <canvas ref="canvas"
-            @click="addPoint"
             width="800"
             height="500"
-            style="border: 2px solid black; display: block; margin: auto;" />
+            style="border: 2px solid black;" />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { io } from 'socket.io-client'
 
 const canvas = ref(null)
 let ctx = null
-let points = []
-let robot = { x: 0, y: 0, index: 0, progress: 0 }
+
+// A, B, C, D zone 정의
+const zones = {
+  A: { x: 100, y: 100, width: 100, height: 100 },
+  B: { x: 300, y: 100, width: 100, height: 100 },
+  C: { x: 100, y: 300, width: 100, height: 100 },
+  D: { x: 300, y: 300, width: 100, height: 100 }
+}
+
+function getCenter(zone) {
+  return {
+    x: zone.x + zone.width / 2,
+    y: zone.y + zone.height / 2
+  }
+}
+
+const robots = ref([]) // 각 로봇의 상태 저장
 const ROBOT_SPEED = 2
 
-onMounted(() => {
-  ctx = canvas.value.getContext('2d')
-  animate()
+// 소켓 연결
+const socket = io('http://localhost:5000')
+
+socket.on('robot_status_update', (data) => {
+  for (const key in data) {
+    const incoming = data[key]
+    let robot = robots.value.find(r => r.name === incoming.name)
+
+    if (!robot) {
+      robot = {
+        name: incoming.name,
+        x: 0, y: 0,
+        path: [],
+        index: 0,
+        progress: 0,
+        battery: incoming.battery,
+        route: incoming.route
+      }
+      updateRobotRoute(robot, incoming.route)
+      const start = robot.path[0]
+      robot.x = start.x
+      robot.y = start.y
+      robots.value.push(robot)
+    } else {
+      robot.battery = incoming.battery
+      if (robot.route !== incoming.route) {
+        robot.route = incoming.route
+        updateRobotRoute(robot, incoming.route)
+      }
+    }
+  }
 })
 
-// 점 추가
-function addPoint(event) {
-  const rect = canvas.value.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
-
-  points.push({ x, y })
-
-  // 첫 점이면 로봇 위치도 초기화
-  if (points.length === 1) {
-    robot.x = x
-    robot.y = y
-    robot.index = 0
-    robot.progress = 0
-  }
+function updateRobotRoute(robot, routeString) {
+  const zoneIds = routeString.split('#')
+  robot.path = zoneIds.map(id => getCenter(zones[id]))
+  robot.index = 0
+  robot.progress = 0
 }
 
 function getDistance(a, b) {
   return Math.hypot(b.x - a.x, b.y - a.y)
 }
 
-function updateRobot() {
-  if (points.length < 2) return
+function updateRobots() {
+  for (const robot of robots.value) {
+    if (robot.battery <= 0 || robot.path.length < 2) continue
 
-  const current = points[robot.index]
-  const next = points[robot.index + 1]
-  const dist = getDistance(current, next)
+    const current = robot.path[robot.index]
+    const next = robot.path[(robot.index + 1) % robot.path.length]
+    const dist = getDistance(current, next)
 
-  robot.progress += ROBOT_SPEED
-  if (robot.progress >= dist) {
-    robot.index++
-    if (robot.index >= points.length - 1) {
-      robot.index = 0
+    robot.progress += ROBOT_SPEED
+    if (robot.progress >= dist) {
+      robot.index = (robot.index + 1) % robot.path.length
       robot.progress = 0
-      return
     }
-    robot.progress = 0
-  }
 
-  const ratio = robot.progress / dist
-  robot.x = current.x + (next.x - current.x) * ratio
-  robot.y = current.y + (next.y - current.y) * ratio
+    const ratio = robot.progress / dist
+    robot.x = current.x + (next.x - current.x) * ratio
+    robot.y = current.y + (next.y - current.y) * ratio
+  }
+}
+
+function drawZones() {
+  ctx.strokeStyle = 'gray'
+  ctx.lineWidth = 1
+  ctx.font = '14px Arial'
+  ctx.fillStyle = 'black'
+
+  for (const key in zones) {
+    const z = zones[key]
+    ctx.strokeRect(z.x, z.y, z.width, z.height)
+    ctx.fillText(key, z.x + 5, z.y + 20)
+  }
 }
 
 function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
+  drawZones()
 
-  // 점
-  ctx.fillStyle = 'red'
-  points.forEach(p => {
-    ctx.beginPath()
-    ctx.arc(p.x, p.y, 5, 0, Math.PI * 2)
-    ctx.fill()
-  })
+  for (const robot of robots.value) {
+    ctx.fillStyle = robot.battery > 0 ? 'blue' : 'gray'
+    ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
 
-  // 선
-  if (points.length >= 2) {
-    ctx.strokeStyle = 'black'
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(points[0].x, points[0].y)
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y)
-    }
-    ctx.stroke()
+    ctx.fillStyle = 'black'
+    ctx.font = '12px Arial'
+    ctx.fillText(robot.name, robot.x - 15, robot.y - 15)
   }
-
-  // 로봇
-  ctx.fillStyle = 'blue'
-  ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
 }
 
 function animate() {
   requestAnimationFrame(animate)
-  updateRobot()
+  updateRobots()
   draw()
 }
+
+onMounted(() => {
+  ctx = canvas.value.getContext('2d')
+  animate()
+})
 </script>
