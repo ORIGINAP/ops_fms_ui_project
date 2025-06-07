@@ -85,6 +85,9 @@ def update_robot_status(robot_id):
         socketio.emit('robot_status_update', {robot_id: state})
         print(f"✅ Updated {robot_id} status: {state}")
 
+        # 간단한 구조로 네트워크 송출
+        socketio.emit('network_mini', state['network'])
+
         # 네트워크 상태도 robot_id와 함께 전송
         socketio.emit('network', {robot_id: state['network']})
         time.sleep(1)

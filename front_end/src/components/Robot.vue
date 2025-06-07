@@ -7,6 +7,7 @@
     Battery: {{ selectedRobot.battery }}%<br />
     Speed: {{ (selectedRobot.velocity / SCALE).toFixed(2) }}<br />
     Route: {{ selectedRobot.route }}
+    <br><b>Network: {{ selectedRobot.network }}</b></br>
   </div>
 </template>
 
@@ -69,6 +70,7 @@ socket.on('robot_status_update', (data) => {
         index: 0,
         progress: 0,
         battery: incoming.battery,
+        network: incoming.network ?? 100,
         route: incoming.route,
         velocity: (parseFloat(incoming.velocity) || DEFAULT_SPEED) * SCALE
       }
@@ -81,6 +83,7 @@ socket.on('robot_status_update', (data) => {
       robots.value[key] = robot
     } else {
       robot.battery = incoming.battery
+      robot.network = incoming.network ?? robot.network
       robot.velocity = (parseFloat(incoming.velocity) || DEFAULT_SPEED) * SCALE
       if (robot.route !== incoming.route) {
         robot.route = incoming.route
@@ -93,7 +96,11 @@ socket.on('robot_status_update', (data) => {
       }
     }
   }
+
+  // ✅ 강제 반응성 갱신
+  robots.value = { ...robots.value }
 })
+
 
 function updateRobotRoute(robot, routeString) {
   const zoneIds = routeString.split('#')
