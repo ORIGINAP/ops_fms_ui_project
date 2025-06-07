@@ -64,6 +64,35 @@
         robot.index = 0
         robot.progress = 0
       }
+
+      // 거리 계산
+    function getDistance(a, b) {
+      return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
+    }
+
+    // 선 따라 이동 로직
+    function updateRobot() {
+      if (points.length < 2) return
+
+      const current = points[robot.index]
+      const next = points[robot.index + 1]
+      const totalDist = getDistance(current, next)
+
+      robot.progress += ROBOT_SPEED
+      if (robot.progress >= totalDist) {
+        robot.index++
+        if (robot.index >= points.length - 1) {
+          robot.index = 0
+          robot.progress = 0
+          return
+        }
+        robot.progress = 0
+      }
+
+      const ratio = robot.progress / totalDist
+      robot.x = current.x + (next.x - current.x) * ratio
+      robot.y = current.y + (next.y - current.y) * ratio
+    }
   }
 </script>
 
