@@ -19,6 +19,7 @@
         <button class="tab" :class="{ active: activeTab === 'Account' }" @click="activeTab = 'Account'">{{ $t('system.account.title') }}</button>
         <button class="tab" :class="{ active: activeTab === 'Sound' }" @click="activeTab = 'Sound'">{{ $t('system.sound.title') }}</button>
         <button class="tab" :class="{ active: activeTab === 'Notification' }" @click="activeTab = 'Notification'">{{ $t('system.notification.title') }}</button>
+        <button class="tab" :class="{ active: activeTab === 'Alert' }" @click="activeTab = 'Alert'">{{ $t('system.alert.title') }}</button>
       </div>
 
       <!-- 탭 콘텐츠 -->
@@ -73,6 +74,20 @@
           </div>
         </div>
 
+        <div v-if="activeTab === 'Alert'">
+          <div class="form-group">
+            <label>{{ $t('system.alert.title') }}</label>
+            <p class="description">{{ $t('system.alert.description') }}</p>
+            <div class="toggle-group">
+              <label class="switch">
+                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation">
+                <span class="slider round"></span>
+              </label>
+              <span>{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
+            </div>
+          </div>
+        </div>
+
         <div v-if="activeTab === 'EditProfile'" class="profile-settings">
           <h2>{{ $t('system.profile.edit') }}</h2>
           <div class="profile-field">
@@ -121,13 +136,21 @@ export default {
         department: ''
       },
       selectedLanguage: localStorage.getItem('language') || 'ko',
-      isDarkTheme: false
+      isDarkTheme: false,
+      isAlertSimulationEnabled: localStorage.getItem('alertSimulation') === 'true'
     }
   },
   methods: {
     changeLanguage() {
       this.$i18n.locale = this.selectedLanguage;
       localStorage.setItem('language', this.selectedLanguage);
+    },
+    toggleAlertSimulation() {
+      localStorage.setItem('alertSimulation', this.isAlertSimulationEnabled);
+      // 이벤트를 발생시켜 Map 컴포넌트에 알림
+      window.dispatchEvent(new CustomEvent('alertSimulationChanged', {
+        detail: { enabled: this.isAlertSimulationEnabled }
+      }));
     },
     saveProfile() {
       axios.post('http://localhost:5000/update-profile', {
