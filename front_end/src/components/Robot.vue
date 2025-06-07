@@ -1,5 +1,6 @@
 <template>
   <div class="black-box"></div>
+  <canvas ref="canvas" @click="addPoint" width="800" height="500" style="border:1px solid black;"></canvas>
 </template>
 
 <script setup>
@@ -34,7 +35,36 @@
       socket.disconnect()
       console.log('소켓 연결 해제')
     })
-    
+
+
+    // 캔버스에 로봇 위치 그리기
+    const canvas = ref(null)
+    let ctx = null
+    let points = []
+    let robot = { x: 0, y: 0, index: 0, progress: 0 }
+
+    const ROBOT_SPEED = 2
+
+    onMounted(() => {
+      ctx = canvas.value.getContext('2d')
+      animate()
+    })
+
+    // 클릭해서 점 추가
+    function addPoint(event) {
+      const rect = canvas.value.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      points.push({ x, y })
+
+      // 처음 점 추가 시 로봇 위치 설정
+      if (points.length === 1) {
+        robot.x = x
+        robot.y = y
+        robot.index = 0
+        robot.progress = 0
+      }
+  }
 </script>
 
 <style scoped>
