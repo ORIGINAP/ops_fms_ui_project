@@ -315,6 +315,11 @@ onMounted(() => {
   user-select: none;
   pointer-events: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 5px;
+  font-size: 15px;
+  line-height: 1.2;
+  word-break: keep-all;
 }
 
 .safety-facility-left {
