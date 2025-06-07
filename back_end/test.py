@@ -25,6 +25,20 @@ class RobotServerTestCase(unittest.TestCase):
         self.assertIsInstance(robot_ids, list)
         self.assertIn('robotA', robot_ids)
 
+    def test_update_robot_valid(self):
+        """POST /update_robot: 유효한 업데이트 요청"""
+        payload = {
+            "robot_id": "robotA",
+            "battery": 80,
+            "route": "A#B#C"
+        }
+        response = self.client.post('/update_robot', json=payload)
+        self.assertEqual(response.status_code, 200)
+        res_json = response.get_json()
+        self.assertEqual(res_json["robot"]["battery"], 80)
+        self.assertEqual(res_json["robot"]["route"], "A#B#C")
+
+    
     
 
 
