@@ -163,18 +163,19 @@ html, body {
 }
 
 .settings-container {
+  margin-left: 20px;
   flex: 1;
-  padding: 40px 20px;
+  padding: 40px 4px;
   display: flex;
   flex-direction: column;
 }
 
 .header-banner {
   left: 10px;
-  width: 89.8%;
+  width: 89.6%;
   background-color: white;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 30px 20px;
   display: flex;
   align-items: center;
@@ -183,8 +184,8 @@ html, body {
 
 .user-avatar {
   width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  height: 75px;
+  border-radius: 10px;
   border: 4px solid #ffffff;
   object-fit: cover;
   background-color: #e0e0e0;
@@ -214,7 +215,6 @@ html, body {
 
 .edit-footer {
   position: absolute;
-  top: 0px;
   right: 20px;
 }
 
@@ -225,7 +225,7 @@ html, body {
   border: 2px solid #0878ff;
   background-color: white;
   color: #0878ff;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -260,8 +260,7 @@ html, body {
 .tab.active {
   background-color: white;
   color: #222;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 -1px 0 white;
+  border-radius: 10px;
 }
 
 .form-section {
@@ -270,13 +269,13 @@ html, body {
   gap: 24px;
   background-color: white;
   padding: 70px 30px 30px 70px;
-  border-radius: 0 15px 15px 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  border-radius: 3px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
   flex-grow: 1;
   height: 545px;
   overflow-y: auto;
   margin-bottom: 100px;
-  width: 86.5%;
+  width: 86.4%;
   margin-left: 10px;
 }
 
@@ -313,7 +312,7 @@ html, body {
 .form-group select {
   padding: 10px 12px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
 }
 
