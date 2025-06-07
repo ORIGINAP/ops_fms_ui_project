@@ -10,19 +10,15 @@
         <label>{{ $t("robot.select_robot") }}</label>
         <select v-model="selectedRobotId">
           <option disabled value="">{{ $t("robot.please_select") }}</option>
-            <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
-              {{ robot.name }}
-            </option>
-          </select>
-        </div>
+          <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
+            {{ robot.name }}
+          </option>
+        </select>
 
         <div v-if="selectedRobot" class="robot-info">
-          <p><strong>{{ $t("robot.battery_status") }} : </strong>
-            {{ selectedRobot.battery }}%</p>
-          <p><strong>{{ $t("robot.current_location") }} : </strong>
-            {{ selectedRobot.location }} </p>
-          <p><strong>{{ $t("robot.fault_status") }} : </strong>
-            {{ selectedRobot.fault ? $t("robot.fault") : $t("robot.normal") }}</p>
+          <p><strong>{{ $t("robot.battery_status") }} : </strong> {{ selectedRobot.battery }}%</p>
+          <p><strong>{{ $t("robot.current_location") }} : </strong> {{ selectedRobot.location }} </p>
+          <p><strong>{{ $t("robot.fault_status") }} : </strong> {{ selectedRobot.fault ? $t("robot.fault") : $t("robot.normal") }}</p>
         </div>
       </div>
 
@@ -42,9 +38,9 @@
               @keyup.enter="sendCommand"
               :placeholder="$t('command.move') + ' A'"
           />
-          <button @click="sendCommand">전송</button>
+          <button @click="sendCommand">{{ $t("robot.send") }}</button>
         </div>
-        <p v-else class="cmd-hint">왼쪽에서 로봇을 선택하면 명령어를 입력할 수 있습니다.</p>
+        <p v-else class="cmd-hint">{{ $t("robot.hint") }}</p>
       </div>
     </div>
   </div>
