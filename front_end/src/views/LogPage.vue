@@ -37,7 +37,10 @@ export default {
   components: { Menu },
   data() {
     return {
-      logs: []
+      logs: [],
+      currentPage: 1,
+      pageSize: 15,
+      totalLogs: 0
     };
   },
   methods: {
