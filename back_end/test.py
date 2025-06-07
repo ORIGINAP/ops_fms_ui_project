@@ -66,7 +66,16 @@ class RobotServerTestCase(unittest.TestCase):
         status_events = [e for e in received if e['name'] == 'robot_status_update']
         self.assertGreaterEqual(len(status_events), len(robots))
 
-    
+    def test_socket_periodic_updates(self):
+        """로봇 상태 업데이트 주기적 전송 테스트"""
+        time.sleep(2)  # emit 대기 시간 확보
+        events = self.socket_client.get_received()
+        
+        # 세 가지 이벤트 모두 포함되는지 확인
+        names = [e['name'] for e in events]
+        self.assertIn('robot_status_update', names)
+        self.assertIn('network', names)
+        self.assertIn('network_mini', names)
     
     
 
