@@ -56,7 +56,8 @@ const messages = {
       noDanger: '현재 감지된 위험 없음'
     },
     alert: {
-      close: '닫기'
+      close: '닫기',
+      dismiss: '경보 해제'
     },
     route: {
       robotSelect: '로봇 선택',
@@ -151,7 +152,8 @@ const messages = {
       noDanger: 'No danger detected'
     },
     alert: {
-      close: 'Close'
+      close: 'Close',
+      dismiss: 'Dismiss'
     },
     route: {
       robotSelect: 'Select Robot',

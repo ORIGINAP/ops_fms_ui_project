@@ -3,7 +3,7 @@
     <div class="alert-content">
       <div class="alert-icon">⚠️</div>
       <div class="alert-message">{{ message }}</div>
-      <button class="alert-close" @click="deactivateAlert">경보 해제</button>
+      <button class="alert-close" @click="deactivateAlert">{{ $t('alert.dismiss') }}</button>
     </div>
   </div>
 </template>
