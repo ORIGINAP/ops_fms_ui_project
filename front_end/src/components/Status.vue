@@ -10,12 +10,13 @@
       </div>
 
       <div class="menu-row">
+        <!-- Outdoor Block -->
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <<div class="temp-header">{{ $t('status.outdoor') }}</div>
-          <div>
+          <div class="temp-header">{{ $t('status.outdoor') }}</div>
+          <div class="temperature-block">
             <img
                 v-if="weatherIconUrl"
-                class="weather-svg-icon"
+                class="weather-icon"
                 :src="weatherIconUrl"
                 alt="weather icon"
             />
@@ -24,18 +25,18 @@
           </div>
         </div>
 
+        <!-- Indoor Block -->
         <div class="menu-temperature">
           <div class="temp-header">{{ $t('status.indoor') }}</div>
-          <div class="internal-block" v-if="internalTemperature !== null">
+          <div class="temperature-block">
             <img
+                v-if="internalTemperature !== null"
                 class="thermometer-icon"
                 :src="thermometerIconUrl"
                 alt="thermometer icon"
             />
-            <p>{{ internalTemperature }}℃</p>
-          </div>
-          <div v-else>
-            <p>{{ $t('status.loading') }}</p>
+            <p v-if="internalTemperature !== null">{{ internalTemperature }}℃</p>
+            <p v-else>{{ $t('status.loading') }}</p>
           </div>
         </div>
       </div>
@@ -330,6 +331,19 @@ export default {
   border-radius: 20px;
 }
 
+.internal-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+  gap: 10px;
+  line-height: 1;
+  margin-top: 80px;
+  padding: 0;
+}
+
 .menu-body {
   display: flex;
   flex-direction: column;
@@ -360,10 +374,10 @@ export default {
   font-size: 15px !important;
   font-weight: 600;
   color: gray;
-  margin: 0;             /* 기본 margin 제거 */
-  position: absolute;    /* 절대 위치로 고정 */
-  top: -32px !important;             /* 위쪽 여백 조정 */
-  left: 30px;            /* 왼쪽 여백 조정 */
+  margin: 0;
+  position: absolute;
+  top: -12px !important;
+  left: 30px;
   z-index: 10;
 }
 .menu-temperature {
@@ -386,7 +400,7 @@ export default {
   font-size: 30px;
   gap: 10px;
   line-height: 1;
-  margin-top: 60px;
+  margin-top: 30px;
   padding: 0;
 }
 
