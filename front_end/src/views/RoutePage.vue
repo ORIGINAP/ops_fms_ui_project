@@ -21,24 +21,26 @@
             {{ selectedRobot.battery }}%</p>
           <p><strong>{{ $t("robot.current_location") }} : </strong>
             {{ selectedRobot.location }} </p>
-          <p><strong>결함 여부 : </strong> {{ selectedRobot.fault ? "결함 있음" : "정상" }}</p>
+          <p><strong>{{ $t("robot.fault_status") }} : </strong>
+            {{ selectedRobot.fault ? $t("robot.fault") : $t("robot.normal") }}</p>
         </div>
       </div>
 
       <!-- 로그 및 커맨드 패널 -->
       <div class="cmd-panel">
         <h2 class="cmd-header">
-          명령어 입력 <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
+          { $t("robot.command_input") }}
+          <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
         </h2>
         <ul ref="cmdList">
-          <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
+          <li v-for="(cmd, idx) in (selectedRobot?.logs || [])" :key="idx">{{ cmd }}</li>
         </ul>
 
         <div class="command-box" v-if="selectedRobot">
           <input
               v-model="commandText"
               @keyup.enter="sendCommand"
-              placeholder="ex: 이동 A"
+              :placeholder="$t('command.move') + ' A'"
           />
           <button @click="sendCommand">전송</button>
         </div>
@@ -75,9 +77,9 @@ export default {
       if (!this.selectedRobot || !this.commandText.trim()) return;
 
       const cmd = this.commandText.trim();
-      this.appendLog(`명령 전송: ${cmd}`);
+      this.appendLog(this.$t("command.log_command_sent", { cmd }));
 
-      if (cmd.startsWith("이동 ")) {
+      if (cmd.startsWith(this.$t("command.move") + " ")) {
         const loc = cmd.split(" ")[1];
         if (["A", "B", "C", "D"].includes(loc)) {
           this.selectedRobot.location = loc;
