@@ -316,6 +316,13 @@ export default {
   padding: 8px 16px;
   background-color: #0878ff;
   color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  min-width: 80px;
+}
 
 .edit-button:hover {
   background-color: #005ecb;
@@ -525,8 +532,4 @@ input:checked + .slider::before {
   border-radius: 50%;
 }
 
-.toggle-label {
-  font-size: 14px;
-  color: #333;
-}
 </style>
