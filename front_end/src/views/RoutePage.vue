@@ -7,10 +7,9 @@
     <div class="main-panel">
       <!-- 로봇 상태 카드 -->
       <div class="robot-info-card">
-        <div class="form-group">
-          <label>로봇 선택</label>
-          <select v-model="selectedRobotId">
-            <option disabled value="">로봇을 선택하세요</option>
+        <label>{{ $t("robot.select_robot") }}</label>
+        <select v-model="selectedRobotId">
+          <option disabled value="">{{ $t("robot.please_select") }}</option>
             <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
               {{ robot.name }}
             </option>
@@ -18,8 +17,10 @@
         </div>
 
         <div v-if="selectedRobot" class="robot-info">
-          <p><strong>배터리 상태 : </strong> {{ selectedRobot.battery }}%</p>
-          <p><strong>현재 위치 : </strong> {{ selectedRobot.location }}</p>
+          <p><strong>{{ $t("robot.battery_status") }} : </strong>
+            {{ selectedRobot.battery }}%</p>
+          <p><strong>{{ $t("robot.current_location") }} : </strong>
+            {{ selectedRobot.location }} </p>
           <p><strong>결함 여부 : </strong> {{ selectedRobot.fault ? "결함 있음" : "정상" }}</p>
         </div>
       </div>
