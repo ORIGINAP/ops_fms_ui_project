@@ -11,7 +11,7 @@
 
       <div class="menu-row">
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <div class="temp-header">실외온도</div>  <!-- 추가 -->
+          <<div class="temp-header">{{ $t('status.outdoor') }}</div>
           <div>
             <img
                 v-if="weatherIconUrl"
@@ -25,7 +25,7 @@
         </div>
 
         <div class="menu-temperature">
-          <div class="temp-header">실내온도</div>  <!-- 추가 -->
+          <div class="temp-header">{{ $t('status.indoor') }}</div>
           <div class="internal-block" v-if="internalTemperature !== null">
             <img
                 class="thermometer-icon"
@@ -155,7 +155,10 @@ export default {
   },
   methods: {
     generateRandomChartData() {
-      this.chartData = this.chartData.map(() => Math.floor(Math.random() * 101));
+      this.chartData = this.chartData.map(() => {
+        const value = Math.floor(Math.random() * 86) + 15; // 15~100
+        return value;
+      });
 
       if (this.totalValue === 0) {
         this.chartData = [25, 25, 25, 25];
