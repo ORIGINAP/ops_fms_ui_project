@@ -43,15 +43,6 @@ html, body {
   overflow: hidden;
   background-color: rgb(246,247,249,100);
 }
-/*
-.field {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  border-radius: 15px;
-  background: black;
-}
- */
 </style>
 
 

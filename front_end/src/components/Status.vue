@@ -11,7 +11,7 @@
 
       <div class="menu-row">
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <div class="temp-header">실외온도</div>  <!-- 추가 -->
+          <div class="temp-header">{{ $t('status.outdoor') }}</div>
           <div>
             <img
                 v-if="weatherIconUrl"
@@ -25,7 +25,7 @@
         </div>
 
         <div class="menu-temperature">
-          <div class="temp-header">실내온도</div>  <!-- 추가 -->
+          <div class="temp-header">{{ $t('status.indoor') }}</div>
           <div class="internal-block" v-if="internalTemperature !== null">
             <img
                 class="thermometer-icon"
@@ -159,7 +159,10 @@ export default {
   },
   methods: {
     generateRandomChartData() {
-      this.chartData = this.chartData.map(() => Math.floor(Math.random() * 101));
+      this.chartData = this.chartData.map(() => {
+        const value = Math.floor(Math.random() * 86) + 15; // 15~100
+        return value;
+      });
 
       if (this.totalValue === 0) {
         this.chartData = [25, 25, 25, 25];
@@ -331,7 +334,20 @@ export default {
   border-radius: 20px;
 }
 
+.internal-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+  gap: 10px;
+  line-height: 1;
+  margin-top: 54px !important;
+  padding: 0;
+}
 .menu-body {
+
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -361,11 +377,15 @@ export default {
   font-size: 15px !important;
   font-weight: 600;
   color: gray;
-  margin: 0;             /* 기본 margin 제거 */
-  position: absolute;    /* 절대 위치로 고정 */
-  top: -32px !important;             /* 위쪽 여백 조정 */
-  left: 30px;            /* 왼쪽 여백 조정 */
+  margin: 0;
+  position: absolute;
+  top: -12px !important;
+  left: 30px;
   z-index: 10;
+}
+
+.menu-temperature:first-child .temp-header {
+  top: -36px !important;
 }
 .menu-temperature {
   position: relative; /* 텍스트 위치 기준 */
@@ -387,8 +407,11 @@ export default {
   font-size: 30px;
   gap: 10px;
   line-height: 1;
-  margin-top: 60px;
+  margin-top: 30px;
   padding: 0;
+}
+.menu-temperature:first-child > div {
+  margin-top: 55px;
 }
 
 .menu-temperature > div img,
@@ -444,7 +467,6 @@ export default {
 .label-value {
   min-width: 30px;
 }
-
 
 .pie-chart {
   transform: rotate(-90deg); /* 시작점을 12시 방향으로 조정 */
