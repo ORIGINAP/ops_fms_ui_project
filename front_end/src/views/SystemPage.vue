@@ -54,7 +54,7 @@
 
         <div v-if="activeTab === 'Sound'" class="sound-settings">
           <div class="form-group">
-            <label>{{ $t('system.sound.title') }}</label>
+            <label class="sound-title">{{ $t('system.sound.title') }}</label>
             <div class="toggle-group">
               <label><input type="checkbox" /> {{ $t('system.sound.enable') }}</label>
             </div>
@@ -433,10 +433,15 @@ export default {
   margin-left: 20px;
   margin-top: 20px;
   letter-spacing: 0.08em;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
-  gap : 50px;
+}
+
+.sound-title {
+  font-size: 28px;
+  font-weight: 700;
+  display: block;
 }
 
 .description {
