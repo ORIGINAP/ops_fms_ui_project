@@ -189,14 +189,14 @@ export default {
 <style scoped>
 .system-page {
   display: flex;
-  width: 90%;
+  width: 94.2%;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
 
 .settings-container {
   flex: 1;
-  padding: 40px 20px;
+  padding: 40px 38px;
   display: flex;
   flex-direction: column;
 }
@@ -216,7 +216,7 @@ export default {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 30px;
 }
 
 .settings-title {
@@ -229,10 +229,11 @@ export default {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  margin-left: 10px;
 }
 
 .tab {
-  padding: 10px 20px;
+  padding: 15px 20px;
   border: none;
   background: white;
   border-radius: 8px;
@@ -252,6 +253,7 @@ export default {
   border-radius: 16px;
   padding: 30px;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
+  height: 580px; /*비율 맞추려고 늘렸는데 가변길이로 하고싶다면 없애요..*/
 }
 
 .profile-view {
