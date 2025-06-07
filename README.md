@@ -17,7 +17,7 @@ $pip install -r requirements.txt
 
 # 의존성
 
-✅###BackEnd
+✅**BackEnd**
 ```bash
 Flask 3.1.0  
 flask-cors 6.0.0  
@@ -27,7 +27,7 @@ flask-socketio 5.5.1
 pymongo 4.13.0  
 ```
 
-✅###FrontEnd
+✅**FrontEnd**
 ```
 axios 1.9.0  
 chart.js 3.9.1  
@@ -40,6 +40,20 @@ vue-chartjs 4.1.2
 vue-i18n 9.14.4  
 vue-router 4.5.1  
 
+```
+
+# 실행 방법
+```
+MongoDB 설치 후 터미널에서 다음을 실행.
+--
+$pip install -r requirements.txt
+$python3 main.py
+--open new terminal--
+$python3 api_main.py
+--open new terminal--
+$cd front-end
+$npm i
+$npm run dev
 ```
 
 # 기능
