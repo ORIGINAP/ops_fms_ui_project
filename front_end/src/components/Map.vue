@@ -53,7 +53,6 @@ onMounted(() => {
 function updateFacilityStatus() {
   
   if (!isAlertSimulationEnabled.value) return;
-    console.log('Alert simulation is enabled, checking facility status...')
   Object.keys(facilityStatus.value).forEach(area => {
     if (Math.random() < FIRE_PROBABILITY) {
       facilityStatus.value[area].isOnFire = true
