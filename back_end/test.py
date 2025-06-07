@@ -38,6 +38,19 @@ class RobotServerTestCase(unittest.TestCase):
         self.assertEqual(res_json["robot"]["battery"], 80)
         self.assertEqual(res_json["robot"]["route"], "A#B#C")
 
+    def test_update_robot_partial_update(self):
+        """POST /update_robot: 일부 필드만 업데이트 (battery 생략)"""
+        payload = {
+            "robot_id": "robotB",
+            "route": "Z#Y"
+        }
+        response = self.client.post('/update_robot', json=payload)
+        self.assertEqual(response.status_code, 200)
+        updated = response.get_json()["robot"]
+        self.assertEqual(updated["route"], "Z#Y")
+        self.assertEqual(updated["battery"], 70)  # 기존 값 유지
+
+   
     
     
 
