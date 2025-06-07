@@ -13,7 +13,7 @@
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
           <p class="temp-label">실외 온도</p> <!-- 글씨만 따로 -->
 
-          <div class="temp-content"> <!-- 아이콘 + 온도 숫자 묶음 -->
+          <div class="temperature-text" v-if="internalTemperature !== null">
             <img
                 v-if="weatherIconUrl"
                 class="weather-svg-icon"
@@ -26,8 +26,8 @@
         </div>
 
         <div class="menu-temperature">
-          <p class="temp-label">실외 온도</p>
-          <div class="temp-content" v-if="internalTemperature !== null">
+          <p class="temp-label">실내 온도</p>
+          <div class="temperature-text" v-if="internalTemperature !== null">
             <img
                 class="thermometer-icon"
                 :src="thermometerIconUrl"
@@ -152,7 +152,7 @@ export default {
   },
   methods: {
     generateRandomChartData() {
-      this.chartData = this.chartData.map(() => Math.floor(Math.random() * 101));
+      this.chartData = this.chartData.map(() => Math.floor(Math.random() * 86)+15);
 
       if (this.totalValue === 0) {
         this.chartData = [25, 25, 25, 25];
@@ -324,6 +324,7 @@ export default {
   border-radius: 20px;
 }
 
+
 .menu-body {
   display: flex;
   flex-direction: column;
@@ -384,7 +385,6 @@ export default {
   line-height: 1;
 }
 
-
 .day-block {
   box-shadow: 2px 0 6px rgba(231,242,255,0.2);
 }
@@ -399,17 +399,21 @@ export default {
   align-items: center;
   gap: 20px;
   background: white;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 10px;
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
-  height: 230px;
+  height: 300px;
   color: darkgray;
 }
-
+.chart-labels > p {
+  margin-top: 0;
+  margin-bottom: 4px;  /* 적당히 줄인 값 */
+  font-weight: 700;
+  font-size: 20px;
+}
 .chart-labels {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   font-size: 18px;
   font-weight: 600;
   min-width: 60px;
@@ -434,16 +438,22 @@ export default {
 .pie-chart {
   transform: rotate(-90deg);
 }
-
+.temperature-text {
+  font-size: 1.2rem;
+  padding: 0;
+  margin-right: 10px;
+}
 .weather-svg-icon {
   width: 60px;
   height: 60px;
   display: block;
-  margin: 0 auto;
+  margin-right: 4px;
+  transform: translateX(-4px);
 }
 .thermometer-icon {
   width: 30px;
   height: 60px;
+  transform: translateX(-4px);
 }
 .color-box {
   margin-top: 7px;
