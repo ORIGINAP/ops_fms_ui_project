@@ -80,7 +80,7 @@
             <p class="description">{{ $t('system.alert.description') }}</p>
             <div class="toggle-group">
               <label class="switch">
-                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation" />
+                <input type="checkbox" v-model="isAlertSimulationEnabled" @change="toggleAlertSimulation">
                 <span class="slider round"></span>
               </label>
               <span>{{ isAlertSimulationEnabled ? $t('system.alert.enable') : $t('system.alert.enable') }}</span>
@@ -272,10 +272,9 @@ export default {
 }
 
 .form-group label {
-  font-size: 20px;
+  font-size: 14px;
   color: #666;
   font-weight: 500;
-  margin-top: 20px;
 }
 
 .form-group select {
@@ -451,7 +450,7 @@ export default {
 
 .alert-tab label {
   line-height: 1.8;
-  font-size: 30px;
+  font-size: 16px;
 }
 
 .toggle-group {
