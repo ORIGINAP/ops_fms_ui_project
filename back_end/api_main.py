@@ -7,7 +7,7 @@ import random  # ✅ 네트워크 상태용 랜덤값
 
 # Flask 앱 및 소켓 설정
 api = Flask(__name__)
-CORS(api)
+CORS(api, supports_credentials=True, resources={r"/*": {"origins": "http://127.0.0.1:5173"}})
 socketio = SocketIO(api, cors_allowed_origins='*')
 
 # 로봇 상태 정의 (배터리, 속도, 경로, 네트워크 상태 포함)
@@ -103,6 +103,30 @@ def handle_connect():
 def start_robot_threads():
     for robot_id in robots.keys():
         threading.Thread(target=update_robot_status, args=(robot_id,), daemon=True).start()
+
+
+@api.route('/update_robot', methods=['POST'])
+def update_robot():
+    data = request.get_json()
+    robot_id = data.get("robot_id")
+    new_battery = data.get("battery")
+    new_route = data.get("route")
+
+    if robot_id not in robots:
+        return jsonify({"error": "Invalid robot ID"}), 400
+
+    # 값이 전달되었을 때만 업데이트
+    if new_battery is not None:
+        robots[robot_id]["battery"] = int(new_battery)
+
+    if new_route is not None:
+        robots[robot_id]["route"] = new_route
+
+    # 클라이언트들에게 업데이트 전송
+    socketio.emit('robot_status_update', {robot_id: robots[robot_id]})
+    socketio.emit('network', {robot_id: robots[robot_id]["network"]})
+
+    return jsonify({"message": "Robot updated", "robot": robots[robot_id]})
 
 
 # 서버 실행
