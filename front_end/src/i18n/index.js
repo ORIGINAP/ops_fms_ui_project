@@ -35,6 +35,16 @@ const messages = {
         light: '라이트 모드'
       }
     },
+    status: {
+      network: '네트워크',
+      loading: '로딩 중...',
+      areas: {
+        a: 'A구역',
+        b: 'B구역',
+        c: 'C구역',
+        d: 'D구역'
+      }
+    },
     login: {
       title: '로그인',
       email: '이메일',
@@ -88,6 +98,16 @@ const messages = {
         theme: 'System Theme',
         dark: 'Dark Mode',
         light: 'Light Mode'
+      }
+    },
+    status: {
+      network: 'Network',
+      loading: 'Loading...',
+      areas: {
+        a: 'Area A',
+        b: 'Area B',
+        c: 'Area C',
+        d: 'Area D'
       }
     },
     login: {
