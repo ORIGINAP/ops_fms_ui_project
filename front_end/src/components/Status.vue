@@ -352,8 +352,9 @@ export default {
 
 .menu-row {
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .menu-network {
@@ -370,18 +371,16 @@ export default {
   color: darkgray;
 }
 
-.temp-header {
-  font-size: 15px !important;
-  font-weight: 600;
-  color: gray;
-  margin: 0;
-  position: absolute;
-  top: -12px !important;
-  left: 30px;
-  z-index: 10;
+.temperature-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
+
 .menu-temperature {
-  position: relative; /* 텍스트 위치 기준 */
+  display: flex;
+  flex-direction: column;
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
   height: 200px;
@@ -463,14 +462,16 @@ export default {
   transform: rotate(-90deg); /* 시작점을 12시 방향으로 조정 */
 }
 
-.weather-svg-icon {
-  width: 60px;
-  height: 60px;
+.weather-icon {
+  width: 50px;
+  height: 50px;
 }
+
 .thermometer-icon {
   width: 30px;
-  height: 60px;
+  height: 30px;
 }
+
 .color-box {
   margin-top: 7px;
   display: inline-block;
