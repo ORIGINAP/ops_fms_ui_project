@@ -10,13 +10,12 @@
       </div>
 
       <div class="menu-row">
-        <!-- Outdoor Block -->
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <div class="temp-header">{{ $t('status.outdoor') }}</div>
-          <div class="temperature-block">
+          <<div class="temp-header">{{ $t('status.outdoor') }}</div>
+          <div>
             <img
                 v-if="weatherIconUrl"
-                class="weather-icon"
+                class="weather-svg-icon"
                 :src="weatherIconUrl"
                 alt="weather icon"
             />
@@ -25,18 +24,18 @@
           </div>
         </div>
 
-        <!-- Indoor Block -->
         <div class="menu-temperature">
           <div class="temp-header">{{ $t('status.indoor') }}</div>
-          <div class="temperature-block">
+          <div class="internal-block" v-if="internalTemperature !== null">
             <img
-                v-if="internalTemperature !== null"
                 class="thermometer-icon"
                 :src="thermometerIconUrl"
                 alt="thermometer icon"
             />
-            <p v-if="internalTemperature !== null">{{ internalTemperature }}℃</p>
-            <p v-else>{{ $t('status.loading') }}</p>
+            <p>{{ internalTemperature }}℃</p>
+          </div>
+          <div v-else>
+            <p>{{ $t('status.loading') }}</p>
           </div>
         </div>
       </div>
@@ -340,11 +339,11 @@ export default {
   font-size: 30px;
   gap: 10px;
   line-height: 1;
-  margin-top: 80px;
+  margin-top: 54px !important;
   padding: 0;
 }
-
 .menu-body {
+
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -352,9 +351,8 @@ export default {
 
 .menu-row {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 20px;
+  justify-content: center;
+  gap: 10px;
 }
 
 .menu-network {
@@ -371,16 +369,18 @@ export default {
   color: darkgray;
 }
 
-.temperature-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+.temp-header {
+  font-size: 15px !important;
+  font-weight: 600;
+  color: gray;
+  margin: 0;
+  position: absolute;
+  top: -12px !important;
+  left: 30px;
+  z-index: 10;
 }
-
 .menu-temperature {
-  display: flex;
-  flex-direction: column;
+  position: relative; /* 텍스트 위치 기준 */
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
   height: 200px;
@@ -457,21 +457,18 @@ export default {
   min-width: 30px;
 }
 
-
 .pie-chart {
   transform: rotate(-90deg); /* 시작점을 12시 방향으로 조정 */
 }
 
-.weather-icon {
-  width: 50px;
-  height: 50px;
+.weather-svg-icon {
+  width: 60px;
+  height: 60px;
 }
-
 .thermometer-icon {
   width: 30px;
-  height: 30px;
+  height: 60px;
 }
-
 .color-box {
   margin-top: 7px;
   display: inline-block;
