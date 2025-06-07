@@ -11,7 +11,7 @@
 
       <div class="menu-row">
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
-          <<div class="temp-header">{{ $t('status.outdoor') }}</div>
+          <div class="temp-header">{{ $t('status.outdoor') }}</div>
           <div>
             <img
                 v-if="weatherIconUrl"
@@ -379,6 +379,10 @@ export default {
   left: 30px;
   z-index: 10;
 }
+
+.menu-temperature:first-child .temp-header {
+  top: -36px !important;
+}
 .menu-temperature {
   position: relative; /* 텍스트 위치 기준 */
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
@@ -401,6 +405,9 @@ export default {
   line-height: 1;
   margin-top: 30px;
   padding: 0;
+}
+.menu-temperature:first-child > div {
+  margin-top: 55px;
 }
 
 .menu-temperature > div img,

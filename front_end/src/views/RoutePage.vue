@@ -7,40 +7,41 @@
     <div class="main-panel">
       <!-- 로봇 상태 카드 -->
       <div class="robot-info-card">
-        <label>{{ $t("robot.select_robot") }}</label>
-        <select v-model="selectedRobotId">
-          <option disabled value="">{{ $t("robot.please_select") }}</option>
-          <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
-            {{ robot.name }}
-          </option>
-        </select>
+        <div class="form-group">
+          <label>{{ $t('route.robotSelect') }}</label>
+          <select v-model="selectedRobotId">
+            <option disabled value="">{{ $t('route.selectRobot') }}</option>
+            <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
+              {{ robot.name }}
+            </option>
+          </select>
+        </div>
 
         <div v-if="selectedRobot" class="robot-info">
-          <p><strong>{{ $t("robot.battery_status") }} : </strong> {{ selectedRobot.battery }}%</p>
-          <p><strong>{{ $t("robot.current_location") }} : </strong> {{ selectedRobot.location }} </p>
-          <p><strong>{{ $t("robot.fault_status") }} : </strong> {{ selectedRobot.fault ? $t("robot.fault") : $t("robot.normal") }}</p>
+          <p><strong>{{ $t('route.batteryStatus') }} : </strong> {{ selectedRobot.battery }}%</p>
+          <p><strong>{{ $t('route.currentLocation') }} : </strong> {{ selectedRobot.location }}</p>
+          <p><strong>{{ $t('route.faultStatus') }} : </strong> {{ selectedRobot.fault ? $t('route.hasFault') : $t('route.normal') }}</p>
         </div>
       </div>
 
       <!-- 로그 및 커맨드 패널 -->
       <div class="cmd-panel">
         <h2 class="cmd-header">
-          { $t("robot.command_input") }}
-          <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
+          {{ $t('route.commandInput') }} <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
         </h2>
         <ul ref="cmdList">
-          <li v-for="(cmd, idx) in (selectedRobot?.logs || [])" :key="idx">{{ cmd }}</li>
+          <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
         </ul>
 
         <div class="command-box" v-if="selectedRobot">
           <input
               v-model="commandText"
               @keyup.enter="sendCommand"
-              :placeholder="$t('command.move') + ' A'"
+              :placeholder="$t('route.moveCommand') + ' A'"
           />
-          <button @click="sendCommand">{{ $t("robot.send") }}</button>
+          <button @click="sendCommand">{{ $t('route.send') }}</button>
         </div>
-        <p v-else class="cmd-hint">{{ $t("robot.hint") }}</p>
+        <p v-else class="cmd-hint">{{ $t('route.commandHint') }}</p>
       </div>
     </div>
   </div>
@@ -73,18 +74,18 @@ export default {
       if (!this.selectedRobot || !this.commandText.trim()) return;
 
       const cmd = this.commandText.trim();
-      this.appendLog(this.$t("command.log_command_sent", { cmd }));
+      this.appendLog(this.$t('route.commandSent', { command: cmd }));
 
-      if (cmd.startsWith(this.$t("command.move") + " ")) {
+      if (cmd.startsWith(this.$t('route.moveCommand') + " ")) {
         const loc = cmd.split(" ")[1];
         if (["A", "B", "C", "D"].includes(loc)) {
           this.selectedRobot.location = loc;
-          this.appendLog(this.$t("command.log_moved", { loc }));
+          this.appendLog(this.$t('route.robotMoved', { location: loc }));
         } else {
-          this.appendLog(this.$t("command.error_invalid_location"));
+          this.appendLog("❗ " + this.$t('route.invalidLocation'));
         }
       } else {
-        this.appendLog(this.$t("command.error_unknown_command"));
+        this.appendLog("❗ " + this.$t('route.unknownCommand'));
       }
 
       this.commandText = "";
@@ -103,8 +104,8 @@ export default {
 <style scoped>
 .robot-control-container {
   display: flex;
-  height: 100vh;
-  box-shadow: 2px 0 5px rgba(21,100,191,0.2);
+  height: 101vh;
+  background: #f0f4f8;
 }
 
 .main-panel {
@@ -119,15 +120,12 @@ export default {
   width: 280px;
   background: #fff;
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  border-radius: 15px;
+
 }
 
 .robot-info p {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .form-group {
@@ -138,16 +136,16 @@ export default {
 select {
   margin-top: 6px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
 }
 
 /* cmd 패널 */
 .cmd-panel {
-  flex: 0.941; /* 기존 1 → 더 좁게 조정 */
+  flex: 0.933; /* 기존 1 → 더 좁게 조정 */
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 13px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
