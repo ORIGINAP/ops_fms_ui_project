@@ -117,6 +117,14 @@ function drawZones() {
   }
 }
 
+function getBatteryColor(battery) {
+  if (battery < 50) return 'red'
+  const percent = battery / 100
+  const r = Math.floor(255 * (1 - percent))
+  const g = Math.floor(255 * percent)
+  return `rgb(${r},${g},0)`
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   drawZones()
@@ -125,12 +133,22 @@ function draw() {
     const robot = robots.value[key]
     if (isNaN(robot.x) || isNaN(robot.y)) continue
 
-    ctx.fillStyle = robot.battery > 0 ? 'blue' : 'gray'
-    ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
+    const size = 20
+    const batteryHeight = size * (robot.battery / 100)
+    const batteryColor = getBatteryColor(robot.battery)
 
+    // 외곽 네모
+    ctx.strokeStyle = 'black'
+    ctx.strokeRect(robot.x - size / 2, robot.y - size / 2, size, size)
+
+    // 배터리 색 영역 (아래부터 위로 채워짐)
+    ctx.fillStyle = batteryColor
+    ctx.fillRect(robot.x - size / 2, robot.y + size / 2 - batteryHeight, size, batteryHeight)
+
+    // 이름 표시
     ctx.fillStyle = 'black'
     ctx.font = '12px Arial'
-    ctx.fillText(robot.name, robot.x - 15, robot.y - 15)
+    ctx.fillText(robot.name, robot.x - 15, robot.y - size / 2 - 5)
   }
 }
 
