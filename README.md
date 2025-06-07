@@ -14,6 +14,8 @@ back-end
 ```
 $pip install -r requirements.txt
 ```
+https://www.mongodb.com/try/download/community
+설치 후 MongoDB compass 를 이용하거나 터미널로 MongoDB서버를 실행
 
 # 의존성
 
@@ -64,5 +66,4 @@ $npm run dev
   - 영어 (en)
 
 # mongoDB 설치 방법
-https://www.mongodb.com/try/download/community
-설치 후 MongoDB compass 를 이용하거나 터미널로 MongoDB서버를 실행하시면 됩니다.
+하시면 됩니다.
