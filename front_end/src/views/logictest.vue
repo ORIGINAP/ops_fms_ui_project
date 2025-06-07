@@ -18,25 +18,31 @@ let ctx = null
 const zones = {
   A: { x: 100, y: 100, width: 100, height: 100 },
   B: { x: 300, y: 100, width: 100, height: 100 },
-  C: { x: 100, y: 300, width: 100, height: 100 },
-  D: { x: 300, y: 300, width: 100, height: 100 }
+  C: { x: 300, y: 300, width: 100, height: 100 },
+  D: { x: 100, y: 300, width: 100, height: 100 }
 }
 
-function getCenter(zone) {
-  return {
-    x: zone.x + zone.width / 2,
-    y: zone.y + zone.height / 2
-  }
-}
-
-function getOutlinePath(zone) {
-  const { x, y, width, height } = zone
+function getRectOutline(x, y, width, height) {
   return [
     { x: x, y: y },
     { x: x + width, y: y },
     { x: x + width, y: y + height },
     { x: x, y: y + height }
   ]
+}
+
+function getCombinedRectanglePath(zoneIds) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity
+
+  for (const id of zoneIds) {
+    const z = zones[id]
+    minX = Math.min(minX, z.x)
+    minY = Math.min(minY, z.y)
+    maxX = Math.max(maxX, z.x + z.width)
+    maxY = Math.max(maxY, z.y + z.height)
+  }
+
+  return getRectOutline(minX, minY, maxX - minX, maxY - minY)
 }
 
 const robots = ref({})
@@ -85,10 +91,7 @@ socket.on('robot_status_update', (data) => {
 
 function updateRobotRoute(robot, routeString) {
   const zoneIds = routeString.split('#')
-  robot.path = []
-  for (const id of zoneIds) {
-    robot.path.push(...getOutlinePath(zones[id]))
-  }
+  robot.path = getCombinedRectanglePath(zoneIds)
   robot.index = 0
   robot.progress = 0
 }
@@ -131,16 +134,16 @@ function drawZones() {
   }
 }
 
-function drawZoneLinks(routeString) {
-  const ids = routeString.split('#')
-  ctx.strokeStyle = 'blue'
+function drawZoneLinks() {
+  const path = getCombinedRectanglePath(Object.keys(zones))
+  ctx.strokeStyle = 'lightblue'
   ctx.lineWidth = 1
   ctx.beginPath()
-  ids.forEach((id, idx) => {
-    const center = getCenter(zones[id])
-    if (idx === 0) ctx.moveTo(center.x, center.y)
-    else ctx.lineTo(center.x, center.y)
+  path.forEach((pt, idx) => {
+    if (idx === 0) ctx.moveTo(pt.x, pt.y)
+    else ctx.lineTo(pt.x, pt.y)
   })
+  ctx.closePath()
   ctx.stroke()
 }
 
@@ -151,12 +154,11 @@ function getBatteryColor(battery) {
 function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   drawZones()
+  drawZoneLinks()
 
   for (const key in robots.value) {
     const robot = robots.value[key]
     if (isNaN(robot.x) || isNaN(robot.y)) continue
-
-    drawZoneLinks(robot.route)
 
     const size = 20
     const batteryHeight = size * (robot.battery / 100)

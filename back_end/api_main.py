@@ -13,28 +13,28 @@ robots = {
     "robotA": {
         "name": "Robot-A",
         "version": "1.0",
-        "velocity": "1",
+        "velocity": 0.5,
         "battery": 100,
         "route": "A#B",
     },
     "robotB": {
         "name": "Robot-B",
         "version": "1.0",
-        "velocity": "1",
+        "velocity": 0.5,
         "battery": 70,
         "route": "B#C",
     },
     "robotC": {
         "name": "Robot-C",
         "version": "1.0",
-        "velocity": "1",
+        "velocity": 0.5,
         "battery": 90,
         "route": "C",
     },
     "robotD": {
         "name": "Robot-D",
         "version": "1.0",
-        "velocity": "1",
+        "velocity": 0.5,
         "battery":  10,
         "route": "D",
     }
