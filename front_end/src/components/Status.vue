@@ -44,7 +44,6 @@
       <!-- 원형차트 + 레이블 행 (추가) -->
       <div class="menu-chart-row">
         <div class="chart-labels">
-          <p> 적재 차트 </p>
           <div v-for="(label, index) in labels" :key="index" class="chart-label">
     <span
         class="color-box"
@@ -386,7 +385,7 @@ export default {
 }
 
 .day-block {
-  box-shadow: 2px 0 6px rgba(231,242,255,0.2);
+  box-shadow: 2px 0 6px rgba(73,135,207,0.25);
 }
 
 .night-block {
@@ -404,16 +403,10 @@ export default {
   height: 300px;
   color: darkgray;
 }
-.chart-labels > p {
-  margin-top: 0;
-  margin-bottom: 4px;  /* 적당히 줄인 값 */
-  font-weight: 700;
-  font-size: 20px;
-}
 .chart-labels {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   font-size: 18px;
   font-weight: 600;
   min-width: 60px;
