@@ -18,18 +18,17 @@ export default {
 <style scoped>
 
 .body {
-  position: fixed;
-  top: 35px;
-  left: 41px;
+position: fixed;
+top: 35px;
+left: 41px;
 
-  width: 89%;
-  height: 92%;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius:10px;
+width: 90%;
+height: 92%;
+box-shadow: 2px 0 5px rgba(21,100,191,0.2);
+background-color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius:10px;
 }
-
 </style>
