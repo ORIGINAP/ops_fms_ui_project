@@ -43,6 +43,11 @@ export default {
       totalLogs: 0
     };
   },
+    computed: {
+    totalPages() {
+      return Math.ceil(this.totalLogs / this.pageSize);
+    }
+  },
   methods: {
     async fetchLogs() {
       try {
