@@ -181,20 +181,20 @@ function showAlertLog() {
 
 // 애니메이션 함수 수정
 function animate() {
-  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
+  //ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
-  // 영역 그리기
-  drawArea(areaA.value, 'A')
-  drawArea(areaB.value, 'B')
-  drawArea(areaC.value, 'C')
-  drawArea(areaD.value, 'D')
+  // // 영역 그리기
+  // drawArea(areaA.value, 'A')
+  // drawArea(areaB.value, 'B')
+  // drawArea(areaC.value, 'C')
+  // drawArea(areaD.value, 'D')
 
-  // 모든 로봇 그리기 및 이동
-  for (const robot of robots) {
-    moveRobot(robot)
-    drawPath(robot.path) // 각 로봇 경로 시각화(원한다면 제거 가능)
-    drawRobot(robot)
-  }
+  // // 모든 로봇 그리기 및 이동
+  // for (const robot of robots) {
+  //   moveRobot(robot)
+  //   drawPath(robot.path) // 각 로봇 경로 시각화(원한다면 제거 가능)
+  //   drawRobot(robot)
+  // }
 
   // 시설 상태 업데이트
   updateFacilityStatus()

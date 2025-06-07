@@ -1,5 +1,4 @@
 <template>
-  <div class="black-box"></div>
   <canvas ref="canvas" @click="addPoint" width="800" height="500" style="border:1px solid black;"></canvas>
 </template>
 
@@ -64,7 +63,7 @@
         robot.index = 0
         robot.progress = 0
       }
-
+    }
       // 거리 계산
     function getDistance(a, b) {
       return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
@@ -93,7 +92,7 @@
       robot.x = current.x + (next.x - current.x) * ratio
       robot.y = current.y + (next.y - current.y) * ratio
     }
-  }
+ 
     function draw() {
     ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
 
