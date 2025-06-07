@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from db import logs_collection
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -53,6 +54,25 @@ def login():
     else:
         return jsonify({"message": "로그인 실패"}), 401
 
+@app.route('/api/logs', methods=['GET'])
+def get_logs():
+    try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 20))
+        skip = (page - 1) * limit
+
+        total_logs = logs_collection.count_documents({})
+        logs_cursor = logs_collection.find({}, {'_id': 0}).skip(skip).limit(limit)
+        logs = list(logs_cursor)
+
+        return jsonify({
+            'logs': logs,
+            'total': total_logs,
+            'page': page,
+            'limit': limit
+        })
+    except Exception as e:
+        return jsonify({'message': '서버 오류', 'error': str(e)}), 500
 @app.route('/me')
 def me():
     user_id = session.get('user_id')
