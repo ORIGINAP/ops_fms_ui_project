@@ -58,12 +58,15 @@ def get_logs():
         logs_cursor = logs_collection.find({}, {'_id': 0}).skip(skip).limit(limit)
         logs = list(logs_cursor)
 
-         return jsonify({
+        return jsonify({
             'logs': logs,
             'total': total_logs,
             'page': page,
             'limit': limit
         })
+    except Exception as e:
+        return jsonify({'message': '서버 오류', 'error': str(e)}), 500
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
