@@ -59,6 +59,9 @@ export default {
         console.error("로그 불러오기 실패", error);
       }
     },
+        changePage(page) {
+      this.fetchLogs(page);
+    },
     showDetail(log) {
       alert('임시 작업')
     }
