@@ -49,9 +49,14 @@ def login():
 
 @app.route('/api/logs', methods=['GET'])
 def get_logs():
-    logs = list(logs_collection.find({}, {'_id': 0}))
-    return jsonify(logs)
+    try:
+        page = int(request.args.get('page', 1))
+        limit = int(request.args.get('limit', 20))
+        skip = (page - 1) * limit
 
+        total_logs = logs_collection.count_documents({})
+        logs_cursor = logs_collection.find({}, {'_id': 0}).skip(skip).limit(limit)
+        logs = list(logs_cursor)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
