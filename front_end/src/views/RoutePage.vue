@@ -29,8 +29,8 @@
         <h2 class="cmd-header">
           명령어 입력 <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
         </h2>
-        <ul ref="cmdList">
-          <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
+        <ul ref="logList">
+          <li v-for="(log, idx) in (selectedRobot?.logs || [])" :key="idx">{{ log }}</li>
         </ul>
 
         <div class="command-box" v-if="selectedRobot">
@@ -47,7 +47,7 @@
   </div>
 </template>
 
-<script>
+<script>import axios from "axios";
 import Menu from "../components/Menu.vue";
 
 export default {
@@ -57,11 +57,7 @@ export default {
     return {
       selectedRobotId: "",
       commandText: "",
-      robotList: [
-        { id: 1, name: "로봇 1", battery: 100, location: "A", fault: false, logs: [] },
-        { id: 2, name: "로봇 2", battery: 80, location: "B", fault: false, logs: [] },
-        { id: 3, name: "로봇 3", battery: 60, location: "C", fault: true, logs: [] },
-      ],
+      robotList: [],
     };
   },
   computed: {
@@ -70,36 +66,86 @@ export default {
     },
   },
   methods: {
-    sendCommand() {
+    async fetchRobotsFromServer() {
+      try {
+        const res = await axios.get("http://127.0.0.1:5002/robots", {
+          withCredentials: true,
+        });
+
+        // 서버 응답: ["robotA", "robotB", ...]
+        this.robotList = res.data.map((rid, index) => ({
+          id: index + 1,
+          name: `로봇 ${index + 1}`,
+          battery: 100,
+          location: "A",
+          fault: false,
+          logs: [],
+          backendId: rid, // 예: "robotA"
+        }));
+
+        if (!this.selectedRobotId && this.robotList.length > 0) {
+          this.selectedRobotId = this.robotList[0].id;
+        }
+      } catch (err) {
+        console.error("❌ 로봇 목록 불러오기 실패:", err);
+      }
+    },
+
+    async sendCommand() {
       if (!this.selectedRobot || !this.commandText.trim()) return;
 
-      const cmd = this.commandText.trim();
-      this.appendLog(`명령 전송: ${cmd}`);
+      const raw = this.commandText.trim();
+      this.appendLog(`명령 전송: ${raw}`);
 
-      if (cmd.startsWith("이동 ")) {
-        const loc = cmd.split(" ")[1];
-        if (["A", "B", "C", "D"].includes(loc)) {
-          this.selectedRobot.location = loc;
-          this.appendLog(`로봇이 ${loc} 위치로 이동했습니다.`);
-        } else {
-          this.appendLog("❗ 올바르지 않은 위치입니다 (A~D)");
+      if (raw.startsWith("이동")) {
+        const parts = raw.split(" ").slice(1); // ["A", "B"]
+        const route = parts.join("#");
+
+        const validZones = ["A", "B", "C", "D"];
+        const allValid = parts.every(zone => validZones.includes(zone));
+        if (!allValid) {
+          this.appendLog("❗ 잘못된 영역이 포함되어 있습니다 (A~D만 가능)");
+          return;
+        }
+
+        try {
+          await axios.post(
+            "http://127.0.0.1:5002/update_robot",
+            {
+              robot_id: this.selectedRobot.backendId,
+              route,
+            },
+            { withCredentials: true }
+          );
+          this.appendLog(`✅ ${route} 경로로 이동 업데이트 완료`);
+        } catch (err) {
+          this.appendLog("❌ 서버 오류로 명령 전송 실패");
+          console.error(err);
         }
       } else {
-        this.appendLog("❗ 알 수 없는 명령어입니다.");
+        this.appendLog("❗ 알 수 없는 명령어입니다. 예: 이동 A B");
       }
 
       this.commandText = "";
     },
+
     appendLog(msg) {
-      this.selectedRobot.logs.push(`[${new Date().toLocaleTimeString()}] ${msg}`);
+      this.selectedRobot.logs.push(
+        `[${new Date().toLocaleTimeString()}] ${msg}`
+      );
       this.$nextTick(() => {
         const list = this.$refs.logList;
         if (list) list.scrollTop = list.scrollHeight;
       });
     },
   },
+  mounted() {
+    this.fetchRobotsFromServer();
+  },
 };
+
 </script>
+
 
 <style scoped>
 .robot-control-container {

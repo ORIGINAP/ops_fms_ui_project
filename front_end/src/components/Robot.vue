@@ -17,17 +17,6 @@ import { io } from 'socket.io-client'
 
 import axios from 'axios';
 
-axios.post('http://localhost:5002/update_robot', {
-  robot_id: 'robotA',
-  battery: 85,
-  route: 'C'
-}, {
-  withCredentials: true, // ✅ 이걸 설정했으면 서버도 credentials 허용해야 함
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
-
 const canvas = ref(null)
 let ctx = null
 

@@ -104,6 +104,10 @@ def start_robot_threads():
     for robot_id in robots.keys():
         threading.Thread(target=update_robot_status, args=(robot_id,), daemon=True).start()
 
+@api.route('/robots', methods=['GET'])
+def get_robot_ids():
+    return jsonify(list(robots.keys()))
+
 
 @api.route('/update_robot', methods=['POST'])
 def update_robot():
