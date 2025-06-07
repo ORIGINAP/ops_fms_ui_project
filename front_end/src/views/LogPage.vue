@@ -124,4 +124,7 @@ button:hover {
   background-color: #0f4ea0;
 }
 
+.pagination {
+  margin-top: 20px;
+}
 </style>
