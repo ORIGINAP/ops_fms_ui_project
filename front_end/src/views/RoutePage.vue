@@ -35,9 +35,9 @@
 
         <div class="command-box" v-if="selectedRobot">
           <input
-              v-model="commandText"
-              @keyup.enter="sendCommand"
-              :placeholder="$t('route.moveCommand') + ' A'"
+            v-model="commandText"
+            @keyup.enter="sendCommand"
+            :placeholder="$t('route.moveCommand') + ' A'"
           />
           <button @click="sendCommand">{{ $t('route.send') }}</button>
         </div>
@@ -47,87 +47,6 @@
   </div>
 </template>
 
-<script>import axios from "axios";
-import Menu from "../components/Menu.vue";
-
-export default {
-  name: "RobotControlPage",
-  components: { Menu },
-  data() {
-    return {
-      selectedRobotId: "",
-      commandText: "",
-      robotList: [],
-    };
-  },
-  computed: {
-    selectedRobot() {
-      return this.robotList.find(r => r.id === this.selectedRobotId);
-    },
-  },
-  methods: {
-    async fetchRobotsFromServer() {
-      try {
-        const res = await axios.get("http://127.0.0.1:5002/robots", {
-          withCredentials: true,
-        });
-
-        // 서버 응답: ["robotA", "robotB", ...]
-        this.robotList = res.data.map((rid, index) => ({
-          id: index + 1,
-          name: `로봇 ${index + 1}`,
-          battery: 100,
-          location: "A",
-          fault: false,
-          logs: [],
-          backendId: rid, // 예: "robotA"
-        }));
-
-        if (!this.selectedRobotId && this.robotList.length > 0) {
-          this.selectedRobotId = this.robotList[0].id;
-        }
-      } catch (err) {
-        console.error("❌ 로봇 목록 불러오기 실패:", err);
-      }
-    },
-
-    async sendCommand() {
-      if (!this.selectedRobot || !this.commandText.trim()) return;
-
-      const cmd = this.commandText.trim();
-      this.appendLog(this.$t('route.commandSent', { command: cmd }));
-
-      if (cmd.startsWith(this.$t('route.moveCommand') + " ")) {
-        const loc = cmd.split(" ")[1];
-        if (["A", "B", "C", "D"].includes(loc)) {
-          this.selectedRobot.location = loc;
-          this.appendLog(this.$t('route.robotMoved', { location: loc }));
-        } else {
-          this.appendLog("❗ " + this.$t('route.invalidLocation'));
-        }
-      } else {
-        this.appendLog("❗ " + this.$t('route.unknownCommand'));
-      }
-
-      this.commandText = "";
-    },
-
-    appendLog(msg) {
-      this.selectedRobot.logs.push(
-        `[${new Date().toLocaleTimeString()}] ${msg}`
-      );
-      this.$nextTick(() => {
-        const list = this.$refs.logList;
-        if (list) list.scrollTop = list.scrollHeight;
-      });
-    },
-  },
-  mounted() {
-    this.fetchRobotsFromServer();
-  },
-};
-
-</script>
 
 
 <style scoped>
@@ -174,7 +93,7 @@ select {
 
 /* cmd 패널 */
 .cmd-panel {
-  flex: 0.94; /* 기존 1 → 더 좁게 조정 */
+  flex: 0.94;
   background: #fff;
   padding: 20px;
   border-radius: 13px;

@@ -15,8 +15,6 @@
 import { ref, onMounted, reactive, inject } from 'vue'
 import { io } from 'socket.io-client'
 
-import axios from 'axios';
-
 const canvas = ref(null)
 let ctx = null
 
