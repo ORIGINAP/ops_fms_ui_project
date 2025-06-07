@@ -1,21 +1,22 @@
 <template>
   <canvas ref="canvas"
-          style="position: fixed; top: 0; left: 0; z-index: 10; width: 100vw; height: 100vh; pointer-events: none;" />
+          style="position: fixed; top: 0; left: 0; z-index: 10; width: 100vw; height: 100vh; border: 2px solid black; pointer-events: none;" />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { io } from 'socket.io-client'
 
 const canvas = ref(null)
 let ctx = null
 
-const zones = {
-  A: { x: 100, y: 100, width: 100, height: 100 },
-  B: { x: 300, y: 100, width: 100, height: 100 },
-  C: { x: 300, y: 300, width: 100, height: 100 },
-  D: { x: 100, y: 300, width: 100, height: 100 }
-}
+// 자유롭게 위치와 크기 조절 가능한 zone 정의
+const zones = reactive({
+  A: { x: 100, y: 100, width: 120, height: 100 },
+  B: { x: 250, y: 120, width: 130, height: 110 },
+  C: { x: 400, y: 300, width: 150, height: 90 },
+  D: { x: 180, y: 280, width: 110, height: 120 }
+})
 
 function getRectOutline(x, y, width, height) {
   return [
@@ -150,8 +151,8 @@ function drawZoneLinks() {
 
   ctx.strokeStyle = 'lightblue'
   ctx.lineWidth = 2
-  const midX = 200
-  const midY = 200
+  const midX = 250
+  const midY = 250
   const midSize = 100
   ctx.strokeRect(midX, midY, midSize, midSize)
 }
