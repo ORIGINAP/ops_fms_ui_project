@@ -29,10 +29,19 @@ function getCenter(zone) {
   }
 }
 
-const robots = ref({}) // 각 로봇의 상태 저장
-const ROBOT_SPEED = 2
+function getOutlinePath(zone) {
+  const { x, y, width, height } = zone
+  return [
+    { x: x, y: y },
+    { x: x + width, y: y },
+    { x: x + width, y: y + height },
+    { x: x, y: y + height }
+  ]
+}
 
-// 소켓 연결
+const robots = ref({})
+const DEFAULT_SPEED = 2
+
 const socket = io('http://localhost:5002')
 
 socket.on('robot_status_update', (data) => {
@@ -48,7 +57,8 @@ socket.on('robot_status_update', (data) => {
         index: 0,
         progress: 0,
         battery: incoming.battery,
-        route: incoming.route
+        route: incoming.route,
+        velocity: parseFloat(incoming.velocity) || DEFAULT_SPEED
       }
       updateRobotRoute(robot, incoming.route)
       const start = robot.path[0]
@@ -59,6 +69,7 @@ socket.on('robot_status_update', (data) => {
       robots.value[key] = robot
     } else {
       robot.battery = incoming.battery
+      robot.velocity = parseFloat(incoming.velocity) || DEFAULT_SPEED
       if (robot.route !== incoming.route) {
         robot.route = incoming.route
         updateRobotRoute(robot, incoming.route)
@@ -74,7 +85,10 @@ socket.on('robot_status_update', (data) => {
 
 function updateRobotRoute(robot, routeString) {
   const zoneIds = routeString.split('#')
-  robot.path = zoneIds.map(id => getCenter(zones[id]))
+  robot.path = []
+  for (const id of zoneIds) {
+    robot.path.push(...getOutlinePath(zones[id]))
+  }
   robot.index = 0
   robot.progress = 0
 }
@@ -92,15 +106,15 @@ function updateRobots() {
     const next = robot.path[(robot.index + 1) % robot.path.length]
     const dist = getDistance(current, next)
 
-    robot.progress += ROBOT_SPEED
+    robot.progress = Math.min(robot.progress + robot.velocity, dist)
+    const ratio = robot.progress / dist
+    robot.x = current.x + (next.x - current.x) * ratio
+    robot.y = current.y + (next.y - current.y) * ratio
+
     if (robot.progress >= dist) {
       robot.index = (robot.index + 1) % robot.path.length
       robot.progress = 0
     }
-
-    const ratio = robot.progress / dist
-    robot.x = current.x + (next.x - current.x) * ratio
-    robot.y = current.y + (next.y - current.y) * ratio
   }
 }
 
@@ -117,8 +131,21 @@ function drawZones() {
   }
 }
 
+function drawZoneLinks(routeString) {
+  const ids = routeString.split('#')
+  ctx.strokeStyle = 'blue'
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ids.forEach((id, idx) => {
+    const center = getCenter(zones[id])
+    if (idx === 0) ctx.moveTo(center.x, center.y)
+    else ctx.lineTo(center.x, center.y)
+  })
+  ctx.stroke()
+}
+
 function getBatteryColor(battery) {
-  return battery < 50 ? 'red' : 'green'
+  return battery < 50 ? 'red' : '#39FF14'
 }
 
 function draw() {
@@ -129,26 +156,25 @@ function draw() {
     const robot = robots.value[key]
     if (isNaN(robot.x) || isNaN(robot.y)) continue
 
+    drawZoneLinks(robot.route)
+
     const size = 20
     const batteryHeight = size * (robot.battery / 100)
     const batteryColor = getBatteryColor(robot.battery)
 
-    // 외곽 네모
     ctx.strokeStyle = 'black'
     ctx.strokeRect(robot.x - size / 2, robot.y - size / 2, size, size)
 
-    // 배터리 색 영역 (아래부터 위로 채워짐)
     ctx.fillStyle = batteryColor
     ctx.fillRect(robot.x - size / 2, robot.y + size / 2 - batteryHeight, size, batteryHeight)
 
-    // 이름 표시
     ctx.fillStyle = 'black'
     ctx.font = '12px Arial'
     ctx.fillText(robot.name, robot.x - 15, robot.y - size / 2 - 5)
   }
 }
 
-function animate() {
+function animate(timestamp) {
   requestAnimationFrame(animate)
   updateRobots()
   draw()
