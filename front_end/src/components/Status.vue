@@ -236,7 +236,7 @@ export default {
       };
 
       try {
-        const response = await axios.get(url, { params });
+        const response = await axios.get(url, { params, withCredentials: false });
         console.log("요청 시간:", baseDate, baseTime);
 
         const result = response.data.response;

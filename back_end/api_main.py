@@ -29,14 +29,14 @@ robots = {
         "version": "1.0",
         "velocity": 0.5,
         "battery": 90,
-        "route": "C",
+        "route": "C#A",
     },
     "robotD": {
         "name": "Robot-D",
         "version": "1.0",
         "velocity": 0.5,
         "battery":  10,
-        "route": "D",
+        "route": "A#B#C#D",
     }
 }
 

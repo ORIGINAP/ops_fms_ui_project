@@ -10,12 +10,14 @@ import { io } from 'socket.io-client'
 const canvas = ref(null)
 let ctx = null
 
-// 자유롭게 위치와 크기 조절 가능한 zone 정의
+const SCALE = 2
+const PADDING = 6 * SCALE // 내부 여백 크기
+
 const zones = reactive({
-  A: { x: 100, y: 100, width: 120, height: 100 },
-  B: { x: 250, y: 120, width: 130, height: 110 },
-  C: { x: 400, y: 300, width: 150, height: 90 },
-  D: { x: 180, y: 280, width: 110, height: 120 }
+  A: { x: 100 * SCALE, y: 100 * SCALE, width: 120 * SCALE, height: 100 * SCALE },
+  B: { x: 250 * SCALE, y: 120 * SCALE, width: 130 * SCALE, height: 110 * SCALE },
+  C: { x: 400 * SCALE, y: 300 * SCALE, width: 150 * SCALE, height: 90 * SCALE },
+  D: { x: 180 * SCALE, y: 280 * SCALE, width: 110 * SCALE, height: 120 * SCALE }
 })
 
 function getRectOutline(x, y, width, height) {
@@ -42,7 +44,7 @@ function getCombinedRectanglePath(zoneIds) {
 }
 
 const robots = ref({})
-const DEFAULT_SPEED = 2
+const DEFAULT_SPEED = 2 * SCALE
 
 const socket = io('http://localhost:5002')
 
@@ -60,7 +62,7 @@ socket.on('robot_status_update', (data) => {
         progress: 0,
         battery: incoming.battery,
         route: incoming.route,
-        velocity: parseFloat(incoming.velocity) || DEFAULT_SPEED
+        velocity: (parseFloat(incoming.velocity) || DEFAULT_SPEED) * SCALE
       }
       updateRobotRoute(robot, incoming.route)
       const start = robot.path[0]
@@ -71,7 +73,7 @@ socket.on('robot_status_update', (data) => {
       robots.value[key] = robot
     } else {
       robot.battery = incoming.battery
-      robot.velocity = parseFloat(incoming.velocity) || DEFAULT_SPEED
+      robot.velocity = (parseFloat(incoming.velocity) || DEFAULT_SPEED) * SCALE
       if (robot.route !== incoming.route) {
         robot.route = incoming.route
         updateRobotRoute(robot, incoming.route)
@@ -118,14 +120,20 @@ function updateRobots() {
 }
 
 function drawZones() {
-  ctx.strokeStyle = 'gray'
   ctx.lineWidth = 1
-  ctx.font = '14px Arial'
-  ctx.fillStyle = 'black'
+  ctx.font = `${14 * SCALE}px Arial`
 
   for (const key in zones) {
     const z = zones[key]
+
+    // 내부에서 padding 만큼 덜 채움
+    ctx.fillStyle = '#007bff'
+    ctx.fillRect(z.x + PADDING, z.y + PADDING, z.width - 2 * PADDING, z.height - 2 * PADDING)
+
+    // draw border and label
+    ctx.strokeStyle = 'gray'
     ctx.strokeRect(z.x, z.y, z.width, z.height)
+    ctx.fillStyle = 'black'
     ctx.fillText(key, z.x + 5, z.y + 20)
   }
 }
@@ -151,10 +159,30 @@ function drawZoneLinks() {
 
   ctx.strokeStyle = 'lightblue'
   ctx.lineWidth = 2
-  const midX = 250
-  const midY = 250
-  const midSize = 100
+  const midX = 250 * SCALE
+  const midY = 250 * SCALE
+  const midSize = 100 * SCALE
   ctx.strokeRect(midX, midY, midSize, midSize)
+}
+
+function drawRobotPaths() {
+  ctx.lineWidth = 1
+  ctx.setLineDash([4, 2])
+
+  for (const key in robots.value) {
+    const robot = robots.value[key]
+    if (!robot.path || robot.path.length < 2) continue
+
+    ctx.beginPath()
+    ctx.strokeStyle = 'orange'
+    robot.path.forEach((pt, idx) => {
+      if (idx === 0) ctx.moveTo(pt.x, pt.y)
+      else ctx.lineTo(pt.x, pt.y)
+    })
+    ctx.closePath()
+    ctx.stroke()
+  }
+  ctx.setLineDash([])
 }
 
 function getBatteryColor(battery) {
@@ -165,12 +193,13 @@ function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   drawZones()
   drawZoneLinks()
+  drawRobotPaths()
 
   for (const key in robots.value) {
     const robot = robots.value[key]
     if (isNaN(robot.x) || isNaN(robot.y)) continue
 
-    const size = 20
+    const size = 20 * SCALE
     const batteryHeight = size * (robot.battery / 100)
     const batteryColor = getBatteryColor(robot.battery)
 
@@ -181,7 +210,7 @@ function draw() {
     ctx.fillRect(robot.x - size / 2, robot.y + size / 2 - batteryHeight, size, batteryHeight)
 
     ctx.fillStyle = 'black'
-    ctx.font = '12px Arial'
+    ctx.font = `${12 * SCALE}px Arial`
     ctx.fillText(robot.name, robot.x - 15, robot.y - size / 2 - 5)
   }
 }
