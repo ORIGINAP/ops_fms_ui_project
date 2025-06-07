@@ -50,6 +50,9 @@ const messages = {
       fireAlert: '{area} 영역에서 화재가 발생했습니다!',
       noDanger: '현재 감지된 위험 없음'
     },
+    alert: {
+      close: '닫기'
+    },
     login: {
       title: '로그인',
       email: '이메일',
@@ -119,6 +122,9 @@ const messages = {
       safetyFacility: 'Safety Facility',
       fireAlert: 'Fire detected in {area}!',
       noDanger: 'No danger detected'
+    },
+    alert: {
+      close: 'Close'
     },
     login: {
       title: 'Login',
