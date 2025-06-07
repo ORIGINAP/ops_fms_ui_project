@@ -11,6 +11,7 @@
 
       <div class="menu-row">
         <div class="menu-temperature" :class="{ 'night-block': isNight, 'day-block': !isNight }">
+          <div class="temp-header">실외온도</div>  <!-- 추가 -->
           <div>
             <img
                 v-if="weatherIconUrl"
@@ -22,7 +23,9 @@
             <p v-else>{{ $t('status.loading') }}</p>
           </div>
         </div>
+
         <div class="menu-temperature">
+          <div class="temp-header">실내온도</div>  <!-- 추가 -->
           <div class="internal-block" v-if="internalTemperature !== null">
             <img
                 class="thermometer-icon"
@@ -343,7 +346,7 @@ export default {
 .menu-network {
   box-shadow: 2px 0 5px rgba(21,100,191,0.2);
   background-color: white;
-  height: 300px;
+  height: 330px;
   border-radius: 10px;
   flex-grow: 1;
   display: flex;
@@ -354,7 +357,18 @@ export default {
   color: darkgray;
 }
 
+.temp-header {
+  font-size: 15px !important;
+  font-weight: 600;
+  color: gray;
+  margin: 0;             /* 기본 margin 제거 */
+  position: absolute;    /* 절대 위치로 고정 */
+  top: -32px !important;             /* 위쪽 여백 조정 */
+  left: 30px;            /* 왼쪽 여백 조정 */
+  z-index: 10;
+}
 .menu-temperature {
+  position: relative; /* 텍스트 위치 기준 */
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
   background-color: white;
   height: 200px;
@@ -373,7 +387,7 @@ export default {
   font-size: 30px;
   gap: 10px;
   line-height: 1;
-  margin-top: 40px;
+  margin-top: 60px;
   padding: 0;
 }
 
@@ -399,10 +413,10 @@ export default {
   align-items: center;
   gap: 20px;
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(178,214,255,0.5);
-  height: 230px;
+  height: 280px;
   color: darkgray;
 }
 

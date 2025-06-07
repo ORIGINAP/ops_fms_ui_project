@@ -187,13 +187,13 @@ onMounted(() => {
 }
 
 .safety-facility-left {
-  bottom: 100px;
-  left: 150px;
+  bottom: 200px;
+  left: 100px;
 }
 
 .safety-facility-right {
-  top: 20px;
-  right: 700px;
+  top: 40px;
+  right: 750px;
 }
 
 /* 캔버스는 화면 전체 */

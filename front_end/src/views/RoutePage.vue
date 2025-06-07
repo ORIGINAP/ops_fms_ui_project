@@ -8,9 +8,9 @@
       <!-- 로봇 상태 카드 -->
       <div class="robot-info-card">
         <div class="form-group">
-          <label>{{ $t('route.robotSelect') }}</label>
+          <label>로봇 선택</label>
           <select v-model="selectedRobotId">
-            <option disabled value="">{{ $t('route.selectRobot') }}</option>
+            <option disabled value="">로봇을 선택하세요</option>
             <option v-for="robot in robotList" :key="robot.id" :value="robot.id">
               {{ robot.name }}
             </option>
@@ -18,16 +18,16 @@
         </div>
 
         <div v-if="selectedRobot" class="robot-info">
-          <p><strong>{{ $t('route.batteryStatus') }} : </strong> {{ selectedRobot.battery }}%</p>
-          <p><strong>{{ $t('route.currentLocation') }} : </strong> {{ selectedRobot.location }}</p>
-          <p><strong>{{ $t('route.faultStatus') }} : </strong> {{ selectedRobot.fault ? $t('route.hasFault') : $t('route.normal') }}</p>
+          <p><strong>배터리 상태 : </strong> {{ selectedRobot.battery }}%</p>
+          <p><strong>현재 위치 : </strong> {{ selectedRobot.location }}</p>
+          <p><strong>결함 여부 : </strong> {{ selectedRobot.fault ? "결함 있음" : "정상" }}</p>
         </div>
       </div>
 
       <!-- 로그 및 커맨드 패널 -->
       <div class="cmd-panel">
         <h2 class="cmd-header">
-          {{ $t('route.commandInput') }} <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
+          명령어 입력 <span v-if="selectedRobot">({{ selectedRobot.name }})</span>
         </h2>
         <ul ref="cmdList">
           <li v-for="(cmd, idx) in (selectedRobot?.cmd || [])" :key="idx">{{ cmd }}</li>
@@ -37,11 +37,11 @@
           <input
               v-model="commandText"
               @keyup.enter="sendCommand"
-              :placeholder="$t('route.moveCommand') + ' A'"
+              placeholder="ex: 이동 A"
           />
-          <button @click="sendCommand">{{ $t('route.send') }}</button>
+          <button @click="sendCommand">전송</button>
         </div>
-        <p v-else class="cmd-hint">{{ $t('route.commandHint') }}</p>
+        <p v-else class="cmd-hint">왼쪽에서 로봇을 선택하면 명령어를 입력할 수 있습니다.</p>
       </div>
     </div>
   </div>
@@ -74,18 +74,18 @@ export default {
       if (!this.selectedRobot || !this.commandText.trim()) return;
 
       const cmd = this.commandText.trim();
-      this.appendLog(this.$t('route.commandSent', { command: cmd }));
+      this.appendLog(`명령 전송: ${cmd}`);
 
-      if (cmd.startsWith(this.$t('route.moveCommand') + " ")) {
+      if (cmd.startsWith("이동 ")) {
         const loc = cmd.split(" ")[1];
         if (["A", "B", "C", "D"].includes(loc)) {
           this.selectedRobot.location = loc;
-          this.appendLog(this.$t('route.robotMoved', { location: loc }));
+          this.appendLog(`로봇이 ${loc} 위치로 이동했습니다.`);
         } else {
-          this.appendLog("❗ " + this.$t('route.invalidLocation'));
+          this.appendLog("❗ 올바르지 않은 위치입니다 (A~D)");
         }
       } else {
-        this.appendLog("❗ " + this.$t('route.unknownCommand'));
+        this.appendLog("❗ 알 수 없는 명령어입니다.");
       }
 
       this.commandText = "";
@@ -104,8 +104,8 @@ export default {
 <style scoped>
 .robot-control-container {
   display: flex;
-  height: 101vh;
-  background: #f0f4f8;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(21,100,191,0.2);
 }
 
 .main-panel {
@@ -120,7 +120,7 @@ export default {
   width: 280px;
   background: #fff;
   padding: 30px;
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
@@ -139,16 +139,16 @@ export default {
 select {
   margin-top: 6px;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
 }
 
 /* cmd 패널 */
 .cmd-panel {
-  flex: 0.933; /* 기존 1 → 더 좁게 조정 */
+  flex: 0.941; /* 기존 1 → 더 좁게 조정 */
   background: #fff;
   padding: 20px;
-  border-radius: 13px;
+  border-radius: 10px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
