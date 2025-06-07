@@ -4,8 +4,8 @@
     <div ref="areaB" class="area">B</div>
     <div ref="areaC" class="area">C</div>
     <div ref="areaD" class="big-area">D</div>
-    <div class="safety-facility safety-facility-left">소방시설</div>
-    <div class="safety-facility safety-facility-right">소방시설</div>
+    <div class="safety-facility safety-facility-left">{{ $t('map.safetyFacility') }}</div>
+    <div class="safety-facility safety-facility-right">{{ $t('map.safetyFacility') }}</div>
     <canvas ref="canvas"></canvas>
     <div class="alert-icon-container" @click="showAlertLog">
       <div class="alert-icon">⚠️</div>
@@ -154,7 +154,7 @@ function updateFacilityStatus() {
         id: Date.now(),
         area,
         timestamp: new Date().toLocaleTimeString(),
-        message: `${area} 영역에서 화재가 발생했습니다!`
+        message: this.$t('map.fireAlert', { area })
       }
       fireLogs.value.unshift(log)
       alertCount.value++
@@ -174,7 +174,7 @@ function showAlertLog() {
       .join('\n')
     alertComponent.value.activateAlert(logMessage)
   } else {
-    alertComponent.value.activateAlert('현재 감지된 위험 없음')
+    alertComponent.value.activateAlert(this.$t('map.noDanger'))
   }
 }
 
