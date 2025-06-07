@@ -142,12 +142,19 @@ button:hover {
 }
 
 .pagination {
-  margin-top: 20px;
+  position: fixed;
+  bottom: 65px;       
+  left: 50%;           
+  transform: translateX(-100%);  
+  display: flex;      
+  justify-content: center;
+  align-items: center;
+  margin-top: 0;         
 }
 .pagination button {
   margin: 0 5px;
   padding: 6px 10px;
-  background-color: #f2f2f2;
+  background-color: gray;
   border: none;
   cursor: pointer;
 }
