@@ -444,7 +444,6 @@ export default {
 
 .alert-tab .description {
   margin-left: 20px; /* 원하는 만큼 숫자 조절 */
-  margin-top: 15px;
 }
 
 .sound-field label {
