@@ -45,8 +45,8 @@ def update_robot_status(robot_id):
         state = robots[robot_id]
         state['battery'] = max(0, state['battery'] - 1)  # 배터리 감소
         socketio.emit('robot_status_update', {robot_id: state})
-        #print(f"Updated {robot_id} status: {state}")
-        time.sleep(0.5)
+        print(f"Updated {robot_id} status: {state}")
+        time.sleep(1)
 
 @socketio.on('connect')
 def handle_connect():

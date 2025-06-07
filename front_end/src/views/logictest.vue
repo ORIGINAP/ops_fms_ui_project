@@ -29,16 +29,16 @@ function getCenter(zone) {
   }
 }
 
-const robots = ref([]) // 각 로봇의 상태 저장
+const robots = ref({}) // 각 로봇의 상태 저장
 const ROBOT_SPEED = 2
 
 // 소켓 연결
-const socket = io('http://localhost:5000')
+const socket = io('http://localhost:5002')
 
 socket.on('robot_status_update', (data) => {
   for (const key in data) {
     const incoming = data[key]
-    let robot = robots.value.find(r => r.name === incoming.name)
+    let robot = robots.value[key]
 
     if (!robot) {
       robot = {
@@ -52,14 +52,21 @@ socket.on('robot_status_update', (data) => {
       }
       updateRobotRoute(robot, incoming.route)
       const start = robot.path[0]
-      robot.x = start.x
-      robot.y = start.y
-      robots.value.push(robot)
+      if (start) {
+        robot.x = start.x
+        robot.y = start.y
+      }
+      robots.value[key] = robot
     } else {
       robot.battery = incoming.battery
       if (robot.route !== incoming.route) {
         robot.route = incoming.route
         updateRobotRoute(robot, incoming.route)
+        const start = robot.path[0]
+        if (start) {
+          robot.x = start.x
+          robot.y = start.y
+        }
       }
     }
   }
@@ -77,8 +84,9 @@ function getDistance(a, b) {
 }
 
 function updateRobots() {
-  for (const robot of robots.value) {
-    if (robot.battery <= 0 || robot.path.length < 2) continue
+  for (const key in robots.value) {
+    const robot = robots.value[key]
+    if (robot.battery <= 0 || !robot.path || robot.path.length < 2) continue
 
     const current = robot.path[robot.index]
     const next = robot.path[(robot.index + 1) % robot.path.length]
@@ -113,7 +121,10 @@ function draw() {
   ctx.clearRect(0, 0, canvas.value.width, canvas.value.height)
   drawZones()
 
-  for (const robot of robots.value) {
+  for (const key in robots.value) {
+    const robot = robots.value[key]
+    if (isNaN(robot.x) || isNaN(robot.y)) continue
+
     ctx.fillStyle = robot.battery > 0 ? 'blue' : 'gray'
     ctx.fillRect(robot.x - 10, robot.y - 10, 20, 20)
 
