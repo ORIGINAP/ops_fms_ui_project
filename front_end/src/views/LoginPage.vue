@@ -86,17 +86,17 @@ const GotoRegister = () => {
 }
 
 .login-container input {
-  width: 95%;
-  padding: 8px;
-  margin-bottom: 15px;
+  width: 94%;
+  padding: 9px;
+  margin-bottom: 14px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
 .login-container button {
   width: 100%;
-  margin-top: 15px;
-  padding: 10px;
+  margin-top: 16px;
+  padding: 11px;
   background-color: #254081;
   color: white;
   border: none;

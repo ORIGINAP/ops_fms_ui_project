@@ -93,10 +93,10 @@ export default {
 
 .body {
 position: fixed;
-top: 35px;
-left: 41px;
+top: 36px;
+left: 42px;
 
-  width: 89%;
+  width: 90%;
   height: 92%;
   box-shadow: 3px 3px 7px rgba(21,100,191, 0.13);
   background-color: white;
@@ -104,7 +104,7 @@ left: 41px;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  border-radius: 30px;
+  border-radius: 10px;
 }
 
 .table-wrapper {
@@ -143,13 +143,12 @@ button:hover {
 
 .pagination {
   position: fixed;
-  bottom: 65px;       
+  bottom: 64px;
   left: 50%;           
   transform: translateX(-100%);  
   display: flex;      
   justify-content: center;
   align-items: center;
-  margin-top: 0;         
 }
 .pagination button {
   margin: 0 5px;

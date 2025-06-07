@@ -54,7 +54,7 @@
 
         <div v-if="activeTab === 'Sound'" class="sound-settings">
           <div class="form-group">
-            <label>{{ $t('system.sound.title') }}</label>
+            <label class="sound-title">{{ $t('system.sound.title') }}</label>
             <div class="toggle-group">
               <label><input type="checkbox" /> {{ $t('system.sound.enable') }}</label>
             </div>
@@ -206,7 +206,7 @@ export default {
 .header-banner {
   background-color: white;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 30px 20px;
   display: flex;
   align-items: center;
@@ -222,7 +222,7 @@ export default {
 }
 
 .settings-title {
-  font-size: 24px;
+  font-size: 25px;
   color: #333;
   margin: 0;
 }
@@ -252,7 +252,7 @@ export default {
 
 .form-section {
   background: white;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 30px;
   box-shadow: 2px 0 5px rgba(8,120,255,0.2);
   height: 580px; /*비율 맞추려고 늘렸는데 가변길이로 하고싶다면 없애요..*/
@@ -267,7 +267,7 @@ export default {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
   max-width: 500px;
 }
 
@@ -302,8 +302,8 @@ export default {
 .profile-text {
   font-size: 16px;
   color: #333;
-  margin: 0;
   padding: 8px 0;
+  margin-left: 20px;
 }
 
 .edit-footer {
@@ -345,7 +345,7 @@ export default {
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.5s ease;
 }
 
 .profile-field input:focus {
@@ -392,13 +392,6 @@ export default {
   flex-direction: column;
   gap: 20px;
 }
-
-.language-field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .alert-label {
   font-size: 15px;
   color: #333;
@@ -429,6 +422,13 @@ export default {
   padding: 10px;
 }
 
+.language-settings h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #666;
+}
+
 .profile-buttons {
   display: flex;
   gap: 10px;
@@ -440,10 +440,15 @@ export default {
   margin-left: 20px;
   margin-top: 20px;
   letter-spacing: 0.08em;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
-  gap : 50px;
+}
+
+.sound-title {
+  font-size: 28px;
+  font-weight: 700;
+  display: block;
 }
 
 .description {
@@ -534,8 +539,4 @@ input:checked + .slider::before {
   border-radius: 50%;
 }
 
-.toggle-label {
-  font-size: 14px;
-  color: #333;
-}
 </style>
